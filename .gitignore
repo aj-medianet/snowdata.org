@@ -1,0 +1,71 @@
+# Vim / VSCode / editors
+*.swp
+*.sw*
+Profile.prof
+.vscode
+.sass-cache
+
+# Python
+.Python
+.python-version
+__pycache__/
+.pytest_cache
+*.py[cod]
+.env/
+.env*
+.~env/
+.venv
+venv/
+env3.*/
+.dev
+.denv
+.pypyenv
+.pytest_cache/
+
+# Distribution / packaging
+env/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheelhouse/
+*.egg-info/
+pip-wheel-metadata/
+Pipfile.lock
+.installed.cfg
+*.egg
+.eggs
+MANIFEST
+
+# Temporary files
+*.~*
+tmp/
+
+# Django stuff:
+*.log
+*.pot
+
+# Windows
+*.bat
+Thumbs.db
+Desktop.ini
+
+# Mac OS X
+*.DS_Store
+
+# Other
+*.tgz
+
+# Pycharm project files
+*.idea
+
+# Cython / C extensions
+cythonize.json
+spacy/*.html
+*.cpp
+*.so
