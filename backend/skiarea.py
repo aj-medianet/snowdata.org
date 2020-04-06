@@ -15,11 +15,9 @@ class SkiArea:
         self.new_snow_48 = new_snow_48
 
     
-    # gettr method
     def get_attr(attr_name):
         return self.name
 
 
-    # settr method
     def set_attr(attr_name, val):
         self.attr_name = val
