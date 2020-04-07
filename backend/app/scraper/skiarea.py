@@ -21,3 +21,8 @@ class SkiArea:
 
     def set_attr(attr_name, val):
         self.attr_name = val
+
+
+    # TODO
+    def update(name):
+        print("TODO")

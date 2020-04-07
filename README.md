@@ -46,7 +46,7 @@ docker-compose down
 ### Web Frameworks 
 
 * [React](https://reactjs.org/) - Frontend
-* [Django](https://www.djangoproject.com/) - Backend
+* [Flask](https://flask.palletsprojects.com/) - Backend
 
 ### Docker Images:
 
@@ -63,6 +63,8 @@ docker-compose down
 * [Nginx Docker Image](/nginx/Dockerfile)
 
 ### End to End App Workflow
+
+TODO
 
 ![App Architecture](app-arch.png)
 ![Backend Architecture](backend-arch.png)

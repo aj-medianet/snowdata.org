@@ -1,23 +1,52 @@
+# development docker-compose file
+# not for production, use prod.docker-compose.yml for production
 version: '3'
 
 services:
-  db:
-    image: postgres
-    volumes:
-        - postgres_data:/var/lib/postgresql/data/
-    environment:
-        - POSTGRES_USER=root
-        - POSTGRES_PASSWORD=root
-        - POSTGRES_DB=snow_db
-  web:
-    build: ./backend/
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - ./backend:/code
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
 
+  db:
+    image: mysql:5.7
+    restart: always
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: snow_db
+    volumes:
+      - './db/init:/docker-entrypoint-initdb.d/:ro'
+      - my-datavolume:/var/lib/mysql
+
+  backend:
+    image: backend
+    restart: always
+    build: 
+      context: ./backend/
+      dockerfile: Dockerfile
+    container_name: backend
+    expose:
+      - 7081
+    volumes:
+      - './backend:/app'
+    environment:
+      - LANG=en_US.UTF-8
+      - LC_ALL=en_US.UTF-8
+      
+  nginx:
+    image: snowdata-nginx
+    build: 
+      context: ./nginx/
+      dockerfile: Dockerfile
+    container_name: snowdata-nginx
+    restart: always
+    ports:
+      - '7082:7082'
+
+# allows for persistent db volumes
 volumes:
-    postgres_data:
+  my-datavolume:
+
+# nginx connects to backend
+# backend exposes 7081, nginx passes that port to 7082
+# frontend acceses backend by POST req to localhost:7082
