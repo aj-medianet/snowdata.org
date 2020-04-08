@@ -1,5 +1,7 @@
 # class for ski areas
+from app import db
 
+ski_areas = ["Snowbird", "Jackson Hole", "Mt Bachelor", "Alta", "Aspen"]
 
 class SkiArea:
     
