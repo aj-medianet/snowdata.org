@@ -37,11 +37,11 @@ def jacksonHole():
     snow48h = snow48h_raw.replace("\n", "")
     snowDepth = snowDepth_raw.replace("\n", "")
     snowYTD = snowYTD_raw.replace("\n", "")
-    #print(repr(snow24h),repr(snow48h), repr(snowDepth), repr(snowYTD), repr(temp), repr(windSpeed))
+    print(repr(snow24h),repr(snow48h), repr(snowDepth), repr(snowYTD), repr(temp), repr(windSpeed))
 
 def main():
-    #mtBachelor()
-    jacksonHole()
+    mtBachelor()
+    #jacksonHole()
 
 
 if __name__ == "__main__":
