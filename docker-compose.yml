@@ -19,12 +19,12 @@ services:
       - my-datavolume:/var/lib/mysql
 
   backend:
-    image: backend
+    image: snowdata-backend
     restart: always
     build: 
       context: ./backend/
       dockerfile: Dockerfile
-    container_name: backend
+    container_name: snowdata-backend
     expose:
       - 7081
     volumes:

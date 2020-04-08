@@ -15,4 +15,8 @@ CREATE TABLE ski_area (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB;
 
-INSERT INTO ski_area (`name`) VALUES ("snowbird", 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO ski_area VALUES (1, "Snowbird", 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO ski_area VALUES (2, "Jackson Hole", 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO ski_area VALUES (3, "Mt Bachelor", 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO ski_area VALUES (4, "Alta", 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO ski_area VALUES (5, "Aspen", 0, 0, 0, 0, 0, 0, 0, 0);
