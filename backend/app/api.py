@@ -28,7 +28,7 @@ def check_pending():
     schedule.run_pending()
 
 # create a scheduler to update every 10 minutes
-schedule.every(2).minutes.do(update_data)
+schedule.every(10).minutes.do(update_data)
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=check_pending, trigger="interval", seconds=300)
 scheduler.start()
@@ -67,10 +67,6 @@ class get_ski_area(Resource):
             return jsonify(data)
         else:
             return jsonify("[DEBUG] Failed get data")
-
-        
-
-
 
 
 if __name__ == '__main__':

@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS ski_area;
+DROP TABLE IF EXISTS users;
 
 CREATE TABLE ski_area (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -20,3 +21,13 @@ INSERT INTO ski_area VALUES (2, "Jackson Hole", "", "", "", "", "", "", "", "");
 INSERT INTO ski_area VALUES (3, "Mt Bachelor", "", "", "", "", "", "", "", "");
 INSERT INTO ski_area VALUES (4, "Alta", "", "", "", "", "", "", "", "");
 INSERT INTO ski_area VALUES (5, "Aspen", "", "", "", "", "", "", "", "");
+
+
+CREATE TABLE users (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `password`,
+  `api_key` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB;

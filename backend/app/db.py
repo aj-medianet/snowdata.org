@@ -23,23 +23,21 @@ def get_db():
 # returns all data
 def get_all_data():
     db = get_db()
-    cursor = db.cursor()
+    cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")
     cursor.execute(""" SELECT * FROM ski_area; """)
-    results = list(cursor.fetchall()) # convert outer tuple to list
-    results = [list(i) for i in results] # convert nested tuples to lists
-
-    for item in results: # pop id off each list
-        item.pop(0)
-    return results
+    res = cursor.fetchall()
+    for item in res:
+        del item["id"]
+    return res
 
 
 # returns a ski areas data
 def get_ski_area(name):
     db = get_db()
-    cursor = db.cursor()
+    cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")
     cursor.execute(""" SELECT * FROM ski_area WHERE name="%s";  """ % name)
-    results = list(cursor.fetchall()[0])
-    results.pop(0)
-    return results
+    res = cursor.fetchone()
+    del res["id"]
+    return res
