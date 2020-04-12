@@ -22,22 +22,22 @@ cd frontend && npm install && cd ..
 
 Build and run the docker containers in detached mode:
 ```
-docker-compose up -d --build
+make br
 ```
 
 Build the docker containers:
 ```
-docker-compose build
+make build
 ```
 
 Run the app detached without building:
 ```
-docker-compose up -d
+make rund
 ```
 
 Run the app in the shell:
 ```
-docker-compose up
+make run
 ```
 
 To kill the app:
@@ -45,6 +45,21 @@ To kill the app:
 ```
 docker-compose down
 ```
+
+### Manually load database
+Login to MySQL docker container
+```
+docker ps
+```
+```
+docker exec -it <container ID> /bin/bash
+```
+```
+mysql -u root -p snow_db < init.sql
+```
+Password = root
+
+
 
 ### Deployment TODO
 
