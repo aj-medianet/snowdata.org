@@ -15,6 +15,11 @@ https://docs.docker.com/compose/install/
 
 ### For development 
 
+Install the node modules in the dev build
+```
+cd frontend && npm install && cd ..
+```
+
 Build and run the docker containers in detached mode:
 ```
 docker-compose up -d --build
@@ -40,6 +45,8 @@ To kill the app:
 ```
 docker-compose down
 ```
+
+### Deployment TODO
 
 ## Built With
 
