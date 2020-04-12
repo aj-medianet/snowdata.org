@@ -32,6 +32,24 @@ services:
     environment:
       - LANG=en_US.UTF-8
       - LC_ALL=en_US.UTF-8
+
+  frontend:
+    image: snowdata-react-frontend
+    stdin_open: true
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    container_name: snowdata-react-frontend
+    restart: always
+    volumes:
+      - './frontend:/opt/app'
+    ports:
+      - '8083:3000'
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - backend
+    command: npm start
       
   nginx:
     image: snowdata-nginx
@@ -50,3 +68,4 @@ volumes:
 # nginx connects to backend
 # backend exposes 7081, nginx passes that port to 7082
 # frontend acceses backend by POST req to localhost:7082
+# frontend accessed on port 8083

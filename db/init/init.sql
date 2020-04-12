@@ -26,7 +26,7 @@ INSERT INTO ski_area VALUES (5, "Aspen", "", "", "", "", "", "", "", "");
 CREATE TABLE users (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
-  `password`,
+  `password`varchar(255) NOT NULL,
   `api_key` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
