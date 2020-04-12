@@ -40,8 +40,8 @@ def jacksonHole():
     print(repr(snow24h),repr(snow48h), repr(snowDepth), repr(snowYTD), repr(temp), repr(windSpeed))
 
 def main():
-    mtBachelor()
-    #jacksonHole()
+    #mtBachelor()
+    jacksonHole()
 
 
 if __name__ == "__main__":

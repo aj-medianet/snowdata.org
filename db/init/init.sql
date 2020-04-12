@@ -31,3 +31,12 @@ CREATE TABLE users (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB;
+
+
+/* TODO create monthly totals and averages with ski area name as foreign key*/
+CREATE TABLE monthly_data (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ski_area_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ski_area_name` (`ski_area_name`)
+) ENGINE=InnoDB;

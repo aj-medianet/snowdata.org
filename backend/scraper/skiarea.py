@@ -28,3 +28,7 @@ class SkiArea:
     # TODO
     def update(name):
         print("TODO")
+
+    # TODO
+    def update_db():
+        db.update_ski_area()

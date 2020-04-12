@@ -41,3 +41,10 @@ def get_ski_area(name):
     res = cursor.fetchone()
     del res["id"]
     return res
+
+# TODO
+def update_ski_area(data):
+    #pass in the data to the db
+    print("")
+
+
