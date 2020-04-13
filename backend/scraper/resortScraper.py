@@ -25,23 +25,67 @@ def jacksonHole():
     html = urlopen('https://www.jacksonhole.com/weather-snow-report.html')
     bs = BeautifulSoup(html, 'html.parser')
     #print(bs.prettify())
-    temp = bs.find('div',{'class':'midTemp1'}).string
+    temp = bs.find('div',{'class':'midTemp1'}).string.strip('°')
     wind = bs.find('div',{'class':'midWind1'}).string
     snow24h_raw = bs.find(text="24 Hrs").find_next('div').find_next('div').string
     snow48h_raw = bs.find(text="48 Hrs").find_next('div').find_next('div').string
     snowDepth_raw = bs.find(text="Snow Depth").find_next('div').find_next('div').string
     snowYTD_raw = bs.find(text="Season Total").find_next('div').find_next('div').string
     speedList = wind.split()[-2:]
-    windSpeed = ' '.join(speedList)
+    windSpeed = ' '.join(speedList).strip('mph').strip()
     snow24h = snow24h_raw.replace("\n", "")
     snow48h = snow48h_raw.replace("\n", "")
     snowDepth = snowDepth_raw.replace("\n", "")
     snowYTD = snowYTD_raw.replace("\n", "")
     print(repr(snow24h),repr(snow48h), repr(snowDepth), repr(snowYTD), repr(temp), repr(windSpeed))
 
+def mthood():
+    html = urlopen('https://www.skihood.com/en/the-mountain/conditions')
+    bs = BeautifulSoup(html, 'html.parser')
+    #print(bs.prettify())
+    temp = bs.find('div',{'class':'conditions-glance-widget conditions-at-elevation'}).find('dd',{'class':'metric temperature', 'data-temperature': True})['data-temperature']
+    windSpeed = bs.find('div', {'class':'conditions-glance-widget conditions-at-elevation'}).find('dd',{'class':'reading windspeed', 'data-windspeed': True})['data-windspeed']
+    snow = bs.find('div',{'class':'conditions-glance-widget conditions-snowfall'}).find_all('dl')
+    snow12h = snow[0].find('dd',{'class':'reading depth', 'data-depth': True})['data-depth']
+    snow24h = snow[1].find('dd',{'class':'reading depth', 'data-depth': True})['data-depth']
+    snow48h = snow[2].find('dd',{'class':'reading depth', 'data-depth': True})['data-depth']
+    snowDepth = bs.find('div',{'class':'snowdepth-mid'}).find('span',{'class':'reading depth', 'data-depth': True})['data-depth'] 
+    snowYTD = bs.find('dl',{'class':'snowdepth-ytd'}).find('dd',{'class':'reading depth', 'data-depth': True})['data-depth'] 
+    #print(temp,windSpeed,snow12h,snow24h, snow48h, snowDepth, snowYTD)
+    #MISSING WIND DIRECTION
+    print(repr(snow24h),repr(snow48h), repr(snowDepth), repr(snowYTD), repr(temp), repr(windSpeed))
+
+def summit_49degreesN():
+    html = urlopen('https://www.ski49n.com/mountain-info/expanded-conditions')
+    bs = BeautifulSoup(html, 'html.parser')
+    summitSnow = bs.find('section', {'class':'mountain-stats'}).find_all('div', {'class':'row'})[2]
+    snow12h = summitSnow.find(text="12 Hours").find_next('h3').string.strip('"')
+    snow24h = summitSnow.find(text="24 Hours").find_next('h3').string.strip('"')
+    snow48h = summitSnow.find(text="48 Hours").find_next('h3').string.strip('"')
+    snowDepth = summitSnow.find(text="Snow Depth").find_next('h3').string.strip('"')
+    temp = bs.find_all('div', {'class':'row'})[4].find(text="Temperature").find_next('h3').string.strip('°')
+    windSpeed = bs.find_all('div', {'class':'row'})[4].find(text="Wind").find_next('h3').string.strip('mph')
+    snowYTD = bs.find(text="Snowfall YTD (summit)").find_next('h3').string
+    print(snow12h,snow24h,snow48h,snowDepth,snowYTD,temp,windSpeed)
+
+def alpental():
+    html = urlopen('https://summitatsnoqualmie.com/conditions')
+    bs = BeautifulSoup(html, 'html.parser')
+    temp = bs.find_all('div', {'class':'box box_flats2'})[1].find_next('span').find_next('span').find_next('span')['data-usc']
+    snow12h = bs.find_all('span',{'class':'js-measurement'})[42]['data-usc']
+    snow24h = bs.find_all('span',{'class':'js-measurement'})[43]['data-usc']
+    snow48h = bs.find_all('span',{'class':'js-measurement'})[44]['data-usc']
+    snowYTD = bs.find_all('span',{'class':'js-measurement'})[45]['data-usc']
+    snowDepth = bs.find_all('span',{'class':'js-measurement'})[46]['data-usc']
+    windSpeed = bs.find_all('span',{'class':'text text_48 text_72Md mix-text_color7 mix-text_alignCenter mix-text_alignLeftMd mix-text_strict'})[2].find_next('span')['data-usc']
+    print(windSpeed, temp,snow12h,snow24h,snow48h,snowYTD,snowDepth)
+
 def main():
     #mtBachelor()
-    jacksonHole()
+    #jacksonHole()
+    #mthood()
+    #summit_49degreesN()
+    #alpental()
 
 
 if __name__ == "__main__":
