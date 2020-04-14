@@ -80,6 +80,27 @@ def alpental():
     windSpeed = bs.find_all('span',{'class':'text text_48 text_72Md mix-text_color7 mix-text_alignCenter mix-text_alignLeftMd mix-text_strict'})[2].find_next('span')['data-usc']
     print(windSpeed, temp,snow12h,snow24h,snow48h,snowYTD,snowDepth)
 
+def summit_whitefish():
+    html = urlopen('https://skiwhitefish.com/snowreport/')
+    bs = BeautifulSoup(html, 'html.parser')
+    snow = bs.find_all('div', {'class':'col-sm-6'})
+    snowStr = str(snow[0]).replace("\t", "").replace("\n","").replace('"',' ').split('>')
+    snowDepth = snowStr[2].split()[2]
+    snowYTD = snowStr[3].split()[3]
+    snowStr2 = str(snow[1]).replace("\t", "").replace("\n","").replace('"',' ').split('>')
+    snow12h = snowStr2[1].split()[2]
+    wind = snowStr2[4].replace("/", " ").replace("mph", " ")
+    windSpeed = wind.split()[5]
+    windDirection = wind.split()[3]
+    htmlTemp = urlopen('https://skiwhitefish.com/weather/')
+    bs2 = BeautifulSoup(htmlTemp, 'html.parser')
+    weatherString = bs2.find('h3', text="Summit Forecast").find_previous('span').string
+    tempIndex = weatherString.find('°F')
+    terminal = weatherString[:tempIndex].split()
+    temp = terminal[-1]
+    #print(snowDepth,snowYTD,snow12h, windSpeed,windDirection,temp)
+    #MISSING SNOW 12H, SNOW 48H
+
 def main():
     #mtBachelor()
     #jacksonHole()
