@@ -27,17 +27,16 @@ def mt_bachelor():
     snow24h = snowfall.find('div','current-section condition').find('div', {'class':'key'}).string
     snowDepth = snowfall.find('div', 'section-block full').find('div', {'class':'key'}).string
     snowYTD = snowfall.find('div', 'section-block full first').find('div', {'class':'key'}).string
-    print(windDirection, windSpeed, temp, snow24h, snowDepth, snowYTD)
-    #MISSING 12H SNOW AND 48H SNOW, CALL NONE
+    #print(windDirection, windSpeed, temp, snow24h, snowDepth, snowYTD)
 
     snow12h = ""
     snow48h = ""
     
+    # strip special characters from the data and return it as a list in correct order
     data = [name, temp, snowDepth, snowYTD, windDirection, windSpeed, snow12h, snow24h, snow48h]
     for i, j in enumerate(data):
         data[i] = strip_special_chars(j)
 
-    # return atributes in a list
     return data
 
 
