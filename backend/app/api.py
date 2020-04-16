@@ -23,12 +23,12 @@ def update_data():
     print("\n\n\n[DEBUG] Updating Data")
     print("[DEBUG]", os.system("date"))
     print("\n\n")
-    skiarea.update_all() # TODO
+    skiarea.update_all() 
 
 def check_pending():
     schedule.run_pending()
 
-# create a scheduler to update every 100 minutes
+# create a scheduler to update every ~~ minutes TODO fix this
 schedule.every(1).minutes.do(update_data)
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=check_pending, trigger="interval", seconds=300)
@@ -36,6 +36,8 @@ scheduler.start()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    # test upate function TODO remove
+    skiarea.update_all()
     return jsonify('Hello')
 
 
