@@ -18,23 +18,22 @@ def mt_bachelor():
     bs = BeautifulSoup(html, 'html.parser')
     bs2 = BeautifulSoup(html2, 'html.parser')
     wind = bs2.find(id="current_conditions_detail").find('b', text="Wind Speed").find_next('td').string
-    windDirection = wind.split(' ', 1)[0]
+    wind_dir = wind.split(' ', 1)[0]
     speedList = wind.split()[-2:]
-    windSpeed = ' '.join(speedList)
-    windSpeed = ''.join(e for e in windSpeed if e.isdecimal()) 
-    temp = bs.find('div', 'weather-sections').find('div', 'current-section condition').find('div', {'class':'key'}).string
+    wind_speed = ' '.join(speedList)
+    wind_speed = ''.join(e for e in wind_speed if e.isdecimal()) 
+    cur_temp = bs.find('div', 'weather-sections').find('div', 'current-section condition').find('div', {'class':'key'}).string
     snowfall = bs.find_all('div', 'current-sections conditions')[0] # maybe change to [1] which is currently base stats.
-    snow24h = snowfall.find('div','current-section condition').find('div', {'class':'key'}).string
-    snowDepth = snowfall.find('div', 'section-block full').find('div', {'class':'key'}).string
-    snowYTD = snowfall.find('div', 'section-block full first').find('div', {'class':'key'}).string
-    #print(windDirection, windSpeed, temp, snow24h, snowDepth, snowYTD)
+    new_snow_24 = snowfall.find('div','current-section condition').find('div', {'class':'key'}).string
+    cur_depth = snowfall.find('div', 'section-block full').find('div', {'class':'key'}).string
+    ytd = snowfall.find('div', 'section-block full first').find('div', {'class':'key'}).string
 
     # set any unknown data points to empty strings
-    snow12h = ""
-    snow48h = ""
+    new_snow_12 = ""
+    new_snow_48 = ""
     
     # strip special chars from the data and return it as a list in correct order
-    data = [temp, snowDepth, snowYTD, windDirection, windSpeed, snow12h, snow24h, snow48h]
+    data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
     for i, j in enumerate(data):
         data[i] = strip_special_chars(j)
     
