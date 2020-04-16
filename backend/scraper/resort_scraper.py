@@ -143,7 +143,7 @@ def get_data(ski_area):
 
 
 def main():
-    pass
+    print("")
     #mt_bachelor()
     #jackson_hole()
     #mthood()
