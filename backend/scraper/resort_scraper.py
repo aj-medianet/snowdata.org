@@ -130,6 +130,7 @@ def summit_whitefish():
     #MISSING SNOW 12H, SNOW 48H
 
 
+# main switch statement to get data based on which ski area you want
 def get_data(ski_area):
     if ski_area == "mt_bachelor":
         return mt_bachelor()
