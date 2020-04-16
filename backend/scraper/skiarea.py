@@ -16,24 +16,14 @@ class SkiArea:
         self.new_snow_48 = new_snow_48
 
     
+    # gets an individual attribute value
     def get_attr(self, attr_name):
         return self.attr_name
 
 
+    # sets an individual attributes value
     def set_attr(self, attr_name, val):
         self.attr_name = val
-
-
-    def test_print(self):
-        print(self.name)
-        print(self.cur_temp)
-        print(self.cur_depth)
-        print(self.ytd)
-        print(self.wind_dir)
-        print(self.wind_speed)
-        print(self.new_snow_12)
-        print(self.new_snow_24)
-        print(self.new_snow_48)
 
 
     # updates the database with all of the ski areas data
