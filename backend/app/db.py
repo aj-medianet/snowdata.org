@@ -45,14 +45,14 @@ def get_ski_area(name):
 
 # updates a ski area with all of its data
 def update_ski_area(data):
-    print("[DEBUG] db.update_ski_area() data:", data)
+    print("\n\n[DEBUG] db.update_ski_area() data:", data)
     db = get_db()
     cursor = db.cursor()
     cursor.execute("use snow_db")
     query = """ UPDATE ski_areas SET cur_temp = "{}", cur_depth = "{}", ytd = "{}", wind_dir = "{}", wind_speed = "{}", new_snow_12 = "{}", new_snow_24 = "{}", new_snow_48 = "{}" WHERE name = "{}";  """.format(data["cur_temp"], data["cur_depth"], data["ytd"], data["wind_dir"], data["wind_speed"], data["new_snow_12"], data["new_snow_24"], data["new_snow_48"], data["name"])
     cursor.execute(query)
     db.commit()
-    print("[DEBUG] Updated {}".format(data["name"]))
+    print("[DEBUG] Updated {}\n\n".format(data["name"]))
 
 
 
