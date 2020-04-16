@@ -10,8 +10,6 @@ def strip_special_chars(string):
 
 
 def mt_bachelor():
-    name = "Mt Bachelor"
-
     html = urlopen('https://www.mtbachelor.com/conditions-report/')
     html2 = urlopen('https://forecast.weather.gov/MapClick.php?lat=43.98886243884903&lon=-121.68182373046875&site=pdt&smap=1&unit=0&lg=en&FcstType=text#.Vky-y3arS71')
     bs = BeautifulSoup(html, 'html.parser')
@@ -32,11 +30,12 @@ def mt_bachelor():
     snow12h = ""
     snow48h = ""
     
-    # strip special characters from the data and return it as a list in correct order
-    data = [name, temp, snowDepth, snowYTD, windDirection, windSpeed, snow12h, snow24h, snow48h]
+    # strip special chars from the data and return it as a list in correct order
+    data = [temp, snowDepth, snowYTD, windDirection, windSpeed, snow12h, snow24h, snow48h]
     for i, j in enumerate(data):
         data[i] = strip_special_chars(j)
-
+    
+    data.insert(0, "Mt Bachelor") # insert ski area name after stripping special chars
     return data
 
 
