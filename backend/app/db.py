@@ -45,6 +45,7 @@ def get_ski_area(name):
 # TODO
 def update_ski_area(data):
     #pass in the data to the db
-    print("")
+    print("inside updata ski area")
+    print("[DEBUG] data:", data)
 
 

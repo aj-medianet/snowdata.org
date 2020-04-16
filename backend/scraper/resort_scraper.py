@@ -1,13 +1,12 @@
 #!/usr/bin/python3
 from urllib.request import urlopen
-#from skiarea import SkiArea
 from bs4 import BeautifulSoup
 #import re #for regex
 
-# TODO
+
+# strips all special characters from string
 def strip_special_chars(string):
-    string = ''.join(e for e in string if e.isalnum())   
-    return string 
+    return ''.join(e for e in string if e.isalnum())   
 
 
 def mt_bachelor():
@@ -29,6 +28,7 @@ def mt_bachelor():
     snowYTD = snowfall.find('div', 'section-block full first').find('div', {'class':'key'}).string
     #print(windDirection, windSpeed, temp, snow24h, snowDepth, snowYTD)
 
+    # set any unknown data points to empty strings
     snow12h = ""
     snow48h = ""
     
@@ -60,8 +60,6 @@ def jackson_hole():
     snowYTD = snowYTD_raw.replace("\n", "")
     print(repr(snow24h),repr(snow48h), repr(snowDepth), repr(snowYTD), repr(temp), repr(windSpeed))
 
-    return [temp, snowDepth, snowYTD, windDirection, windspeed, snow12h, snow24h, snow48h]
-
 
 def mt_hood():
     html = urlopen('https://www.skihood.com/en/the-mountain/conditions')
@@ -79,7 +77,6 @@ def mt_hood():
     #MISSING WIND DIRECTION
     print(repr(snow24h),repr(snow48h), repr(snowDepth), repr(snowYTD), repr(temp), repr(windSpeed))
 
-    return [temp, snowDepth, snowYTD, windDirection, windspeed, snow12h, snow24h, snow48h]
 
 
 def summit_49degreesN():
@@ -95,8 +92,6 @@ def summit_49degreesN():
     snowYTD = bs.find(text="Snowfall YTD (summit)").find_next('h3').string
     print(snow12h,snow24h,snow48h,snowDepth,snowYTD,temp,windSpeed)
 
-    return [temp, snowDepth, snowYTD, windDirection, windspeed, snow12h, snow24h, snow48h]
-
 
 def alpental():
     html = urlopen('https://summitatsnoqualmie.com/conditions')
@@ -110,7 +105,6 @@ def alpental():
     windSpeed = bs.find_all('span',{'class':'text text_48 text_72Md mix-text_color7 mix-text_alignCenter mix-text_alignLeftMd mix-text_strict'})[2].find_next('span')['data-usc']
     print(windSpeed, temp,snow12h,snow24h,snow48h,snowYTD,snowDepth)
 
-    return [temp, snowDepth, snowYTD, windDirection, windspeed, snow12h, snow24h, snow48h]
 
 
 def summit_whitefish():
@@ -134,12 +128,14 @@ def summit_whitefish():
     #print(snowDepth,snowYTD,snow12h, windSpeed,windDirection,temp)
     #MISSING SNOW 12H, SNOW 48H
 
-    return [temp , snowDepth, snowYTD, windDirection, windspeed, snow12h, snow24h, snow48h]
-
 
 def get_data(ski_area):
     if ski_area == "mt_bachelor":
         return mt_bachelor()
+    elif ski_area == "jackson_hole":
+        return jackson_hole()
+    elif ski_area == "mt_hood":
+        return mt_hood()
 
 
 def main():
