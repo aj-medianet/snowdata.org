@@ -1,7 +1,10 @@
 #!/usr/bin/python3
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
+import argparse
+
 #import re #for regex
+
 
 
 # strips all special characters from string
@@ -137,14 +140,12 @@ def get_data(ski_area):
         return mt_hood()
 
 
-def main():
-    print("")
-    #mt_bachelor()
-    #jackson_hole()
-    #mthood()
-    #summit_49degreesN()
-    #alpental()
-
 
 if __name__ == "__main__":
-    main()    
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("func")
+    args = parser.parse_args()
+
+    if args.func:
+        print(get_data(args.func))
