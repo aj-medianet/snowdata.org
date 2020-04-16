@@ -23,13 +23,13 @@ def update_data():
     print("\n\n\n[DEBUG] Updating Data")
     print("[DEBUG]", os.system("date"))
     print("\n\n")
-    skiarea.update() # TODO
+    skiarea.update_all() # TODO
 
 def check_pending():
     schedule.run_pending()
 
 # create a scheduler to update every 100 minutes
-schedule.every(100).minutes.do(update_data)
+schedule.every(1).minutes.do(update_data)
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=check_pending, trigger="interval", seconds=300)
 scheduler.start()

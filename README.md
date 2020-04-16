@@ -54,26 +54,30 @@ docker ps
 ```
 docker exec -it <container ID> /bin/bash
 ```
+
+Load the init.sql schema into the snow_db database
 ```
 mysql -u root -p snow_db < init.sql
 ```
 Password = root
 
 
+### Deployment 
 
-### Deployment TODO
+TODO
 
 ## Built With
 
-### Web Frameworks 
+### Frameworks 
 
 * [React](https://reactjs.org/) - Frontend
 * [Flask](https://flask.palletsprojects.com/) - Backend
+* [MySQL](https://www.mysql.com/) - Database
 
 ### Docker Images:
 
 * [Node](https://hub.docker.com/_/node/) - Frontend
-* [Python](https://hub.docker.com/_/python) - Backend
+* [Ubuntu](https://hub.docker.com/_/ubuntu) - Backend
 * [Nginx](https://hub.docker.com/_/nginx) - Reverse Proxy Server
 
 ### Dependencies
@@ -86,8 +90,6 @@ Password = root
 
 ### End to End App Workflow
 
-TODO
-
 ![App Architecture](app-arch.png)
 ![Backend Architecture](backend-arch.png)
 
@@ -99,5 +101,5 @@ TODO
 
 ## License
 
-This project is released under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is released under the MIT License - see the [license.md](license.md) file for details
 

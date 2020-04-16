@@ -1,7 +1,9 @@
-DROP TABLE IF EXISTS ski_area;
+DROP TABLE IF EXISTS ski_areas;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS monthly_data;
 
-CREATE TABLE ski_area (
+
+CREATE TABLE ski_areas (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `cur_temp` varchar(255),
@@ -16,11 +18,7 @@ CREATE TABLE ski_area (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB;
 
-INSERT INTO ski_area VALUES (1, "Snowbird", "", "", "", "", "", "", "", "");
-INSERT INTO ski_area VALUES (2, "Jackson Hole", "", "", "", "", "", "", "", "");
-INSERT INTO ski_area VALUES (3, "Mt Bachelor", "", "", "", "", "", "", "", "");
-INSERT INTO ski_area VALUES (4, "Alta", "", "", "", "", "", "", "", "");
-INSERT INTO ski_area VALUES (5, "Aspen", "", "", "", "", "", "", "", "");
+INSERT INTO ski_areas VALUES (1, "Snowbird", "", "", "", "", "", "", "", ""),(2, "Jackson Hole", "", "", "", "", "", "", "", ""),(3, "Mt Bachelor", "", "", "", "", "", "", "", ""),(4, "Alta", "", "", "", "", "", "", "", ""),(5, "Aspen", "", "", "", "", "", "", "", "");
 
 
 CREATE TABLE users (
@@ -33,10 +31,19 @@ CREATE TABLE users (
 ) ENGINE=InnoDB;
 
 
-/* TODO create monthly totals and averages with ski area name as foreign key*/
+/* TODO */
+/*
 CREATE TABLE monthly_data (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ski_area_name` varchar(255) NOT NULL,
+  `month` varchar(255) NOT NULL,
+  `year` varchar(255) NOT NULL,
+  `ski_area` int(11) DEFAULT NULL,
+  `total_new_snow` varchar(255) NOT NULL,
+  `snow_depth` varchar(255) NOT NULL,
+  `avg_temp` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `ski_area_name` (`ski_area_name`)
+  UNIQUE KEY `month` (`month`)
+  key `ski_area` (`ski_area`),
+  CONSTRAINT `monthly_data_ibfk_1` FOREIGN KEY (`ski_area`) REFERENCES `ski_areas` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB;
+*/
