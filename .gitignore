@@ -75,6 +75,8 @@ spacy/*.html
 # react stuff
 #
 
+package-lock.json
+
 # Logs
 logs
 *.log
