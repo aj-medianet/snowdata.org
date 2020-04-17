@@ -41,93 +41,120 @@ def mt_bachelor():
     return data
 
 
-def jackson_hole():
-    name = "Jackson Hole"
-
+def jacksonHole():
     html = urlopen('https://www.jacksonhole.com/weather-snow-report.html')
     bs = BeautifulSoup(html, 'html.parser')
-    #print(bs.prettify())
-    temp = bs.find('div',{'class':'midTemp1'}).string.strip('°')
+    cur_temp = bs.find('div',{'class':'midTemp1'}).string.strip('°')
     wind = bs.find('div',{'class':'midWind1'}).string
     snow24h_raw = bs.find(text="24 Hrs").find_next('div').find_next('div').string
     snow48h_raw = bs.find(text="48 Hrs").find_next('div').find_next('div').string
     snowDepth_raw = bs.find(text="Snow Depth").find_next('div').find_next('div').string
     snowYTD_raw = bs.find(text="Season Total").find_next('div').find_next('div').string
-    speedList = wind.split()[-2:]
-    windSpeed = ' '.join(speedList).strip('mph').strip()
-    snow24h = snow24h_raw.replace("\n", "")
-    snow48h = snow48h_raw.replace("\n", "")
-    snowDepth = snowDepth_raw.replace("\n", "")
-    snowYTD = snowYTD_raw.replace("\n", "")
-    print(repr(snow24h),repr(snow48h), repr(snowDepth), repr(snowYTD), repr(temp), repr(windSpeed))
+    #speedList = wind.split()[-2:]
+    #wind_speed = ' '.join(speedList).strip('mph').strip()
+    new_snow_24 = snow24h_raw.replace("\n", "")
+    new_snow_48 = snow48h_raw.replace("\n", "")
+    cur_depth = snowDepth_raw.replace("\n", "")
+    ytd = snowYTD_raw.replace("\n", "")
+    
+    # set any unknown data points to empty strings
+    new_snow_12 = ""
+    wind_dir = ""
 
+    # was previously working but removed as they stopped reporting mid mountain wind speed
+    wind_speed =""
+    
+    data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
+    for i, j in enumerate(data):
+        data[i] = strip_special_chars(j)
 
-def mt_hood():
+    data.insert(0, "Jackson Hole") # insert ski area name after stripping special chars
+    return data
+
+def mthood():
+    name = "Mt Hood"
     html = urlopen('https://www.skihood.com/en/the-mountain/conditions')
     bs = BeautifulSoup(html, 'html.parser')
-    #print(bs.prettify())
-    temp = bs.find('div',{'class':'conditions-glance-widget conditions-at-elevation'}).find('dd',{'class':'metric temperature', 'data-temperature': True})['data-temperature']
-    windSpeed = bs.find('div', {'class':'conditions-glance-widget conditions-at-elevation'}).find('dd',{'class':'reading windspeed', 'data-windspeed': True})['data-windspeed']
+    cur_temp = bs.find('div',{'class':'conditions-glance-widget conditions-at-elevation'}).find('dd',{'class':'metric temperature', 'data-temperature': True})['data-temperature']
+    wind_speed = bs.find('div', {'class':'conditions-glance-widget conditions-at-elevation'}).find('dd',{'class':'reading windspeed', 'data-windspeed': True})['data-windspeed']
     snow = bs.find('div',{'class':'conditions-glance-widget conditions-snowfall'}).find_all('dl')
-    snow12h = snow[0].find('dd',{'class':'reading depth', 'data-depth': True})['data-depth']
-    snow24h = snow[1].find('dd',{'class':'reading depth', 'data-depth': True})['data-depth']
-    snow48h = snow[2].find('dd',{'class':'reading depth', 'data-depth': True})['data-depth']
-    snowDepth = bs.find('div',{'class':'snowdepth-mid'}).find('span',{'class':'reading depth', 'data-depth': True})['data-depth'] 
-    snowYTD = bs.find('dl',{'class':'snowdepth-ytd'}).find('dd',{'class':'reading depth', 'data-depth': True})['data-depth'] 
-    #print(temp,windSpeed,snow12h,snow24h, snow48h, snowDepth, snowYTD)
-    #MISSING WIND DIRECTION
-    print(repr(snow24h),repr(snow48h), repr(snowDepth), repr(snowYTD), repr(temp), repr(windSpeed))
-
+    new_snow_12  = snow[0].find('dd',{'class':'reading depth', 'data-depth': True})['data-depth']
+    new_snow_24  = snow[1].find('dd',{'class':'reading depth', 'data-depth': True})['data-depth']
+    new_snow_48  = snow[2].find('dd',{'class':'reading depth', 'data-depth': True})['data-depth']
+    cur_depth = bs.find('div',{'class':'snowdepth-mid'}).find('span',{'class':'reading depth', 'data-depth': True})['data-depth'] 
+    ytd = bs.find('dl',{'class':'snowdepth-ytd'}).find('dd',{'class':'reading depth', 'data-depth': True})['data-depth'] 
+    
+    wind_dir = ""
+    
+    data = [name, cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
+    return data
 
 
 def summit_49degreesN():
+    name = "49 Degrees North"
     html = urlopen('https://www.ski49n.com/mountain-info/expanded-conditions')
     bs = BeautifulSoup(html, 'html.parser')
     summitSnow = bs.find('section', {'class':'mountain-stats'}).find_all('div', {'class':'row'})[2]
-    snow12h = summitSnow.find(text="12 Hours").find_next('h3').string.strip('"')
-    snow24h = summitSnow.find(text="24 Hours").find_next('h3').string.strip('"')
-    snow48h = summitSnow.find(text="48 Hours").find_next('h3').string.strip('"')
-    snowDepth = summitSnow.find(text="Snow Depth").find_next('h3').string.strip('"')
-    temp = bs.find_all('div', {'class':'row'})[4].find(text="Temperature").find_next('h3').string.strip('°')
-    windSpeed = bs.find_all('div', {'class':'row'})[4].find(text="Wind").find_next('h3').string.strip('mph')
-    snowYTD = bs.find(text="Snowfall YTD (summit)").find_next('h3').string
-    print(snow12h,snow24h,snow48h,snowDepth,snowYTD,temp,windSpeed)
+    new_snow_12 = summitSnow.find(text="12 Hours").find_next('h3').string
+    new_snow_24 = summitSnow.find(text="24 Hours").find_next('h3').string
+    new_snow_48 = summitSnow.find(text="48 Hours").find_next('h3').string
+    cur_depth = summitSnow.find(text="Snow Depth").find_next('h3').string
+    cur_temp = bs.find_all('div', {'class':'row'})[4].find(text="Temperature").find_next('h3').string
+    wind_speed = bs.find_all('div', {'class':'row'})[4].find(text="Wind").find_next('h3').string.strip('mph')
+    ytd = bs.find(text="Snowfall YTD (summit)").find_next('h3').string
+    
+    wind_dir =""
 
+    data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
+    
+    for i, j in enumerate(data):
+        data[i] = strip_special_chars(j)
+    
+    data.insert(0, name)
+    return data
 
 def alpental():
+    name = "Alpental"
     html = urlopen('https://summitatsnoqualmie.com/conditions')
     bs = BeautifulSoup(html, 'html.parser')
-    temp = bs.find_all('div', {'class':'box box_flats2'})[1].find_next('span').find_next('span').find_next('span')['data-usc']
-    snow12h = bs.find_all('span',{'class':'js-measurement'})[42]['data-usc']
-    snow24h = bs.find_all('span',{'class':'js-measurement'})[43]['data-usc']
-    snow48h = bs.find_all('span',{'class':'js-measurement'})[44]['data-usc']
-    snowYTD = bs.find_all('span',{'class':'js-measurement'})[45]['data-usc']
-    snowDepth = bs.find_all('span',{'class':'js-measurement'})[46]['data-usc']
-    windSpeed = bs.find_all('span',{'class':'text text_48 text_72Md mix-text_color7 mix-text_alignCenter mix-text_alignLeftMd mix-text_strict'})[2].find_next('span')['data-usc']
-    print(windSpeed, temp,snow12h,snow24h,snow48h,snowYTD,snowDepth)
-
+    cur_temp = bs.find_all('div', {'class':'box box_flats2'})[1].find_next('span').find_next('span').find_next('span')['data-usc']
+    new_snow_12 = bs.find_all('span',{'class':'js-measurement'})[42]['data-usc']
+    new_snow_24 = bs.find_all('span',{'class':'js-measurement'})[43]['data-usc']
+    new_snow_48 = bs.find_all('span',{'class':'js-measurement'})[44]['data-usc']
+    ytd = bs.find_all('span',{'class':'js-measurement'})[45]['data-usc']
+    cur_depth = bs.find_all('span',{'class':'js-measurement'})[46]['data-usc']
+    wind_speed = bs.find_all('span',{'class':'text text_48 text_72Md mix-text_color7 mix-text_alignCenter mix-text_alignLeftMd mix-text_strict'})[2].find_next('span')['data-usc']
+    
+    wind_dir =""
+    data = [name, cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
+    return data
 
 
 def summit_whitefish():
+    name = "Whitefish Mountain"
     html = urlopen('https://skiwhitefish.com/snowreport/')
     bs = BeautifulSoup(html, 'html.parser')
     snow = bs.find_all('div', {'class':'col-sm-6'})
     snowStr = str(snow[0]).replace("\t", "").replace("\n","").replace('"',' ').split('>')
-    snowDepth = snowStr[2].split()[2]
-    snowYTD = snowStr[3].split()[3]
+    cur_depth = snowStr[2].split()[2]
+    ytd = snowStr[3].split()[3]
     snowStr2 = str(snow[1]).replace("\t", "").replace("\n","").replace('"',' ').split('>')
-    snow12h = snowStr2[1].split()[2]
+    new_snow_12 = snowStr2[1].split()[2]
     wind = snowStr2[4].replace("/", " ").replace("mph", " ")
-    windSpeed = wind.split()[5]
-    windDirection = wind.split()[3]
+    wind_speed = wind.split()[5]
+    wind_dir = wind.split()[3]
     htmlTemp = urlopen('https://skiwhitefish.com/weather/')
     bs2 = BeautifulSoup(htmlTemp, 'html.parser')
     weatherString = bs2.find('h3', text="Summit Forecast").find_previous('span').string
     tempIndex = weatherString.find('°F')
     terminal = weatherString[:tempIndex].split()
-    temp = terminal[-1]
-    #print(snowDepth,snowYTD,snow12h, windSpeed,windDirection,temp)
-    #MISSING SNOW 12H, SNOW 48H
+    cur_temp = terminal[-1]
+    
+    new_snow_24 =""
+    new_snow_48 =""
+
+    data = [name, cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
+    return data
 
 
 # main switch statement to get data based on which ski area you want
