@@ -11,7 +11,8 @@ class MainContent extends Component {
   
     getTest = (event) => {
       event.preventDefault()
-      fetch("http://localhost:7082")
+      fetch('https://api.snowdata.org')
+      //fetch("http://localhost:7082")
       .then((response) => {
         return response.json()
       })
@@ -22,7 +23,8 @@ class MainContent extends Component {
   
     getAllData = (event) => {
       event.preventDefault()
-      fetch('http://localhost:7082/get-all-data')
+      fetch('https://api.snowdata.org/get-all-data')
+      //fetch('http://localhost:7082/get-all-data')
       .then((response) => {
         return response.json()
       }).then((data) => {
@@ -35,7 +37,7 @@ class MainContent extends Component {
       const data = { skiareaname : "Snowbird" }
       //console.log(data)
       //console.log(JSON.stringify(data))
-      fetch('http://localhost:7082/get-ski-area', {
+      fetch('https://api.snowdata.org/get-ski-area', {
         method: 'POST',
         headers: {'Content-Type': 'application/json',},
         body: JSON.stringify(data),
