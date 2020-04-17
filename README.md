@@ -15,7 +15,7 @@ https://docs.docker.com/compose/install/
 
 ### For development 
 
-Install the node modules in the dev build
+Install the node modules in the dev build after you've installed node and npm
 ```
 cd frontend && npm install && cd ..
 ```

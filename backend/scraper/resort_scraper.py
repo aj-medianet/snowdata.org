@@ -2,9 +2,7 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import argparse
-
 #import re #for regex
-
 
 
 # strips all special characters from string
@@ -72,7 +70,6 @@ def jacksonHole():
     return data
 
 def mthood():
-    name = "Mt Hood"
     html = urlopen('https://www.skihood.com/en/the-mountain/conditions')
     bs = BeautifulSoup(html, 'html.parser')
     cur_temp = bs.find('div',{'class':'conditions-glance-widget conditions-at-elevation'}).find('dd',{'class':'metric temperature', 'data-temperature': True})['data-temperature']
@@ -86,12 +83,15 @@ def mthood():
     
     wind_dir = ""
     
-    data = [name, cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
+    data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
+    for i, j in enumerate(data):
+        data[i] = strip_special_chars(j)
+
+    data.insert(0, "Mt Hood") # insert ski area name after stripping special chars
     return data
 
 
 def summit_49degreesN():
-    name = "49 Degrees North"
     html = urlopen('https://www.ski49n.com/mountain-info/expanded-conditions')
     bs = BeautifulSoup(html, 'html.parser')
     summitSnow = bs.find('section', {'class':'mountain-stats'}).find_all('div', {'class':'row'})[2]
@@ -110,11 +110,10 @@ def summit_49degreesN():
     for i, j in enumerate(data):
         data[i] = strip_special_chars(j)
     
-    data.insert(0, name)
+    data.insert(0, "49 Degrees North")
     return data
 
 def alpental():
-    name = "Alpental"
     html = urlopen('https://summitatsnoqualmie.com/conditions')
     bs = BeautifulSoup(html, 'html.parser')
     cur_temp = bs.find_all('div', {'class':'box box_flats2'})[1].find_next('span').find_next('span').find_next('span')['data-usc']
@@ -127,11 +126,15 @@ def alpental():
     
     wind_dir =""
     data = [name, cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
+
+    for i, j in enumerate(data):
+        data[i] = strip_special_chars(j)
+    
+    data.insert(0, "Alpental")
     return data
 
 
-def summit_whitefish():
-    name = "Whitefish Mountain"
+def whitefish():
     html = urlopen('https://skiwhitefish.com/snowreport/')
     bs = BeautifulSoup(html, 'html.parser')
     snow = bs.find_all('div', {'class':'col-sm-6'})
@@ -154,6 +157,10 @@ def summit_whitefish():
     new_snow_48 =""
 
     data = [name, cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
+    for i, j in enumerate(data):
+        data[i] = strip_special_chars(j)
+    
+    data.insert(0, "Whitefish")
     return data
 
 
@@ -165,6 +172,10 @@ def get_data(ski_area):
         return jackson_hole()
     elif ski_area == "mt_hood":
         return mt_hood()
+    elif ski_area == "alpental":
+        return alpental()
+    elif ski_area == "whitefish":
+        return whitefish()
 
 
 
