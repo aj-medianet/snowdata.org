@@ -24,10 +24,23 @@ INSERT INTO ski_areas VALUES (1, "Snowbird", "", "", "", "", "", "", "", ""),(2,
 CREATE TABLE users (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
-  `password`varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `pwd`varchar(255) NOT NULL,
   `api_key` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB;
+
+
+CREATE TABLE api_keys (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `api_key` varchar(255) NOT NULL,
+  `count` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `api_key` (`api_key`)
+  key `username` (`username`),
+  CONSTRAINT `api_keys_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 

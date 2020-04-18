@@ -39,7 +39,7 @@ def mt_bachelor():
     return data
 
 
-def jacksonHole():
+def jackson_hole():
     html = urlopen('https://www.jacksonhole.com/weather-snow-report.html')
     bs = BeautifulSoup(html, 'html.parser')
     cur_temp = bs.find('div',{'class':'midTemp1'}).string.strip('°')
@@ -69,7 +69,7 @@ def jacksonHole():
     data.insert(0, "Jackson Hole") # insert ski area name after stripping special chars
     return data
 
-def mthood():
+def mt_hood():
     html = urlopen('https://www.skihood.com/en/the-mountain/conditions')
     bs = BeautifulSoup(html, 'html.parser')
     cur_temp = bs.find('div',{'class':'conditions-glance-widget conditions-at-elevation'}).find('dd',{'class':'metric temperature', 'data-temperature': True})['data-temperature']
@@ -103,7 +103,7 @@ def summit_49degreesN():
     wind_speed = bs.find_all('div', {'class':'row'})[4].find(text="Wind").find_next('h3').string.strip('mph')
     ytd = bs.find(text="Snowfall YTD (summit)").find_next('h3').string
     
-    wind_dir =""
+    wind_dir = ""
 
     data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
     
@@ -125,7 +125,7 @@ def alpental():
     wind_speed = bs.find_all('span',{'class':'text text_48 text_72Md mix-text_color7 mix-text_alignCenter mix-text_alignLeftMd mix-text_strict'})[2].find_next('span')['data-usc']
     
     wind_dir =""
-    data = [name, cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
+    data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
 
     for i, j in enumerate(data):
         data[i] = strip_special_chars(j)
@@ -156,7 +156,7 @@ def whitefish():
     new_snow_24 =""
     new_snow_48 =""
 
-    data = [name, cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
+    data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
     for i, j in enumerate(data):
         data[i] = strip_special_chars(j)
     
