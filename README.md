@@ -46,6 +46,14 @@ To kill the app:
 docker-compose down
 ```
 
+The frontend is running on 
+http://localhost:8083
+
+
+The backend is running on 
+http://localhost:7072
+
+
 ### Manually load database
 Login to MySQL docker container
 ```
