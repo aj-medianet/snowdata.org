@@ -10,32 +10,24 @@ def strip_special_chars(string):
     return ''.join(e for e in string if e.isalnum())   
 
 
-def mt_bachelor():
-    html = urlopen('https://www.mtbachelor.com/conditions-report/')
-    html2 = urlopen('https://forecast.weather.gov/MapClick.php?lat=43.98886243884903&lon=-121.68182373046875&site=pdt&smap=1&unit=0&lg=en&FcstType=text#.Vky-y3arS71')
+def alpental():
+    html = urlopen('https://summitatsnoqualmie.com/conditions')
     bs = BeautifulSoup(html, 'html.parser')
-    bs2 = BeautifulSoup(html2, 'html.parser')
-    wind = bs2.find(id="current_conditions_detail").find('b', text="Wind Speed").find_next('td').string
-    wind_dir = wind.split(' ', 1)[0]
-    speedList = wind.split()[-2:]
-    wind_speed = ' '.join(speedList)
-    wind_speed = ''.join(e for e in wind_speed if e.isdecimal()) 
-    cur_temp = bs.find('div', 'weather-sections').find('div', 'current-section condition').find('div', {'class':'key'}).string
-    snowfall = bs.find_all('div', 'current-sections conditions')[0] # maybe change to [1] which is currently base stats.
-    new_snow_24 = snowfall.find('div','current-section condition').find('div', {'class':'key'}).string
-    cur_depth = snowfall.find('div', 'section-block full').find('div', {'class':'key'}).string
-    ytd = snowfall.find('div', 'section-block full first').find('div', {'class':'key'}).string
-
-    # set any unknown data points to empty strings
-    new_snow_12 = ""
-    new_snow_48 = ""
+    cur_temp = bs.find_all('div', {'class':'box box_flats2'})[1].find_next('span').find_next('span').find_next('span')['data-usc']
+    new_snow_12 = bs.find_all('span',{'class':'js-measurement'})[42]['data-usc']
+    new_snow_24 = bs.find_all('span',{'class':'js-measurement'})[43]['data-usc']
+    new_snow_48 = bs.find_all('span',{'class':'js-measurement'})[44]['data-usc']
+    ytd = bs.find_all('span',{'class':'js-measurement'})[45]['data-usc']
+    cur_depth = bs.find_all('span',{'class':'js-measurement'})[46]['data-usc']
+    wind_speed = bs.find_all('span',{'class':'text text_48 text_72Md mix-text_color7 mix-text_alignCenter mix-text_alignLeftMd mix-text_strict'})[2].find_next('span')['data-usc']
     
-    # strip special chars from the data and return it as a list in correct order
+    wind_dir =""
     data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
+
     for i, j in enumerate(data):
         data[i] = strip_special_chars(j)
     
-    data.insert(0, "Mt Bachelor") # insert ski area name after stripping special chars
+    data.insert(0, "Alpental")
     return data
 
 
@@ -68,6 +60,36 @@ def jackson_hole():
 
     data.insert(0, "Jackson Hole") # insert ski area name after stripping special chars
     return data
+
+
+def mt_bachelor():
+    html = urlopen('https://www.mtbachelor.com/conditions-report/')
+    html2 = urlopen('https://forecast.weather.gov/MapClick.php?lat=43.98886243884903&lon=-121.68182373046875&site=pdt&smap=1&unit=0&lg=en&FcstType=text#.Vky-y3arS71')
+    bs = BeautifulSoup(html, 'html.parser')
+    bs2 = BeautifulSoup(html2, 'html.parser')
+    wind = bs2.find(id="current_conditions_detail").find('b', text="Wind Speed").find_next('td').string
+    wind_dir = wind.split(' ', 1)[0]
+    speedList = wind.split()[-2:]
+    wind_speed = ' '.join(speedList)
+    wind_speed = ''.join(e for e in wind_speed if e.isdecimal()) 
+    cur_temp = bs.find('div', 'weather-sections').find('div', 'current-section condition').find('div', {'class':'key'}).string
+    snowfall = bs.find_all('div', 'current-sections conditions')[0] # maybe change to [1] which is currently base stats.
+    new_snow_24 = snowfall.find('div','current-section condition').find('div', {'class':'key'}).string
+    cur_depth = snowfall.find('div', 'section-block full').find('div', {'class':'key'}).string
+    ytd = snowfall.find('div', 'section-block full first').find('div', {'class':'key'}).string
+
+    # set any unknown data points to empty strings
+    new_snow_12 = ""
+    new_snow_48 = ""
+    
+    # strip special chars from the data and return it as a list in correct order
+    data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
+    for i, j in enumerate(data):
+        data[i] = strip_special_chars(j)
+    
+    data.insert(0, "Mt Bachelor") # insert ski area name after stripping special chars
+    return data
+
 
 def mt_hood():
     html = urlopen('https://www.skihood.com/en/the-mountain/conditions')
@@ -111,26 +133,6 @@ def summit_49degreesN():
         data[i] = strip_special_chars(j)
     
     data.insert(0, "49 Degrees North")
-    return data
-
-def alpental():
-    html = urlopen('https://summitatsnoqualmie.com/conditions')
-    bs = BeautifulSoup(html, 'html.parser')
-    cur_temp = bs.find_all('div', {'class':'box box_flats2'})[1].find_next('span').find_next('span').find_next('span')['data-usc']
-    new_snow_12 = bs.find_all('span',{'class':'js-measurement'})[42]['data-usc']
-    new_snow_24 = bs.find_all('span',{'class':'js-measurement'})[43]['data-usc']
-    new_snow_48 = bs.find_all('span',{'class':'js-measurement'})[44]['data-usc']
-    ytd = bs.find_all('span',{'class':'js-measurement'})[45]['data-usc']
-    cur_depth = bs.find_all('span',{'class':'js-measurement'})[46]['data-usc']
-    wind_speed = bs.find_all('span',{'class':'text text_48 text_72Md mix-text_color7 mix-text_alignCenter mix-text_alignLeftMd mix-text_strict'})[2].find_next('span')['data-usc']
-    
-    wind_dir =""
-    data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
-
-    for i, j in enumerate(data):
-        data[i] = strip_special_chars(j)
-    
-    data.insert(0, "Alpental")
     return data
 
 
