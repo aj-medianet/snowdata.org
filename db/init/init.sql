@@ -14,12 +14,26 @@ CREATE TABLE ski_areas (
   `new_snow_12` varchar(255),
   `new_snow_24` varchar(255),
   `new_snow_48` varchar(255),
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
+  KEY (`name`)
 ) ENGINE=InnoDB;
 
 INSERT INTO ski_areas VALUES (1, "Snowbird", "", "", "", "", "", "", "", ""),(2, "Jackson Hole", "", "", "", "", "", "", "", ""),(3, "Mt Bachelor", "", "", "", "", "", "", "", ""),(4, "Alta", "", "", "", "", "", "", "", ""),(5, "Aspen", "", "", "", "", "", "", "", "");
 
+CREATE TABLE monthly_data (
+    `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `month` varchar(255) NOT NULL,
+    `year` varchar(255) NOT NULL,
+    `ski_area_name` varchar(255) NOT NULL,
+    `total_new_snow` varchar(255) NOT NULL,
+    `snow_depth` varchar(255) NOT NULL,
+    `avg_temp` varchar(255) NOT NULL,
+    CONSTRAINT `ski_area_fk1` FOREIGN KEY (`ski_area_name`) REFERENCES ski_areas(`name`) 
+      ON DELETE CASCADE 
+      ON UPDATE CASCADE,
+    KEY `ski_area_name` (`ski_area_name`)
+) ENGINE=InnoDB;
 
 CREATE TABLE users (
   `id` int(11) NOT NULL AUTO_INCREMENT,
