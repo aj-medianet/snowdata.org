@@ -82,7 +82,7 @@ def check_api_key_count(data):
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")
-    query = """ SELECT count FROM api_keys WHERE api_key="{} """.format(data["api_key"])
+    query = """ SELECT api_count FROM users WHERE api_key="{} """.format(data["api_key"])
     cursor.execute(query)
     res = cursor.fetchone()
     if res < 20:
@@ -95,7 +95,7 @@ def reset_api_counts():
     db = get_db()
     cursor = db.cursor()
     cursor.execute("use snow_db")    
-    query = """ UPDATE api_keys SET count="0" """
+    query = """ UPDATE users SET count="0" """
     cursor.execute(query)
     db.commit()
 
