@@ -1,6 +1,8 @@
-DROP TABLE IF EXISTS ski_areas;
+/* drop tables in reverse order so fk constraints dont break it first */
+DROP TABLE IF EXISTS api_keys;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS monthly_data;
+DROP TABLE IF EXISTS ski_areas;
 
 
 CREATE TABLE ski_areas (
@@ -14,12 +16,14 @@ CREATE TABLE ski_areas (
   `new_snow_12` varchar(255),
   `new_snow_24` varchar(255),
   `new_snow_48` varchar(255),
-  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ts` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY (`name`)
 ) ENGINE=InnoDB;
 
-INSERT INTO ski_areas VALUES (1, "Snowbird", "", "", "", "", "", "", "", ""),(2, "Jackson Hole", "", "", "", "", "", "", "", ""),(3, "Mt Bachelor", "", "", "", "", "", "", "", ""),(4, "Alta", "", "", "", "", "", "", "", ""),(5, "Aspen", "", "", "", "", "", "", "", "");
+INSERT INTO ski_areas VALUES (1, "Mt Bachelor", "", "", "", "", "", "", "", "", curdate());
+/*,(2, "Jackson Hole", "", "", "", "", "", "", "", "",""),(3, "Mt Bachelor", "", "", "", "", "", "", "", "",""),(4, "Alta", "", "", "", "", "", "", "", "",""),(5, "Aspen", "", "", "", "", "", "", "", "","");
+*/
 
 CREATE TABLE monthly_data (
     `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -35,42 +39,30 @@ CREATE TABLE monthly_data (
     KEY `ski_area_name` (`ski_area_name`)
 ) ENGINE=InnoDB;
 
+INSERT INTO monthly_data VALUES (1, MONTH(curdate()), YEAR(CURDATE()), "Mt Bachelor", "10", "100", "32");
+
 CREATE TABLE users (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `pwd`varchar(255) NOT NULL,
   `api_key` varchar(255) NOT NULL,
+  `api_count` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB;
 
+INSERT INTO users VALUES (1, "aj", "josephan@oregonstate.edu", "tmpadmin", "tmpkey", 0);
 
+/*
 CREATE TABLE api_keys (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
+  `username` int(11) DEFAULT NULL,
   `api_key` varchar(255) NOT NULL,
   `count` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `api_key` (`api_key`)
+  UNIQUE KEY `api_key` (`api_key`),
   key `username` (`username`),
-  CONSTRAINT `api_keys_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB;
-
-
-/* TODO */
-/*
-CREATE TABLE monthly_data (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `month` varchar(255) NOT NULL,
-  `year` varchar(255) NOT NULL,
-  `ski_area` int(11) DEFAULT NULL,
-  `total_new_snow` varchar(255) NOT NULL,
-  `snow_depth` varchar(255) NOT NULL,
-  `avg_temp` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `month` (`month`)
-  key `ski_area` (`ski_area`),
-  CONSTRAINT `monthly_data_ibfk_1` FOREIGN KEY (`ski_area`) REFERENCES `ski_areas` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+  CONSTRAINT `api_keys_fk_1` FOREIGN KEY (`username`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 */
