@@ -31,6 +31,14 @@ def alpental():
     return data
 
 
+def big_sky():
+    pass
+
+
+def bridger_bowl():
+    pass
+
+
 def jackson_hole():
     html = urlopen('https://www.jacksonhole.com/weather-snow-report.html')
     bs = BeautifulSoup(html, 'html.parser')
@@ -113,7 +121,7 @@ def mt_hood():
     return data
 
 
-def summit_49degreesN():
+def ski49n():
     html = urlopen('https://www.ski49n.com/mountain-info/expanded-conditions')
     bs = BeautifulSoup(html, 'html.parser')
     summitSnow = bs.find('section', {'class':'mountain-stats'}).find_all('div', {'class':'row'})[2]
@@ -134,6 +142,10 @@ def summit_49degreesN():
     
     data.insert(0, "49 Degrees North")
     return data
+
+
+def snowbird():
+    pass
 
 
 def whitefish():
@@ -168,14 +180,22 @@ def whitefish():
 
 # main switch statement to get data based on which ski area you want
 def get_data(ski_area):
-    if ski_area == "mt_bachelor":
-        return mt_bachelor()
+    if ski_area == "alpental":
+        return alpental()
+    elif ski_area == "big_sky":
+        return big_sky()
+    elif ski_area == "bridger_bowl":
+        return bridger_bowl()
     elif ski_area == "jackson_hole":
         return jackson_hole()
+    elif ski_area == "mt_bachelor":
+        return mt_bachelor()
     elif ski_area == "mt_hood":
         return mt_hood()
-    elif ski_area == "alpental":
-        return alpental()
+    elif ski_area == "ski49n":
+        return ski49n()
+    elif ski_area == "snowbird":
+        return snowbird()
     elif ski_area == "whitefish":
         return whitefish()
 
