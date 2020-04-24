@@ -29,7 +29,8 @@ scheduler.start()
 @app.route('/', methods=['GET', 'POST'])
 def index():
     # test upate function TODO remove
-    skiarea.update_all()
+    #skiarea.update_all()
+    db.reset_api_counts()
     return jsonify('Hello')
 
 
@@ -38,14 +39,19 @@ def index():
 #####################
 
 parser = reqparse.RequestParser()
-parser.add_argument("skiareaname", type=str, location="json", required=True)
+parser.add_argument("skiareaname", type=str, location="json")
+parser.add_argument("api_key", type=str, location="json")
 
 
 class get_all_data(Resource):
-    def get(self):
-        data = db.get_all_data()
-        if data:
-            return jsonify(data)
+    def get(self, api_key):
+        if db.verify_api_key(api_key):
+            data = db.get_all_data()
+            if data:
+                return jsonify(data)
+        else:
+            return jsonify("API daily limit has been exceeded")
+        
 
 
 class get_ski_area(Resource):
@@ -61,7 +67,7 @@ if __name__ == '__main__':
     app.run()
 
 
-api.add_resource(get_all_data, '/get-all-data')
+api.add_resource(get_all_data, '/get-all-data/<string:api_key>')
 api.add_resource(get_ski_area, '/get-ski-area')
 
 CORS(app, expose_headers='Authorization')

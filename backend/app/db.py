@@ -78,24 +78,35 @@ def create_user_account(data):
     db.commit()
 
 
-def check_api_key_count(data):
+def verify_api_key(api_key):
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")
-    query = """ SELECT api_count FROM users WHERE api_key="{} """.format(data["api_key"])
+    query = """ SELECT api_count FROM users WHERE api_key="{}" """.format(api_key)
     cursor.execute(query)
     res = cursor.fetchone()
-    if res < 20:
+    print( "api_count:", res["api_count"] )
+    if res["api_count"] < 5:
+        increment_api_count(api_key, res["api_count"])
         return True
-    else:
-        return False
+    return False
+
+
+def increment_api_count(api_key, cur_count):
+    cur_count += 1
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("use snow_db")
+    query = """ UPDATE users SET api_count="{}" """.format(cur_count)
+    cursor.execute(query)
+    db.commit()
 
 
 def reset_api_counts():
     db = get_db()
     cursor = db.cursor()
     cursor.execute("use snow_db")    
-    query = """ UPDATE users SET count="0" """
+    query = """ UPDATE users SET api_count="0" """
     cursor.execute(query)
     db.commit()
 

@@ -54,15 +54,3 @@ CREATE TABLE users (
 
 INSERT INTO users VALUES (1, "aj", "josephan@oregonstate.edu", "tmpadmin", "tmpkey", 0);
 
-/*
-CREATE TABLE api_keys (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` int(11) DEFAULT NULL,
-  `api_key` varchar(255) NOT NULL,
-  `count` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `api_key` (`api_key`),
-  key `username` (`username`),
-  CONSTRAINT `api_keys_fk_1` FOREIGN KEY (`username`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB;
-*/
