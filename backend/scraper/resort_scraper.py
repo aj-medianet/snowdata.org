@@ -32,6 +32,9 @@ def alpental():
 
 
 def big_sky():
+    # i think we should do a few that aren't currently working and not presenting data
+    # that way we can handle that 'error' correctly and make sure it works
+    # since this is what will happen to all the ski areas in the summer most likely
     pass
 
 

@@ -22,7 +22,7 @@ def get_db():
     return connection
 
 
-# returns all data
+# returns all ski areas data
 def get_all_data():
     db = get_db()
     cursor = db.cursor(dictionary=True)
@@ -34,7 +34,7 @@ def get_all_data():
     return res
 
 
-# returns a ski areas data
+# returns a single ski areas data
 def get_ski_area(name):
     db = get_db()
     cursor = db.cursor(dictionary=True)
@@ -63,6 +63,11 @@ def update_ski_area(data):
         print("[DEBUG] Updated {}\n\n".format(data["name"]))
     except:
         print("[DEBUG] Error updating {}\n\n".format(data["name"]))
+
+
+# possible TODO
+def create_ski_area(data):
+    pass
 
 
 def create_user(data):
@@ -98,7 +103,7 @@ def verify_api_key(api_key):
     query = """ SELECT api_count FROM users WHERE api_key="{}" """.format(api_key)
     cursor.execute(query)
     res = cursor.fetchone()
-    print( "api_count:", res["api_count"] )
+    print("\n\n[DEBUG] api_count: {}\n".format(res["api_count"]))
     if res["api_count"] < 5:
         increment_api_count(api_key, res["api_count"])
         return True

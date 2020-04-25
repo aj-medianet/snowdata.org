@@ -21,7 +21,17 @@ CREATE TABLE ski_areas (
   KEY (`name`)
 ) ENGINE=InnoDB;
 
-INSERT INTO ski_areas VALUES (1, "Mt Bachelor", "", "", "", "", "", "", "", "", curdate());
+INSERT INTO ski_areas VALUES 
+(1, "Alpental", "", "", "", "", "", "", "", "", curdate()),
+(2, "Big Sky", "", "", "", "", "", "", "", "", curdate()),
+(3, "Bridger Bowl", "", "", "", "", "", "", "", "", curdate()),
+(4, "Jackson Hole", "", "", "", "", "", "", "", "", curdate()),
+(5, "Mt Bachelor", "", "", "", "", "", "", "", "", curdate()),
+(6, "Mt Hood", "", "", "", "", "", "", "", "", curdate()),
+(7, "49 Degrees North", "", "", "", "", "", "", "", "", curdate()),
+(8, "Snowbird", "", "", "", "", "", "", "", "", curdate()),
+(9, "Whitefish", "", "", "", "", "", "", "", "", curdate());
+
 /*,(2, "Jackson Hole", "", "", "", "", "", "", "", "",""),(3, "Mt Bachelor", "", "", "", "", "", "", "", "",""),(4, "Alta", "", "", "", "", "", "", "", "",""),(5, "Aspen", "", "", "", "", "", "", "", "","");
 */
 
