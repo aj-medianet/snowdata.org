@@ -145,7 +145,27 @@ def ski49n():
 
 
 def snowbird():
-    pass
+    html = urlopen('https://www.snowbird.com/mountain-report/')
+    bs = BeautifulSoup(html, 'html.parser')
+    sbList = bs.find('div', {'class':'conditions'}).find_all('div', {'class':'sb-condition_value'})
+    #print(summitSnow[:])
+    new_snow_12 = sbList[0].string
+    new_snow_24 = sbList[1].string
+    new_snow_48 = sbList[2].string
+    cur_depth = sbList[3].string
+    ytd = sbList[4].string
+    cur_temp = sbList[6].string
+    wind_dir = sbList[8].contents[0]
+    wind = sbList[8].contents[2].split("-")
+    wind_speed = int(round((int(wind[0]) + int(wind[1]))/2))
+    
+    data = [cur_temp, cur_depth, ytd, wind_dir, new_snow_12, new_snow_24, new_snow_48]
+    for i, j in enumerate(data):
+        data[i] = strip_special_chars(j)
+
+    data.insert(4, str(wind_speed))
+    data.insert(0, "Snowbird") # insert ski area name after stripping special chars
+    return data
 
 
 def whitefish():
