@@ -133,8 +133,14 @@ def ski49n():
     new_snow_48 = summitSnow.find(text="48 Hours").find_next('h3').string
     cur_depth = summitSnow.find(text="Snow Depth").find_next('h3').string
     cur_temp = bs.find_all('div', {'class':'row'})[4].find(text="Temperature").find_next('h3').string
-    wind_speed = bs.find_all('div', {'class':'row'})[4].find(text="Wind").find_next('h3').string.strip('mph')
     ytd = bs.find(text="Snowfall YTD (summit)").find_next('h3').string
+    wind_speed_check = bs.find_all('div', {'class':'row'})[4].find(text="Wind").find_next('h3').string.strip('mph')
+
+    # Remove "Calm" because it is not quantitative data
+    if wind_speed_check == "Calm ":
+        wind_speed = ""
+    else:
+        wind_speed = wind_speed_check
     
     wind_dir = ""
 
@@ -158,7 +164,7 @@ def snowbird():
     cur_depth = sbList[3].string
     ytd = sbList[4].string
     cur_temp = sbList[6].string
-    wind_dir = sbList[8].contents[0]
+    wind_dir = sbList[8].contents[0].upper()
     wind = sbList[8].contents[2].split("-")
     wind_speed = int(round((int(wind[0]) + int(wind[1]))/2))
     
