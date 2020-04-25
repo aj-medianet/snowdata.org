@@ -65,17 +65,34 @@ def update_ski_area(data):
         print("[DEBUG] Error updating {}\n\n".format(data["name"]))
 
 
-def create_user_account(data):
-    print("\n\n[DEBUG] db.create_user_account() data:", data)
+def create_user(data):
+    print("\n\n[DEBUG] db.create_user() data:", data)
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("use snow_db")
+        hashed_pwd = generate_password_hash(data["password"])
+        query = """INSERT INTO users (username, email, password, api_key) VALUES ({}, {}, {}, {}) \
+            """.format(data["username"], data["email"], hashed_pwd, data["api_key"]) 
+        cursor.execute(query)
+        db.commit()
+        return True
+    except:
+        return False
+
+
+def login(data):
     db = get_db()
     cursor = db.cursor()
     cursor.execute("use snow_db")
-    hashed_pwd = generate_password_hash(data["password"])
-    api_key = utils.generate_api_key()
-    query = """INSERT INTO users (username, email, pwd, api_key) VALUES ({}, {}, {}, {}) \
-         """.format(data["username"], data["email"], hashed_pwd, api_key) 
+    query = """ SELECT password FROM users WHERE username="{}" """.format(data["username"])
     cursor.execute(query)
-    db.commit()
+    pwhash = cursor.fetchone()
+    
+    if check_password_hash(pwhash, data["password"]):
+        return True
+    return False
+
 
 
 def verify_api_key(api_key):

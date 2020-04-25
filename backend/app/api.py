@@ -19,9 +19,9 @@ app.config.from_object(app_settings)
 def check_pending():
     schedule.run_pending()
 
-# schedule tasks to update the ski area data and reset api key counts 
-schedule.every(10).minutes.do(skiarea.update_all)
-schedule.every().day.at("10:30").do(db.reset_api_counts)
+# schedule tasks
+schedule.every(20).minutes.do(skiarea.update_all) # update ski area data ever 20 min
+schedule.every().day.at("10:30").do(db.reset_api_counts) # reset api counts once a day
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=check_pending, trigger="interval", seconds=300)
 scheduler.start()
@@ -41,6 +41,10 @@ def index():
 parser = reqparse.RequestParser()
 parser.add_argument("skiareaname", type=str, location="json")
 parser.add_argument("api_key", type=str, location="json")
+parser.add_argument("username", type=str, location="json")
+parser.add_argument("email", type=str, location="json")
+parser.add_argument("password", type=str, location="json")
+
 
 
 class get_all_data(Resource):
@@ -53,7 +57,6 @@ class get_all_data(Resource):
             return jsonify("API daily limit has been exceeded")
         
 
-
 class get_ski_area(Resource):
     def post(self):
         args = parser.parse_args()
@@ -63,11 +66,39 @@ class get_ski_area(Resource):
             return jsonify(data)
 
 
+class create_user(Resource):
+    def post(self):
+        api_key = utils.generate_api_key()
+        args = parser.parse_args()
+        data = {
+            "username" : args["username"],
+            "password" : args["password"],
+            "email" : args["email"],
+            "api_key" : api_key
+        }
+
+        if db.create_user(data):
+            return jsonify("Success. API Key: {}".format(api_key))
+
+        return jsonify("Failed")
+
+class login(Resource):
+    def post(self):
+        args = parser.parse_args()
+        data = {
+            "username" : args["username"],
+            "password" : args["password"]
+        }
+
+        db.user_login(data)
+
 if __name__ == '__main__':
     app.run()
 
 
 api.add_resource(get_all_data, '/get-all-data/<string:api_key>')
 api.add_resource(get_ski_area, '/get-ski-area')
+api.add_resource(create_user, '/create_user')
+api.add_resource(login, '/login')
 
 CORS(app, expose_headers='Authorization')
