@@ -70,8 +70,8 @@ class create_user(Resource):
         args = parser.parse_args()
         data = {
             "username" : args["username"],
-            "password" : args["password"],
             "email" : args["email"],
+            "password" : args["password"],
             "api_key" : api_key
         }
 
