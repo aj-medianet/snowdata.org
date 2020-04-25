@@ -59,9 +59,12 @@ class get_ski_area(Resource):
     def post(self):
         args = parser.parse_args()
         ski_area_name = args["skiareaname"]
-        data = db.get_ski_area(ski_area_name)
-        if data:
-            return jsonify(data)
+        api_key = args["api_key"]
+        if db.verify_api_key(api_key):
+            data = db.get_ski_area(ski_area_name)
+            if data:
+                return jsonify(data)
+        return jsonify("API daily limit has been exceeded")
 
 
 class create_user(Resource):

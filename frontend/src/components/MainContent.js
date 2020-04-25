@@ -23,7 +23,7 @@ class MainContent extends Component {
   
     getAllData = (event) => {
       event.preventDefault()
-      fetch('https://api.snowdata.org/get-all-data')
+      fetch('https://api.snowdata.org/get-all-data/tmpkey')
       //fetch('http://localhost:7082/get-all-data')
       .then((response) => {
         return response.json()
@@ -34,7 +34,10 @@ class MainContent extends Component {
   
     getSkiAreaData = (event) => {
       event.preventDefault()
-      const data = { skiareaname : "Snowbird" }
+      const data = { 
+        skiareaname : "Snowbird",
+        api_key : "tmpkey"
+      }
       //console.log(data)
       //console.log(JSON.stringify(data))
       fetch('https://api.snowdata.org/get-ski-area', {
