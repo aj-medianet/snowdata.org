@@ -46,7 +46,6 @@ parser.add_argument("email", type=str, location="json")
 parser.add_argument("password", type=str, location="json")
 
 
-
 class get_all_data(Resource):
     def get(self, api_key):
         if db.verify_api_key(api_key):
@@ -80,6 +79,7 @@ class create_user(Resource):
             return jsonify("Success. API Key: {}".format(api_key))
         return jsonify("Failed")
 
+
 class login(Resource):
     def post(self):
         args = parser.parse_args()
@@ -88,7 +88,7 @@ class login(Resource):
             "password" : args["password"]
         }
 
-        if db.user_login(data):
+        if db.login(data):
             return jsonify("Success")
         return jsonify("Failed")
 

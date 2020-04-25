@@ -88,11 +88,7 @@ def login(data):
     query = """ SELECT password FROM users WHERE username="{}" """.format(data["username"])
     cursor.execute(query)
     pwhash = cursor.fetchone()
-    
-    if check_password_hash(pwhash, data["password"]):
-        return True
-    return False
-
+    return check_password_hash(pwhash, data["password"])
 
 
 def verify_api_key(api_key):
