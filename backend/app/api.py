@@ -88,7 +88,9 @@ class login(Resource):
             "password" : args["password"]
         }
 
-        db.user_login(data)
+        if db.user_login(data):
+            return jsonify("Success")
+        return jsonify("Failed")
 
 if __name__ == '__main__':
     app.run()
