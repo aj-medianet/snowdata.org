@@ -20,7 +20,7 @@ def check_pending():
     schedule.run_pending()
 
 # schedule tasks
-schedule.every(5).minutes.do(skiarea.update_all) # update ski area data ever 20 min
+schedule.every(1).minutes.do(skiarea.update_all) # update ski area data ever 20 min
 schedule.every().day.at("10:30").do(db.reset_api_counts) # reset api counts once a day
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=check_pending, trigger="interval", seconds=300)

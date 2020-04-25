@@ -32,9 +32,6 @@ INSERT INTO ski_areas VALUES
 (8, "Snowbird", "", "", "", "", "", "", "", "", curdate()),
 (9, "Whitefish", "", "", "", "", "", "", "", "", curdate());
 
-/*,(2, "Jackson Hole", "", "", "", "", "", "", "", "",""),(3, "Mt Bachelor", "", "", "", "", "", "", "", "",""),(4, "Alta", "", "", "", "", "", "", "", "",""),(5, "Aspen", "", "", "", "", "", "", "", "","");
-*/
-
 CREATE TABLE monthly_data (
     `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `month` varchar(255) NOT NULL,
