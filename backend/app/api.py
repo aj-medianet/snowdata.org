@@ -53,8 +53,7 @@ class get_all_data(Resource):
             data = db.get_all_data()
             if data:
                 return jsonify(data)
-        else:
-            return jsonify("API daily limit has been exceeded")
+        return jsonify("API daily limit has been exceeded")
         
 
 class get_ski_area(Resource):
@@ -79,7 +78,6 @@ class create_user(Resource):
 
         if db.create_user(data):
             return jsonify("Success. API Key: {}".format(api_key))
-
         return jsonify("Failed")
 
 class login(Resource):
