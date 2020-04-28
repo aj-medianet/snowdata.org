@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react';
+import 'bootstrap/dist/js/bootstrap.bundle';
 
-class HeaderContent extends Component {
-    render() {
+const Navigation = () => {
         return (
             <header className="">
                 <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -14,18 +14,25 @@ class HeaderContent extends Component {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav ml-auto">
 
+                            <a className="navbar-brand" href="/apitest">API Test</a>
+                            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span className="navbar-toggler-icon"></span>
+                            </button>
+
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Ski Area
                                 </a>
                                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a className="dropdown-item" href="/ski-area/snowbird">Snowbird</a>
-                                    <a className="dropdown-item" href="/ski-area/bridgerbowl">Bridger Bowl</a>
-                                    <a className="dropdown-item" href="/ski-area/mtbaker">Mt Baker</a>
-                                    <a className="dropdown-item" href="/ski-area/mtbachelor">Mt Bachelor</a>
+                                    <a className="dropdown-item" href="/snowbird">Snowbird</a>
+                                    <a className="dropdown-item" href="/bridger">Bridger Bowl</a>
+                                    <a className="dropdown-item" href="/mtbaker">Mt Baker</a>
+                                    <a className="dropdown-item" href="/mtbachelor">Mt Bachelor</a>
                                 </div>
                             </li>
+
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,5 +57,5 @@ class HeaderContent extends Component {
             </header>
         )
     }
-}
-export default HeaderContent
+
+export default Navigation;
