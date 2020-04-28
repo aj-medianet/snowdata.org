@@ -89,6 +89,19 @@ def create_user(data):
         return False
 
 
+def delete_user(data):
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("use snow_db")
+        query = """ SET FOREIGN_KEY_CHECKS=0; DELETE from users where username="{}"; """.format(data["username"])
+        cursor.execute(query)
+        db.commit()
+        return True
+    except:
+        return False
+
+
 def update_password(data):
     print("\n\n[DEBUG] db.update_password() data:", data)
     try:
@@ -105,14 +118,26 @@ def update_password(data):
 
 
 def login(data):
+    print("[DEBUG] db.login data:", data)
     db = get_db()
     cursor = db.cursor()
     cursor.execute("use snow_db")
     query = """ SELECT password FROM users WHERE username="{}"; """.format(data["username"])
     cursor.execute(query)
     pwhash = cursor.fetchone()
-    return check_password_hash(pwhash, data["password"])
+    print("[DEBUG] pwhash:", pwhash[0])
+    return check_password_hash(pwhash[0], data["password"])
 
+
+def get_api_key(data):
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("use snow_db")
+    query = """ SELECT api_key FROM users WHERE username="{}"; """.format(data["username"])
+    cursor.execute(query)
+    res = cursor.fetchone()
+    return res
+    
 
 def verify_api_key(api_key):
     db = get_db()

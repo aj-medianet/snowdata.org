@@ -71,7 +71,6 @@ class create_user(Resource):
     def post(self):
         api_key = utils.generate_api_key()
         args = parser.parse_args()
-        print("username:", args["username"])
         data = {
             "username" : args["username"],
             "email" : args["email"],
@@ -79,11 +78,24 @@ class create_user(Resource):
             "api_key" : api_key
         }
 
-        print("[DEBUG] create_user() data:", data)
-
         if db.create_user(data):
             return jsonify("Success. API Key: {}".format(api_key))
         return jsonify("Failed")
+
+
+class delete_user(Resource):
+    def post(self):
+        args = parser.parse_args()
+        data = {
+            "username" : args["username"],
+            "password" : args["password"]
+        }
+
+        if db.login(data):
+            if db.delete_user(data):
+                return jsonify("Success. {} deleted".format(args["username"]))
+            return jsonify("Failed to delete")
+        return jsonify("Failed. Incorrect username and password")
 
 
 class login(Resource):
@@ -94,9 +106,26 @@ class login(Resource):
             "password" : args["password"]
         }
 
+        print("[DEBUG] api endpoint data:", data)
+
         if db.login(data):
             return jsonify("Success")
         return jsonify("Failed")
+
+
+class get_api_key(Resource):
+    def post(self):
+        args = parser.parse_args()
+        data = {
+            "username" : args["username"],
+            "password" : args["password"]
+        }
+
+        if db.login(data):
+            api_key = db.get_api_key(data)
+            return jsonify("Success. API Key: {}".format(api_key))
+        return jsonify("Failed")
+
 
 if __name__ == '__main__':
     app.run()
@@ -105,6 +134,8 @@ if __name__ == '__main__':
 api.add_resource(get_all_data, '/get-all-data/<string:api_key>')
 api.add_resource(get_ski_area, '/get-ski-area')
 api.add_resource(create_user, '/create-user')
+api.add_resource(delete_user, '/delete-user')
 api.add_resource(login, '/login')
+api.add_resource(get_api_key, '/get-api-key')
 
 CORS(app, expose_headers='Authorization')
