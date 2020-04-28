@@ -71,12 +71,15 @@ class create_user(Resource):
     def post(self):
         api_key = utils.generate_api_key()
         args = parser.parse_args()
+        print("username:", args["username"])
         data = {
             "username" : args["username"],
             "email" : args["email"],
             "password" : args["password"],
             "api_key" : api_key
         }
+
+        print("[DEBUG] create_user() data:", data)
 
         if db.create_user(data):
             return jsonify("Success. API Key: {}".format(api_key))
@@ -101,7 +104,7 @@ if __name__ == '__main__':
 
 api.add_resource(get_all_data, '/get-all-data/<string:api_key>')
 api.add_resource(get_ski_area, '/get-ski-area')
-api.add_resource(create_user, '/create_user')
+api.add_resource(create_user, '/create-user')
 api.add_resource(login, '/login')
 
 CORS(app, expose_headers='Authorization')

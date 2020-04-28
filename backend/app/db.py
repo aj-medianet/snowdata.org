@@ -69,6 +69,9 @@ def update_ski_area(data):
 def create_ski_area(data):
     pass
 
+def delete_ski_area(data):
+    pass
+
 
 def create_user(data):
     print("\n\n[DEBUG] db.create_user() data:", data)
@@ -77,8 +80,23 @@ def create_user(data):
         cursor = db.cursor()
         cursor.execute("use snow_db")
         hashed_pwd = generate_password_hash(data["password"])
-        query = """INSERT INTO users (username, email, password, api_key) VALUES ({}, {}, {}, {}) \
+        query = """INSERT INTO users (username, email, password, api_key, api_count) VALUES ("{}", "{}", "{}", "{}", 0); \
             """.format(data["username"], data["email"], hashed_pwd, data["api_key"]) 
+        cursor.execute(query)
+        db.commit()
+        return True
+    except:
+        return False
+
+
+def update_password(data):
+    print("\n\n[DEBUG] db.update_password() data:", data)
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("use snow_db")
+        hashed_pwd = generate_password_hash(data["password"])
+        query = """ UPDATE users SET password="{}" WHERE username="{}"; """.format(hashed_pwd, data["username"]) 
         cursor.execute(query)
         db.commit()
         return True
@@ -90,7 +108,7 @@ def login(data):
     db = get_db()
     cursor = db.cursor()
     cursor.execute("use snow_db")
-    query = """ SELECT password FROM users WHERE username="{}" """.format(data["username"])
+    query = """ SELECT password FROM users WHERE username="{}"; """.format(data["username"])
     cursor.execute(query)
     pwhash = cursor.fetchone()
     return check_password_hash(pwhash, data["password"])
@@ -100,7 +118,7 @@ def verify_api_key(api_key):
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")
-    query = """ SELECT api_count FROM users WHERE api_key="{}" """.format(api_key)
+    query = """ SELECT api_count FROM users WHERE api_key="{}"; """.format(api_key)
     cursor.execute(query)
     res = cursor.fetchone()
     print("\n\n[DEBUG] api_count: {}\n".format(res["api_count"]))
@@ -115,7 +133,7 @@ def increment_api_count(api_key, cur_count):
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")
-    query = """ UPDATE users SET api_count="{}" """.format(cur_count)
+    query = """ UPDATE users SET api_count="{}"; """.format(cur_count)
     cursor.execute(query)
     db.commit()
 
@@ -124,7 +142,7 @@ def reset_api_counts():
     db = get_db()
     cursor = db.cursor()
     cursor.execute("use snow_db")    
-    query = """ UPDATE users SET api_count="0" """
+    query = """ UPDATE users SET api_count="0"; """
     cursor.execute(query)
     db.commit()
 
