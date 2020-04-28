@@ -1,11 +1,32 @@
-import React from 'react'
+import React, { Component } from 'react'
+import ReactMarkdown from 'react-markdown';
+import source from '../docs/pricing.md';
 
-const Pricing = () => {
-    return (
-        <div>
-            <h1>API Pricing</h1>
-            <p>page content</p>
-        </div>
-    );
+
+class Pricing extends Component {
+    state = {
+        text : null,
+    }
+
+    componentDidMount() {
+        fetch(source)
+            .then(res => res.text())
+            .then(text => this.setState((state) => ({ ...state, text })))
+            .catch((err) => console.error(err));
+    }
+
+    render() {
+        const { text } = this.state;
+
+        return (
+            <div className="m-5">
+                <h1 className="m-5">Pricing</h1>
+                <div className="text-left">
+                    <ReactMarkdown source={text} />
+                </div>   
+            </div>
+            
+        )
+    }
 }
 export default Pricing;
