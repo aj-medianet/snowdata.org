@@ -35,9 +35,12 @@ class SkiArea:
 def update_all():
     ski_areas = ["alpental","jackson_hole", "mt_bachelor", "mt_hood", "ski49n", "snowbird", "whitefish"] #, "jackson_hole", "mt_hood"]
     for ski_area in ski_areas:
-        data = resort_scraper.get_data(ski_area)
-        sa = SkiArea(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
-        sa.update_db()
+        try:
+            data = resort_scraper.get_data(ski_area)
+            sa = SkiArea(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
+            sa.update_db()
+        except:
+            print("[DEBUG] Error scraping and updating {}".format(ski_area))
 
 
 if __name__ == "__main__":
