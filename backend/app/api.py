@@ -91,7 +91,7 @@ class delete_user(Resource):
             "password" : args["password"]
         }
 
-        if db.login(data):
+        if db.login(data): # might take this out, but need to make sure user is logged in
             if db.delete_user(data):
                 return jsonify("Success. {} deleted".format(args["username"]))
             return jsonify("Failed to delete")
@@ -106,8 +106,6 @@ class login(Resource):
             "password" : args["password"]
         }
 
-        print("[DEBUG] api endpoint data:", data)
-
         if db.login(data):
             return jsonify("Success")
         return jsonify("Failed")
@@ -121,7 +119,7 @@ class get_api_key(Resource):
             "password" : args["password"]
         }
 
-        if db.login(data):
+        if db.login(data): # might take this if out but need user to be logged in first
             api_key = db.get_api_key(data)
             return jsonify("Success. API Key: {}".format(api_key))
         return jsonify("Failed")

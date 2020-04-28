@@ -118,14 +118,12 @@ def update_password(data):
 
 
 def login(data):
-    print("[DEBUG] db.login data:", data)
     db = get_db()
     cursor = db.cursor()
     cursor.execute("use snow_db")
     query = """ SELECT password FROM users WHERE username="{}"; """.format(data["username"])
     cursor.execute(query)
     pwhash = cursor.fetchone()
-    print("[DEBUG] pwhash:", pwhash[0])
     return check_password_hash(pwhash[0], data["password"])
 
 
