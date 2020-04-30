@@ -125,7 +125,7 @@ class APITest extends Component {
         <div className="row">
           <div className="col text-left">
             <p className="text-danger">{this.state.passwordError ? 'Password Error' : ''}</p>
-            <p className="text-success">{this.state.apiKey ? 'Success! API Key: '+ this.apiKey : ''}</p>
+            <p className="text-success">{this.state.apiKey ? 'Success! API Key: '+ this.state.apiKey : ''}</p>
             <Form onSubmit={this.createUser}>
               <Form.Group controlId="formBasicUsername">
                 <Form.Label>Username</Form.Label>

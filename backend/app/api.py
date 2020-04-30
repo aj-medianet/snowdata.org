@@ -72,11 +72,6 @@ class create_user(Resource):
         api_key = utils.generate_api_key()
         args = parser.parse_args()
 
-        print("args:")
-        print( args["username"] )
-        print(args["email"])
-        print(args["password"])
-
         data = {
             "username" : args["username"],
             "email" : args["email"],
@@ -84,10 +79,8 @@ class create_user(Resource):
             "api_key" : api_key
         }
 
-        print("api data: ", data)
-
         if db.create_user(data):
-            return jsonify("{}".format(api_key))
+            return jsonify(api_key)
         return jsonify("Failed")
 
 
