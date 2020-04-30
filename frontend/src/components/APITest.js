@@ -12,6 +12,7 @@ class APITest extends Component {
       password: "",
       passwordError: false,
       errMessage: "",
+      apiKey: "",
     }
   }
 
@@ -45,6 +46,7 @@ class APITest extends Component {
       return response.json()
     }).then((data) => {
       console.log(data)
+      this.setState({ apiKey: JSON.stringify(data) })
     }).catch((err) => {
       this.setState({ errMessage: err })
       return
@@ -122,7 +124,8 @@ class APITest extends Component {
 
         <div className="row">
           <div className="col text-left">
-            <p className="errorStyle">{this.state.passwordError ? 'Password Error' : ''}</p>
+            <p className="text-danger">{this.state.passwordError ? 'Password Error' : ''}</p>
+            <p className="text-success">{this.state.apiKey ? 'Success! API Key: '+ this.apiKey : ''}</p>
             <Form onSubmit={this.createUser}>
               <Form.Group controlId="formBasicUsername">
                 <Form.Label>Username</Form.Label>

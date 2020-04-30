@@ -87,7 +87,7 @@ class create_user(Resource):
         print("api data: ", data)
 
         if db.create_user(data):
-            return jsonify("Success. API Key: {}".format(api_key))
+            return jsonify("{}".format(api_key))
         return jsonify("Failed")
 
 
