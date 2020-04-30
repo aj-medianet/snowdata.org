@@ -81,7 +81,7 @@ class create_user(Resource):
 
         if db.create_user(data):
             return jsonify(api_key)
-        return jsonify("Failed")
+        return jsonify("Failed"), 500
 
 
 class delete_user(Resource):
