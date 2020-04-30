@@ -37,11 +37,10 @@ class APITest extends Component {
       password: this.state.password
     }
 
-    console.log("data: " + data.email)
-
     fetch('https://api.snowdata.org/create-user', {
       method: 'POST',
-      body: data,
+      headers: { 'Content-Type': 'application/json', },
+      body: JSON.stringify(data),
     }).then((response) => {
       return response.json()
     }).then((data) => {
