@@ -71,6 +71,12 @@ class create_user(Resource):
     def post(self):
         api_key = utils.generate_api_key()
         args = parser.parse_args()
+
+        print("args:")
+        print( args["username"] )
+        print(args["email"])
+        print(args["password"])
+
         data = {
             "username" : args["username"],
             "email" : args["email"],
