@@ -131,6 +131,7 @@ class APITest extends Component {
             <p className="text-danger">{this.state.errMessage ? this.state.errMessage : ''}</p>
             <p className="text-success">{this.state.apiKey ? 'Success! API Key: '+ this.state.apiKey : ""}</p>
 
+            <h2>Create Account</h2>
             <Form onSubmit={this.createUser}>
               <Form.Group controlId="formBasicUsername">
                 <Form.Label>Username</Form.Label>
