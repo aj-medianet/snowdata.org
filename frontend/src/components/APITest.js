@@ -45,6 +45,7 @@ class APITest extends Component {
     }).then((response) => {
       return response.json()
     }).then((data) => {
+      console.log(JSON.stringify(data) === "Invalid Username")
       JSON.stringify(data) === "Invalid Username" ? this.setState({ errMessage: JSON.stringify(data)}) : this.setState({ apiKey: JSON.stringify(data) })
     }).catch((err) => {
       this.setState({ errMessage: err })
