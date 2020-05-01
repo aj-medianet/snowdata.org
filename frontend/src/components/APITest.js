@@ -45,7 +45,11 @@ class APITest extends Component {
     }).then((response) => {
       return response.json()
     }).then((data) => {
-      data === "Invalid Username" ? this.setState({ errMessage: data}) : this.setState({ apiKey: data }); this.setState({ errMessage: ""}) 
+      if (data === "Invalid Username") {
+        this.setState({ errMessage: data})
+      } else {
+        this.setState({ apiKey: data }); this.setState({ errMessage: ""}) 
+      }
     }).catch((err) => {
       this.setState({ errMessage: err })
       return
