@@ -46,7 +46,8 @@ class APITest extends Component {
       return response.json()
     }).then((data) => {
       console.log(JSON.stringify(data) === "Invalid Username")
-      JSON.stringify(data) === "Invalid Username" ? this.setState({ errMessage: JSON.stringify(data)}) : this.setState({ apiKey: JSON.stringify(data) })
+      console.log(data)
+      data === "Invalid Username" ? this.setState({ errMessage: data}) : this.setState({ apiKey: data })
     }).catch((err) => {
       this.setState({ errMessage: err })
       return
@@ -125,7 +126,9 @@ class APITest extends Component {
         <div className="row">
           <div className="col text-left">
             <p className="text-danger">{this.state.passwordError ? 'Password Error' : ''}</p>
-            <p className="text-success">{this.state.apiKey ? 'Success! API Key: '+ this.state.apiKey : this.state.errMessage}</p>
+            <p className="text-danger">{this.state.errMessage ? this.state.errMessage : ''}</p>
+            <p className="text-success">{this.state.apiKey ? 'Success! API Key: '+ this.state.apiKey : ""}</p>
+
             <Form onSubmit={this.createUser}>
               <Form.Group controlId="formBasicUsername">
                 <Form.Label>Username</Form.Label>
