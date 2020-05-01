@@ -127,7 +127,7 @@ class APITest extends Component {
 
         <div className="row">
           <div className="col text-left">
-            <p className="text-danger">{this.state.passwordError ? 'Password Error' : ''}</p>
+            <p className="text-danger">{this.state.passwordError ? 'Password must be at least 10 characters' : ''}</p>
             <p className="text-danger">{this.state.errMessage ? this.state.errMessage : ''}</p>
             <p className="text-success">{this.state.apiKey ? 'Success! API Key: '+ this.state.apiKey : ""}</p>
 
