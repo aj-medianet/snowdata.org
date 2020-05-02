@@ -17,6 +17,7 @@ import MtBaker from './components/MtBaker'
 import MtBachelor from './components/MtBachelor'
 import Bridger from './components/Bridger'
 import Snowbird from './components/Snowbird'
+import SkiAreas from './components/SkiAreas'
 
 class App extends Component {
   constructor() {
@@ -42,6 +43,7 @@ class App extends Component {
               <Route path="/mtbachelor" component={MtBachelor}/>
               <Route path="/bridger" component={Bridger}/>
               <Route path="/snowbird" component={Snowbird}/>
+              <Route path="/allareas" component={SkiAreas}/>
             </Switch>
         </div>
       </BrowserRouter>

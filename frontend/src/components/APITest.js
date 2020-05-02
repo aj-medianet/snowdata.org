@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
+const URL = 'https://api.snowdata.org/'
+//const URL = 'http://localhost:7082/'
+
 class APITest extends Component {
   constructor(props) {
     super(props)
@@ -38,7 +41,7 @@ class APITest extends Component {
       password: this.state.password
     }
 
-    fetch('https://api.snowdata.org/create-user', {
+    fetch(URL + 'create-user', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', },
       body: JSON.stringify(data),
@@ -65,7 +68,7 @@ class APITest extends Component {
 
   resetAPICount = (event) => {
     event.preventDefault()
-    fetch('https://api.snowdata.org')
+    fetch(URL)
       .then((response) => {
         return response.json()
       })
@@ -77,7 +80,7 @@ class APITest extends Component {
 
   getAllData = (event) => {
     event.preventDefault()
-    fetch('https://api.snowdata.org/get-all-data/tmpkey')
+    fetch(URL + 'get-all-data/tmpkey')
       .then((response) => {
         return response.json()
       }).then((data) => {
@@ -92,7 +95,7 @@ class APITest extends Component {
       skiareaname: "Snowbird",
       api_key: "tmpkey"
     }
-    fetch('https://api.snowdata.org/get-ski-area', {
+    fetch(URL + 'get-ski-area', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', },
       body: JSON.stringify(data),

@@ -26,6 +26,7 @@ const Navigation = () => {
                                     Ski Area
                                 </a>
                                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a className="dropdown-item" href="/allareas">All Areas</a>
                                     <a className="dropdown-item" href="/snowbird">Snowbird</a>
                                     <a className="dropdown-item" href="/bridger">Bridger Bowl</a>
                                     <a className="dropdown-item" href="/mtbaker">Mt Baker</a>

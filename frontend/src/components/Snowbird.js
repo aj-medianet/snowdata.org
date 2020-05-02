@@ -12,12 +12,13 @@ class Snowbird extends Component {
         skiareaname : "Snowbird",
         api_key : "tmpkey"
       }
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json',},
+      
+      const response = await fetch(url, 
+        { method: 'POST', headers: {'Content-Type': 'application/json',},
         body: JSON.stringify(dataIn)})
       const dataOut = await response.json();
       this.setState({ ski_area: dataOut, loading: false });
+      console.log(dataOut)
     }
 
     render() {
