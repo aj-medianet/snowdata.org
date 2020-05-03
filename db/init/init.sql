@@ -56,7 +56,16 @@ INSERT INTO monthly_data VALUES
 (6, MONTH(curdate()), YEAR(CURDATE()), "Mt Hood", "0", "0", "0", "0"),
 (7, MONTH(curdate()), YEAR(CURDATE()), "49 Degrees North", "0", "0", "0", "0"),
 (8, MONTH(curdate()), YEAR(CURDATE()), "Snowbird", "0", "0", "0", "0"),
-(9, MONTH(curdate()), YEAR(CURDATE()), "Whitefish", "0", "0", "0", "0");
+(9, MONTH(curdate()), YEAR(CURDATE()), "Whitefish", "0", "0", "0", "0"),
+(10, 4, YEAR(CURDATE()), "Alpental", "0", "0", "0", "0"),
+(11, 4, YEAR(CURDATE()), "Big Sky", "0", "0", "0", "0"),
+(12, 4, YEAR(CURDATE()), "Bridger Bowl", "0", "0", "0", "0"),
+(13, 4, YEAR(CURDATE()), "Jackson Hole", "0", "0", "0", "0"),
+(14, 4, YEAR(CURDATE()), "Mt Bachelor", "0", "0", "0", "0"),
+(15, 4, YEAR(CURDATE()), "Mt Hood", "0", "0", "0", "0"),
+(16, 4, YEAR(CURDATE()), "49 Degrees North", "0", "0", "0", "0"),
+(17, 4, YEAR(CURDATE()), "Snowbird", "0", "0", "0", "0"),
+(18, 4, YEAR(CURDATE()), "Whitefish", "0", "0", "0", "0");
 
 
 CREATE TABLE users (
@@ -77,17 +86,18 @@ CREATE TABLE avg_temps (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ski_area_name` varchar(255) NOT NULL,
   `avg_temp` varchar(255) NOT NULL,
+  `count` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ski_area_name` (`ski_area_name`)
 ) ENGINE=InnoDB;
 
 INSERT INTO avg_temps VALUES 
-(1, "Alpental", "0"),
-(2, "Big Sky", "0"),
-(3, "Bridger Bowl", "0"),
-(4, "Jackson Hole", "0"),
-(5, "Mt Bachelor", "0"),
-(6, "Mt Hood", "0"),
-(7, "49 Degrees North", "0"),
-(8, "Snowbird", "0"),
-(9, "Whitefish", "0");
+(1, "Alpental", "0", 0),
+(2, "Big Sky", "0", 0),
+(3, "Bridger Bowl", "0", 0),
+(4, "Jackson Hole", "0", 0),
+(5, "Mt Bachelor", "0", 0),
+(6, "Mt Hood", "0", 0),
+(7, "49 Degrees North", "0", 0),
+(8, "Snowbird", "0", 0),
+(9, "Whitefish", "0", 0);

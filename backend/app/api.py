@@ -19,22 +19,20 @@ app.config.from_object(app_settings)
 def check_pending():
     schedule.run_pending()
 
-# schedule tasks
-schedule.every(20).minutes.do(skiarea.update("sa")) # update ski area data every 20 min
-schedule.every(120).minutes.do(skiarea.update("temps")) # updates avg temps every 2 hours
+# schedule tasks to update the database and api
+schedule.every(20).minutes.do(skiarea.update_sa) # update ski area data every 20 min
+schedule.every(120).minutes.do(skiarea.update_avg_temps) # updates avg temps every 2 hours
 schedule.every().day.at("10:30").do(db.reset_api_counts) # reset api counts once a day
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=check_pending, trigger="interval", seconds=300)
-
-# update monthly data on the first of every month
-scheduler.add_job(func=skiarea.update("md"),trigger='cron', year='*', month='*', day='first')
+#scheduler.add_job(func=skiarea.update_monthly_data,trigger='cron', year='*', month='*', day='first') # update monthly data on the first of every month
 scheduler.start()
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    # test upate function TODO remove
-    #skiarea.update_all()
-    db.reset_api_counts()
+    skiarea.update_monthly_data()
+    
     return jsonify('Hello')
 
 

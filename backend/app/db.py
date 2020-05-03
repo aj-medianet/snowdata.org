@@ -83,15 +83,33 @@ def delete_ski_area(data):
 # monthlydata functions #
 #########################
 
-
-def get_last_month(ski_area_name):
+def get_previous_month(ski_area_name, month, year):
+    print("DEBUG db.get_prev_month()")
+    print("DEBUG ski_area_name:", ski_area_name)
+    print("DEBUG month:", month)
+    print("DEBUG year", year)
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")
-    query = """ SELECT * FROM montly_data WHERE ski_area_name="{}";  """.format(ski_area_name)
+    query = """ SELECT * FROM monthly_data WHERE (ski_area_name="{}" AND month="{}" AND year="{}");  """.format(ski_area_name, month, year)
     cursor.execute(query)
     res = cursor.fetchone()
     return res
+
+
+def create_new_month(data):
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("use snow_db")
+        hashed_pwd = generate_password_hash(data["password"])
+        query = """INSERT INTO monthly_data (month, year, ski_area_name, total_new_snow, snow_depth, avg_temp, ytd) VALUES  ("{}", "{}", "{}", "{}", "{}", "{}", "{}"); \
+            """.format(data["month"], data["year"], data["ski_area_name"], data["total_new_snow"], data["snow_depth"], data["avg_temp"], data["ytd"]) 
+        cursor.execute(query)
+        db.commit()
+        return True
+    except:
+        return False
 
 
 # updates the montly data db with a ski areas calcualted montly data
@@ -101,15 +119,79 @@ def update_monthly_data(data):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        query = """ UPDATE monthly_data SET month = "{}", year = "{}", total_new_snow = "{}", \
-            snow_depth = "{}", avg_temp = "{}", ytd = "{}" WHERE ski_area_name = "{}";  """.format(data["month"], \
-            data["year"], data["total_new_snow"], data["snow_depth"], data["avg_temp"], \
-            data["ytd"], data["ski_area_name"])
+        query = """ UPDATE monthly_data SET total_new_snow = "{}", \
+            snow_depth = "{}", avg_temp = "{}", ytd = "{}" WHERE ski_area_name = "{}", month = "{}", year = "{}";  """.format( \
+            data["total_new_snow"], data["snow_depth"], data["avg_temp"], \
+            data["ytd"], data["ski_area_name"], data["month"], data["year"])
         cursor.execute(query)
         db.commit()
         print("[DEBUG] Updated monthly data for {}\n\n".format(data["ski_area_name"]))
     except:
         print("[DEBUG] Error updating monthly data for {}\n\n".format(data["ski_area_name"]))
+
+
+
+#######################
+# avg_temps functions #
+#######################
+
+
+def get_avg_temp(data):
+    print("\n\n[DEBUG] db.get_avg_temp()")
+    try:
+        db = get_db()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute("use snow_db")
+        query = """ SELECT * FROM avg_temps WHERE ski_area_name="{}";  """.format(data["name"])
+        cursor.execute(query)
+        res = cursor.fetchone()
+        print("DEBUG avg_temp:", int(res["avg_temp"]))
+        return int(res["avg_temp"])
+    except:
+        print("[DEBUG] Error getting avg_temp from db")
+
+# updates the average temperature for a ski area
+# uses ski areas current temp and adds it to the overall average
+def update_avg_temp(data):
+    print("\n\n[DEBUG] db.update_avg_temps()")
+    try:
+        db = get_db()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute("use snow_db")
+        query = """ SELECT * FROM avg_temps WHERE ski_area_name="{}";  """.format(data["name"])
+        cursor.execute(query)
+        res = cursor.fetchone()
+        new_avg_temp = int((float(res["avg_temp"]) + float(data["cur_temp"])) / (int(res["count"]) + 1))
+        new_count = res["count"] + 1
+    except:
+        print("[DEBUG] Error getting temps")
+
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("use snow_db")
+        query = """ UPDATE avg_temps SET avg_temp="{}", count="{}" WHERE ski_area_name = "{}"; """.format(new_avg_temp, new_count, data["name"])
+        cursor.execute(query)
+        db.commit()
+        print("[DEBUG] Updated average temp for {}\n\n".format(data["name"]))
+    except:
+        print("[DEBUG] Error updating average temp for {}\n\n".format(data["name"]))
+
+
+
+def reset_avg_temp(data):
+    print("\n\n[DEBUG] db.reset_avg_temps()")
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("use snow_db")
+        query = """ UPDATE avg_temps SET avg_temp="0", count="0" WHERE ski_area_name = "{}"; """.format(data["name"])
+        cursor.execute(query)
+        db.commit()
+        print("[DEBUG] Reset avg temp for {}\n\n".format(data["name"]))
+    except:
+        print("[DEBUG] Error resetting avg temp for {}\n\n".format(data["name"]))
+
 
 
 ##################
@@ -188,7 +270,8 @@ def get_api_key(data):
     
 
 def verify_api_key(api_key):
-    # if the api_key is from our web frontned
+    # if the api_key is from our web frontend
+    # TODO - make this better
     if api_key == "tmpkey":
         return True
 
