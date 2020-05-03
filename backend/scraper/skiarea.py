@@ -1,6 +1,12 @@
 # class for ski areas
 from app import db
 from scraper import resort_scraper
+from app import utils
+from datetime import date
+
+# global list of ski areas we're parsing
+SKI_AREAS = ["alpental","jackson_hole", "mt_bachelor", "mt_hood", "ski49n", "snowbird", "whitefish"]
+
 
 class SkiArea:
     
@@ -27,21 +33,49 @@ class SkiArea:
 
 
     # updates the database with all of the ski areas data
-    def update_db(self):
+    def update_ski_areas_db(self):
         db.update_ski_area(self.__dict__)
 
 
-# run through the list of ski areas, get the current data and update the db
-def update_all():
-    ski_areas = ["alpental","jackson_hole", "mt_bachelor", "mt_hood", "ski49n", "snowbird", "whitefish"] #, "jackson_hole", "mt_hood"]
-    for ski_area in ski_areas:
+    # returns a dictonary of last months data 
+    def get_last_month(self):
+        return db.get_last_month(self.name)
+    
+
+    # calculates monthly data for a ski area and updates the db
+    def update_monthly_data(self):
+        last_month_data = self.get_last_month()
+
+        data = {
+            "ski_area_name" : self.name,
+            "month" : date.today().month,
+            "year" : date.today().year,
+            "total_new_snow" : self.ytd - last_month_data["ytd"],
+            "snow_depth" : self.cur_depth,
+            "avg_temp" : "",
+            "ytd" : self.ytd
+        } 
+
+        print("[DEBUG] update_monthly_data():", data)
+        #db.update_monthly_data(data)
+
+
+# loop through the list of ski areas, get the current data and update the db
+def update(func_call):
+    for ski_area in SKI_AREAS:
         try:
             data = resort_scraper.get_data(ski_area)
             sa = SkiArea(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
-            sa.update_db()
+
+            if func_call == "sa":
+                sa.update_ski_areas_db()
+            elif func_call == "md":
+                sa.update_monthly_data()
+            elif func_call == "temps":
+                sa.update_avg_temps()
+
         except:
             print("[DEBUG] Error scraping and updating {}".format(ski_area))
 
 
-if __name__ == "__main__":
-    update_all()   
+

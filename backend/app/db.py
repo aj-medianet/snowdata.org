@@ -22,6 +22,10 @@ def get_db():
     return connection
 
 
+###########################
+# ski area data functions #
+###########################
+
 # returns all ski areas data
 def get_all_data():
     db = get_db()
@@ -65,12 +69,52 @@ def update_ski_area(data):
         print("[DEBUG] Error updating {}\n\n".format(data["name"]))
 
 
-# possible TODO
+# possible TODO if we have an admin web page
 def create_ski_area(data):
     pass
 
+
+# possible TODO if we have an admin web page
 def delete_ski_area(data):
     pass
+
+
+#########################
+# monthlydata functions #
+#########################
+
+
+def get_last_month(ski_area_name):
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("use snow_db")
+    query = """ SELECT * FROM montly_data WHERE ski_area_name="{}";  """.format(ski_area_name)
+    cursor.execute(query)
+    res = cursor.fetchone()
+    return res
+
+
+# updates the montly data db with a ski areas calcualted montly data
+def update_monthly_data(data):
+    print("\n\n[DEBUG] db.update_monthly_data() data:", data)
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("use snow_db")
+        query = """ UPDATE monthly_data SET month = "{}", year = "{}", total_new_snow = "{}", \
+            snow_depth = "{}", avg_temp = "{}", ytd = "{}" WHERE ski_area_name = "{}";  """.format(data["month"], \
+            data["year"], data["total_new_snow"], data["snow_depth"], data["avg_temp"], \
+            data["ytd"], data["ski_area_name"])
+        cursor.execute(query)
+        db.commit()
+        print("[DEBUG] Updated monthly data for {}\n\n".format(data["ski_area_name"]))
+    except:
+        print("[DEBUG] Error updating monthly data for {}\n\n".format(data["ski_area_name"]))
+
+
+##################
+# user functions #
+##################
 
 
 def create_user(data):
@@ -127,6 +171,12 @@ def login(data):
     return check_password_hash(pwhash[0], data["password"])
 
 
+
+#####################
+# API key functions #
+#####################
+
+
 def get_api_key(data):
     db = get_db()
     cursor = db.cursor()
@@ -138,6 +188,10 @@ def get_api_key(data):
     
 
 def verify_api_key(api_key):
+    # if the api_key is from our web frontned
+    if api_key == "tmpkey":
+        return True
+
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")

@@ -1,5 +1,5 @@
 /* drop tables in reverse order so fk constraints dont break it first */
-DROP TABLE IF EXISTS api_keys;
+DROP TABLE IF EXISTS avg_temps;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS monthly_data;
 DROP TABLE IF EXISTS ski_areas;
@@ -40,13 +40,24 @@ CREATE TABLE monthly_data (
     `total_new_snow` varchar(255) NOT NULL,
     `snow_depth` varchar(255) NOT NULL,
     `avg_temp` varchar(255) NOT NULL,
+    `ytd` varchar(255),
     CONSTRAINT `ski_area_fk1` FOREIGN KEY (`ski_area_name`) REFERENCES ski_areas(`name`) 
       ON DELETE CASCADE 
       ON UPDATE CASCADE,
     KEY `ski_area_name` (`ski_area_name`)
 ) ENGINE=InnoDB;
 
-INSERT INTO monthly_data VALUES (1, MONTH(curdate()), YEAR(CURDATE()), "Mt Bachelor", "10", "100", "32");
+INSERT INTO monthly_data VALUES 
+(1, MONTH(curdate()), YEAR(CURDATE()), "Alpental", "0", "0", "0", "0"),
+(2, MONTH(curdate()), YEAR(CURDATE()), "Big Sky", "0", "0", "0", "0"),
+(3, MONTH(curdate()), YEAR(CURDATE()), "Bridger Bowl", "0", "0", "0", "0"),
+(4, MONTH(curdate()), YEAR(CURDATE()), "Jackson Hole", "0", "0", "0", "0"),
+(5, MONTH(curdate()), YEAR(CURDATE()), "Mt Bachelor", "0", "0", "0", "0"),
+(6, MONTH(curdate()), YEAR(CURDATE()), "Mt Hood", "0", "0", "0", "0"),
+(7, MONTH(curdate()), YEAR(CURDATE()), "49 Degrees North", "0", "0", "0", "0"),
+(8, MONTH(curdate()), YEAR(CURDATE()), "Snowbird", "0", "0", "0", "0"),
+(9, MONTH(curdate()), YEAR(CURDATE()), "Whitefish", "0", "0", "0", "0");
+
 
 CREATE TABLE users (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -61,3 +72,22 @@ CREATE TABLE users (
 
 INSERT INTO users VALUES (1, "aj", "josephan@oregonstate.edu", "tmpadmin", "tmpkey", 0);
 
+
+CREATE TABLE avg_temps (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ski_area_name` varchar(255) NOT NULL,
+  `avg_temp` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ski_area_name` (`ski_area_name`)
+) ENGINE=InnoDB;
+
+INSERT INTO avg_temps VALUES 
+(1, "Alpental", "0"),
+(2, "Big Sky", "0"),
+(3, "Bridger Bowl", "0"),
+(4, "Jackson Hole", "0"),
+(5, "Mt Bachelor", "0"),
+(6, "Mt Hood", "0"),
+(7, "49 Degrees North", "0"),
+(8, "Snowbird", "0"),
+(9, "Whitefish", "0");
