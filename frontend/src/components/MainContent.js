@@ -20,14 +20,14 @@ class MainContent extends Component {
   render() {
     return (
 
-      <div className="p-5">
-        <ul>
+      <div className="pt-5 pb-5">
+        
           {
             this.state.skiareas.map(area =>
               <div key={area.id}>
                 {
                   <div>
-                    <h1 className="p-3">{area.name}</h1>
+                    <h1 className="pt-3 pb-3">{area.name}</h1>
                     <div>Current temperature: {area.cur_temp}</div>
                     <div>Wind speed: {area.wind_speed}</div>
                     <div>Wind direction: {area.wind_dir}</div>
@@ -41,10 +41,10 @@ class MainContent extends Component {
               </div>
             )
           }
-        </ul>
+        
       </div>
 
     )
   }
 }
-export default MainContent
+export default MainContent 

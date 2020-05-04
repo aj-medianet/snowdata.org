@@ -47,7 +47,7 @@ class SkiAreas extends Component {
   render() {
     return (
       <>
-        <h1 className="p-5">{this.props.match.params.skiArea}</h1>
+        <h1 className="pt-5 pb-3">{this.props.match.params.skiArea}</h1>
         { this.state.data ? 
         <div >
           
