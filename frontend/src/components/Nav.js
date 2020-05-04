@@ -1,6 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/js/bootstrap.bundle';
 
+// site navigation bar
 const Navigation = () => {
         return (
             <header className="">

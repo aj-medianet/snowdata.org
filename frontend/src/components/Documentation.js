@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactMarkdown from 'react-markdown';
 import source from '../docs/documentation.md';
 
-
+// displays website documentation info
 class Documentation extends Component {
     state = {
         text : null,

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 //import '../App.css';
 
+// displays website main page
 const getAllData = (event) => {
   event.preventDefault()
   fetch('https://api.snowdata.org/get-all-data/tmpkey')

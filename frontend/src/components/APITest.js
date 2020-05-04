@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button'
 const URL = 'https://api.snowdata.org/'
 //const URL = 'http://localhost:7082/'
 
+// displays website API test
 class APITest extends Component {
   constructor(props) {
     super(props)

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 //import { useState, useEffect } from 'react';
 
-
+// displays individual skiareas
 class SkiAreas extends React.Component {
     constructor(props) {
         super(props);

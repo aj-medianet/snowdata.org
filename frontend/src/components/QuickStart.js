@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactMarkdown from 'react-markdown';
 import source from '../docs/quickstart.md';
 
-
+// displays website quickstart guide
 class QuickStart extends Component {
     state = {
         text : null,

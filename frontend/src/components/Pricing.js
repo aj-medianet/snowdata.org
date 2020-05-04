@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactMarkdown from 'react-markdown';
 import source from '../docs/pricing.md';
 
-
+// displays website pricing info
 class Pricing extends Component {
     state = {
         text : null,
