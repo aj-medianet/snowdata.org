@@ -9,6 +9,7 @@ class SkiAreas extends Component {
     super(props);
     this.state = {
       skiArea: "",
+      data: true,
     }
   }
 
@@ -27,13 +28,29 @@ class SkiAreas extends Component {
     const dataOut = await response.json();
     this.setState({ skiArea: dataOut, loading: false });
     console.log(dataOut)
+
+    this.checkNoData()
+  }
+
+  checkNoData = () => {
+    var hasData = false;
+    for (var key in this.state.skiArea) {
+      console.log(this.props.match.params.skiArea)
+      console.log(this.state.skiArea[key])
+      if (!this.state.skiArea[key] === "" && this.state.skiArea[key] !== this.props.match.params.skiArea) {
+        hasData = true;
+      }
+    }
+    this.setState({data : hasData})
   }
 
   render() {
     return (
       <>
         <h1>{this.props.match.params.skiArea}</h1>
+        { this.state.data ? 
         <div>
+          
           <div>Current temperature: {this.state.skiArea.cur_temp}</div>
           <div>Wind speed: {this.state.skiArea.wind_speed}</div>
           <div>Wind direction: {this.state.skiArea.wind_dir}</div>
@@ -43,6 +60,11 @@ class SkiAreas extends Component {
           <div>Current snow depth: {this.state.skiArea.cur_depth}</div>
           <div>YTD: {this.state.skiArea.ytd}</div>
         </div>
+
+        :
+
+        <h3>This Ski Area has stopped reporting Snow Data for the season</h3>
+        } 
       </>
 
     );
