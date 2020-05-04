@@ -112,15 +112,15 @@ class Account extends Component {
   render() {
     return (
       <>
-        <div className="container-fluid p-5" >
+        <div className="container-fluid pt-5" >
           <div className="row">
             <div className="col text-center">
-              <h1>Account</h1>
+              <h1 className="mb-3">Account</h1>
             </div>
           </div>
 
           <div className="row">
-            <div className="col text-left">
+            <div className="col text-left m-3">
               <p className="text-danger">{this.state.passwordError ? 'Password must be at least 10 characters' : ''}</p>
               <p className="text-danger">{this.state.errMessage ? this.state.errMessage : ''}</p>
               <p className="text-success">{this.state.apiKey ? 'Success! API Key: ' + this.state.apiKey : ""}</p>

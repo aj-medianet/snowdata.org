@@ -19,9 +19,9 @@ class QuickStart extends Component {
         const { text } = this.state;
 
         return (
-            <div className="m-5">
-                <h1 className="m-5">QuickStart</h1>
-                <div className="text-left">
+            <div className="mt-5">
+                <h1 className="mb-3">QuickStart</h1>
+                <div className="text-left m-3">
                     <ReactMarkdown source={text} />
                 </div>   
             </div>

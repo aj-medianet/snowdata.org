@@ -19,9 +19,9 @@ class Pricing extends Component {
         const { text } = this.state;
 
         return (
-            <div className="m-5">
-                <h1 className="m-5">Pricing</h1>
-                <div>
+            <div className="mt-5">
+                <h1 className="mb-3">Pricing</h1>
+                <div className="m-3">
                    <h3><ReactMarkdown source={text} /></h3> 
                 </div>   
             </div>
