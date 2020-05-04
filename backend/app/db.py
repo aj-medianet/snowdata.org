@@ -145,10 +145,10 @@ def get_avg_temp(data):
         query = """ SELECT * FROM avg_temps WHERE ski_area_name="{}";  """.format(data["name"])
         cursor.execute(query)
         res = cursor.fetchone()
-        print("DEBUG avg_temp:", int(res["avg_temp"]))
-        return int(res["avg_temp"])
+        return res["avg_temp"]
     except:
         print("[DEBUG] Error getting avg_temp from db")
+
 
 # updates the average temperature for a ski area
 # uses ski areas current temp and adds it to the overall average
