@@ -9,7 +9,7 @@ class SkiAreas extends Component {
     super(props);
     this.state = {
       skiArea: "",
-      data: true,
+      data: false,
     }
   }
 
@@ -26,7 +26,7 @@ class SkiAreas extends Component {
         body: JSON.stringify(dataIn)
       })
     const dataOut = await response.json();
-    this.setState({ skiArea: dataOut, loading: false });
+    this.setState({ skiArea: dataOut});
     console.log(dataOut)
 
     this.checkNoData()
@@ -35,9 +35,9 @@ class SkiAreas extends Component {
   checkNoData = () => {
     var hasData = false;
     for (var key in this.state.skiArea) {
-      console.log(this.props.match.params.skiArea)
-      console.log(this.state.skiArea[key])
-      if (!this.state.skiArea[key] === "" && this.state.skiArea[key] !== this.props.match.params.skiArea) {
+      console.log(key)
+      if (this.state.skiArea[key] !== "" && key !== "name" && key !== "ts") {
+        
         hasData = true;
       }
     }
