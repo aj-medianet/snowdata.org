@@ -21,8 +21,8 @@ class Pricing extends Component {
         return (
             <div className="m-5">
                 <h1 className="m-5">Pricing</h1>
-                <div className="text-left">
-                    <ReactMarkdown source={text} />
+                <div>
+                   <h3><ReactMarkdown source={text} /></h3> 
                 </div>   
             </div>
             
