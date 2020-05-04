@@ -47,9 +47,9 @@ class SkiAreas extends Component {
   render() {
     return (
       <>
-        <h1>{this.props.match.params.skiArea}</h1>
+        <h1 className="p-5">{this.props.match.params.skiArea}</h1>
         { this.state.data ? 
-        <div>
+        <div className="p-5">
           
           <div>Current temperature: {this.state.skiArea.cur_temp}</div>
           <div>Wind speed: {this.state.skiArea.wind_speed}</div>
@@ -63,7 +63,7 @@ class SkiAreas extends Component {
 
         :
 
-        <h3>This Ski Area has stopped reporting Snow Data for the season</h3>
+        <h3 className="p-5">This Ski Area has stopped reporting Snow Data for the season</h3>
         } 
       </>
 
