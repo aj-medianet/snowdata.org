@@ -150,13 +150,13 @@ class Account extends Component {
 
                 <Form.Group controlId="formBasicEmail">
                   <Form.Label>Email address</Form.Label>
-                  <Form.Control onChange={this.changeHandler} type="text" name="email" placeholder="Enter Email" required />
+                  <Form.Control onChange={this.changeHandler} type="email" name="email" placeholder="Enter Email" required />
                 </Form.Group>
 
 
                 <Form.Group controlId="formBasicPassword">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control onChange={this.changeHandler} type="text" name="password" placeholder="Enter Password" required />
+                  <Form.Control onChange={this.changeHandler} type="password" name="password" placeholder="Enter Password" required />
                 </Form.Group>
 
                 <Button variant="primary" onClick={this.createUser}>
