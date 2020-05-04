@@ -20,11 +20,15 @@ const Navigation = () => {
                                     Ski Area
                                 </a>
                                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    {/*<a className="dropdown-item" href="/allareas">All Areas</a>*/}
-                                    <a className="dropdown-item" href="/skiareas/Snowbird">Snowbird</a>
+                                    <a className="dropdown-item" href="/skiareas/Alpental">Alpental</a>
+                                    <a className="dropdown-item" href="/skiareas/Big Sky">Big Sky</a>
                                     <a className="dropdown-item" href="/skiareas/Bridger Bowl">Bridger Bowl</a>
-                                    <a className="dropdown-item" href="/skiareas/Mt Baker">Mt Baker</a>
+                                    <a className="dropdown-item" href="/skiareas/Jackson Hole">Jackson Hole</a>
                                     <a className="dropdown-item" href="/skiareas/Mt Bachelor">Mt Bachelor</a>
+                                    <a className="dropdown-item" href="/skiareas/Mt Hood">Mt Hood</a>
+                                    <a className="dropdown-item" href="/skiareas/49 Degrees North">49 Degrees North</a>
+                                    <a className="dropdown-item" href="/skiareas/Snowbird">Snowbird</a>
+                                    <a className="dropdown-item" href="/skiareas/Whitefish">Whitefish</a>
                                 </div>
                             </li>
 
