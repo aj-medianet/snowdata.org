@@ -18,8 +18,6 @@ class SkiAreas extends Component {
       skiareaname : this.props.match.params.skiArea,
       api_key : "tmpkey"
     }
-    this.setState({ skiArea: this.props.match.params.skiArea })
-    console.log(this.state.skiArea)
 
     const response = await fetch(url, 
       { method: 'POST', headers: {'Content-Type': 'application/json',},
