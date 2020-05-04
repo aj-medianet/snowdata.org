@@ -41,10 +41,8 @@ class SkiArea:
     # calculates monthly data for a ski area and updates the db
     def update_monthly_data(self):
         print("[DEBUG] sa.udate_monthly_data()")
-        prev_date = utils.get_prev_date()
-        print("[DEBUG] prev_date:", prev_date)
-        previous_month_data = db.get_previous_month(self.name, prev_date.month, prev_date.year)
-        print('[DEBUG] previous_month_data:', previous_month_data)
+        prev = utils.get_prev_month()
+        previous_month_data = db.get_previous_month(self.name, prev.month, prev.year)
 
         data = {
             "ski_area_name" : self.name,
