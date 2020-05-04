@@ -8,21 +8,37 @@ import requests
 def strip_special_chars(string):
     return ''.join(e for e in string if e.isalnum())   
 
+"""
+ The scraper functions following each return an array 'data' with the necessary ski area information 
+ data = [
+    name,         - ski area name
+    cur_temp,     - the current temperature at the ski area in Fahrenheit
+    cur_depth,    - the measured snow pack depth in inches
+    ytd,          - the year to date aka the total snowfall in inches
+    wind_dir,     - the current wind direction
+    wind_speed,   - the current wind speed in mph
+    new_snow_12,  - the last 12 hours of snowfall in inches
+    new_snow_24,  - the last 24 hours in snowfall in inches
+    new_snow_48   - the last 48 hours in snowfall in inches
+ ]
+"""
 
 def alpental():
     url = 'https://summitatsnoqualmie.com/conditions'
-    try:
+    # attempt to get html from url specified
+    try:                                           
         html = urlopen(url)
-        bs = BeautifulSoup(html, 'html.parser')
-        
-    except:
+        bs = BeautifulSoup(html, 'html.parser') 
+    # SSL certificate lapse exception
+    except:                                        
         html = requests.get(url, verify=False)
         bs = BeautifulSoup(html.text, 'html.parser')
         print("\n\n[DEBUG] SSL certifiate out of date:", url)
         print("\n")
         
     finally:
-        cur_temp = bs.find_all('div', {'class':'box box_flats2'})[1].find_next('span').find_next('span').find_next('span')['data-usc']
+        # select the elements that have the data and take that directly
+        cur_temp = bs.find_all('div', {'class':'box box_flats2'})[1].find_next('span').find_next('span').find_next('span')['data-usc'] 
         new_snow_12 = bs.find_all('span',{'class':'js-measurement'})[42]['data-usc']
         new_snow_24 = bs.find_all('span',{'class':'js-measurement'})[43]['data-usc']
         new_snow_48 = bs.find_all('span',{'class':'js-measurement'})[44]['data-usc']
@@ -30,23 +46,26 @@ def alpental():
         cur_depth = bs.find_all('span',{'class':'js-measurement'})[46]['data-usc']
         wind_speed = bs.find_all('span',{'class':'text text_48 text_72Md mix-text_color7 mix-text_alignCenter mix-text_alignLeftMd mix-text_strict'})[2].find_next('span')['data-usc']
         
+        # wind direction not reported by alpental so set as empty string
         wind_dir =""
         data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
 
+        # strip any special chars
         for i, j in enumerate(data):
             data[i] = strip_special_chars(j)
         
+        # add the name of the 
         data.insert(0, "Alpental")
         return data
 
-
+# todo - not reporting data anymore
 def big_sky():
     # i think we should do a few that aren't currently working and not presenting data
     # that way we can handle that 'error' correctly and make sure it works
     # since this is what will happen to all the ski areas in the summer most likely
     pass
 
-
+# todo - a js site vs html so will need to use a web driver
 def bridger_bowl():
     pass
 
@@ -56,7 +75,7 @@ def jackson_hole():
     try:
         html = urlopen(url)
         bs = BeautifulSoup(html, 'html.parser')
-        
+    # SSL certificate lapse exception    
     except:
         html = requests.get(url, verify=False)
         bs = BeautifulSoup(html.text, 'html.parser')
@@ -64,14 +83,19 @@ def jackson_hole():
         print("\n")
         
     finally:
-        cur_temp = bs.find('div',{'class':'midTemp1'}).string.strip('°')
+        cur_temp = bs.find('div',{'class':'midTemp1'}).string 
         wind = bs.find('div',{'class':'midWind1'}).string
-        snow24h_raw = bs.find(text="24 Hrs").find_next('div').find_next('div').string
+        # finding the variables by text values and selecting the string before tag closure
+        snow24h_raw = bs.find(text="24 Hrs").find_next('div').find_next('div').string     
         snow48h_raw = bs.find(text="48 Hrs").find_next('div').find_next('div').string
         snowDepth_raw = bs.find(text="Snow Depth").find_next('div').find_next('div').string
         snowYTD_raw = bs.find(text="Season Total").find_next('div').find_next('div').string
+        
+        # removed the wind speed as jackson hole stopped reporting mid mountain data for this mid april
         #speedList = wind.split()[-2:]
         #wind_speed = ' '.join(speedList).strip('mph').strip()
+
+        # removing new line chars from the strings
         new_snow_24 = snow24h_raw.replace("\n", "")
         new_snow_48 = snow48h_raw.replace("\n", "")
         cur_depth = snowDepth_raw.replace("\n", "")
@@ -85,6 +109,7 @@ def jackson_hole():
         wind_speed =""
         
         data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
+        
         for i, j in enumerate(data):
             data[i] = strip_special_chars(j)
 
@@ -97,7 +122,7 @@ def mt_bachelor():
     try:
         html = urlopen(url)
         bs = BeautifulSoup(html, 'html.parser')
-        
+    # SSL certificate lapse exception    
     except:
         html = requests.get(url, verify=False)
         bs = BeautifulSoup(html.text, 'html.parser')
@@ -105,6 +130,7 @@ def mt_bachelor():
         print("\n")
         
     finally:
+        # mt bachelor required scraping a second noaa site for wind speed and direction data as they did not report it on their site
         html2 = urlopen('https://forecast.weather.gov/MapClick.php?lat=43.98886243884903&lon=-121.68182373046875&site=pdt&smap=1&unit=0&lg=en&FcstType=text#.Vky-y3arS71')
         bs2 = BeautifulSoup(html2, 'html.parser')
         wind = bs2.find(id="current_conditions_detail").find('b', text="Wind Speed").find_next('td').string
@@ -113,8 +139,9 @@ def mt_bachelor():
         wind_speed = ' '.join(speedList)
         wind_speed = ''.join(e for e in wind_speed if e.isdecimal()) 
         
+        # extracting the strings from the bachelor site
         cur_temp = bs.find('div', 'weather-sections').find('div', 'current-section condition').find('div', {'class':'key'}).string
-        snowfall = bs.find_all('div', 'current-sections conditions')[0] # maybe change to [1] which is currently base stats.
+        snowfall = bs.find_all('div', 'current-sections conditions')[0] # [1] is base mountain stats 
         new_snow_24 = snowfall.find('div','current-section condition').find('div', {'class':'key'}).string
         cur_depth = snowfall.find('div', 'section-block full').find('div', {'class':'key'}).string
         ytd = snowfall.find('div', 'section-block full first').find('div', {'class':'key'}).string
@@ -128,7 +155,8 @@ def mt_bachelor():
         for i, j in enumerate(data):
             data[i] = strip_special_chars(j)
         
-        data.insert(0, "Mt Bachelor") # insert ski area name after stripping special chars
+        # insert ski area name
+        data.insert(0, "Mt Bachelor") 
         return data
 
 
@@ -137,7 +165,7 @@ def mt_hood():
     try:
         html = urlopen(url)
         bs = BeautifulSoup(html, 'html.parser')
-        
+    # SSL certificate lapse exception    
     except:
         html = requests.get(url, verify=False)
         bs = BeautifulSoup(html.text, 'html.parser')
@@ -145,6 +173,7 @@ def mt_hood():
         print("\n")
         
     finally:
+        # added check to make sure that 'data-depth' is actually a variable 
         cur_temp = bs.find('div',{'class':'conditions-glance-widget conditions-at-elevation'}).find('dd',{'class':'metric temperature', 'data-temperature': True})['data-temperature']
         wind_speed = bs.find('div', {'class':'conditions-glance-widget conditions-at-elevation'}).find('dd',{'class':'reading windspeed', 'data-windspeed': True})['data-windspeed']
         snow = bs.find('div',{'class':'conditions-glance-widget conditions-snowfall'}).find_all('dl')
@@ -154,9 +183,12 @@ def mt_hood():
         cur_depth = bs.find('div',{'class':'snowdepth-mid'}).find('span',{'class':'reading depth', 'data-depth': True})['data-depth'] 
         ytd = bs.find('dl',{'class':'snowdepth-ytd'}).find('dd',{'class':'reading depth', 'data-depth': True})['data-depth'] 
         
+        # wind direction not reported by mt hood
         wind_dir = ""
         
         data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
+        
+        # todo - remove as no longer necessary, there are no special chars in this instance
         for i, j in enumerate(data):
             data[i] = strip_special_chars(j)
 
@@ -169,7 +201,7 @@ def ski49n():
     try:
         html = urlopen(url)
         bs = BeautifulSoup(html, 'html.parser')
-        
+    # SSL certificate lapse exception    
     except:
         html = requests.get(url, verify=False)
         bs = BeautifulSoup(html.text, 'html.parser')
@@ -192,10 +224,12 @@ def ski49n():
         else:
             wind_speed = wind_speed_check
         
+        # wind direction is not reported by 49 deg north, set as empty string
         wind_dir = ""
 
         data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
         
+        # remove special chars
         for i, j in enumerate(data):
             data[i] = strip_special_chars(j)
         
@@ -208,7 +242,7 @@ def snowbird():
     try:
         html = urlopen(url)
         bs = BeautifulSoup(html, 'html.parser')
-        
+    # SSL certificate lapse exception    
     except:
         html = requests.get(url, verify=False)
         bs = BeautifulSoup(html.text, 'html.parser')
@@ -216,24 +250,31 @@ def snowbird():
         print("\n")
         
     finally:
+        # data was nicely organized for scraping on this site, everything needed had the class 'sb-condition_value'
         sbList = bs.find('div', {'class':'conditions'}).find_all('div', {'class':'sb-condition_value'})
-        #print(summitSnow[:])
         new_snow_12 = sbList[0].string
         new_snow_24 = sbList[1].string
         new_snow_48 = sbList[2].string
         cur_depth = sbList[3].string
         ytd = sbList[4].string
         cur_temp = sbList[6].string
+
+        # convert the wind direction to uppercase
         wind_dir = sbList[8].contents[0].upper()
+        # site reported wind speed as a range remove dash
         wind = sbList[8].contents[2].split("-")
+        # convert the string to an int and take average of - seperated values
         wind_speed = int(round((int(wind[0]) + int(wind[1]))/2))
         
+        # strip special chars
         data = [cur_temp, cur_depth, ytd, wind_dir, new_snow_12, new_snow_24, new_snow_48]
         for i, j in enumerate(data):
             data[i] = strip_special_chars(j)
 
+        # convert back to string for db
         data.insert(4, str(wind_speed))
-        data.insert(0, "Snowbird") # insert ski area name after stripping special chars
+        # insert ski area name after stripping special chars
+        data.insert(0, "Snowbird") 
         return data
 
 
@@ -243,7 +284,7 @@ def whitefish():
     try:
         html = urlopen(url)
         bs = BeautifulSoup(html, 'html.parser')
-        
+    # SSL certificate lapse exception     
     except:
         html = requests.get(url, verify=False)
         bs = BeautifulSoup(html.text, 'html.parser')
@@ -252,6 +293,7 @@ def whitefish():
         
     finally:
         snow = bs.find_all('div', {'class':'col-sm-6'})
+        # remove some special chars but not all from string
         snowStr = str(snow[0]).replace("\t", "").replace("\n","").replace('"',' ').split('>')
         cur_depth = snowStr[2].split()[2]
         ytd = snowStr[3].split()[3]
@@ -260,13 +302,18 @@ def whitefish():
         wind = snowStr2[4].replace("/", " ").replace("mph", " ")
         wind_speed = wind.split()[5]
         wind_dir = wind.split()[3]
+        # white fishe required scraping an additional site, 
+        # todo add to the except above to check SSL cert
         htmlTemp = urlopen('https://skiwhitefish.com/weather/')
         bs2 = BeautifulSoup(htmlTemp, 'html.parser')
         weatherString = bs2.find('h3', text="Summit Forecast").find_previous('span').string
+        # find the '°F' in sentence and split the string so that last word is the temperature
         tempIndex = weatherString.find('°F')
+        # select last word as temp
         terminal = weatherString[:tempIndex].split()
         cur_temp = terminal[-1]
         
+        # whitefish does not report 24h or 48h snow data so set as empty strings
         new_snow_24 =""
         new_snow_48 =""
 
