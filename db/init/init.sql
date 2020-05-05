@@ -86,6 +86,7 @@ CREATE TABLE avg_temps (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ski_area_name` varchar(255) NOT NULL,
   `avg_temp` varchar(255) NOT NULL,
+  `total_temp` varchar(255) NOT NULL,
   `count` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ski_area_name` (`ski_area_name`)

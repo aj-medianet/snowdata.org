@@ -161,8 +161,10 @@ def update_avg_temp(data):
         query = """ SELECT * FROM avg_temps WHERE ski_area_name="{}";  """.format(data["name"])
         cursor.execute(query)
         res = cursor.fetchone()
-        new_avg_temp = int((float(res["avg_temp"]) + float(data["cur_temp"])) / (int(res["count"]) + 1))
+        new_total_temp = float(res["total_temp"]) + float(data["cur_temp"])
         new_count = res["count"] + 1
+        new_avg_temp = int(new_total_temp / new_count)
+        
     except:
         print("[DEBUG] Error getting temps")
 
@@ -170,7 +172,7 @@ def update_avg_temp(data):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        query = """ UPDATE avg_temps SET avg_temp="{}", count="{}" WHERE ski_area_name = "{}"; """.format(new_avg_temp, new_count, data["name"])
+        query = """ UPDATE avg_temps SET avg_temp="{}", total_temp="{}", count="{}" WHERE ski_area_name = "{}"; """.format(new_avg_temp, new_total_temp, new_count, data["name"])
         cursor.execute(query)
         db.commit()
         print("[DEBUG] Updated average temp for {}\n\n".format(data["name"]))
@@ -185,7 +187,7 @@ def reset_avg_temp(data):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        query = """ UPDATE avg_temps SET avg_temp="0", count="0" WHERE ski_area_name = "{}"; """.format(data["name"])
+        query = """ UPDATE avg_temps SET avg_temp="0", total_temp, count="0" WHERE ski_area_name = "{}"; """.format(data["name"])
         cursor.execute(query)
         db.commit()
         print("[DEBUG] Reset avg temp for {}\n\n".format(data["name"]))
