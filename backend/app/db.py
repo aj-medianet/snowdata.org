@@ -187,7 +187,7 @@ def reset_avg_temp(data):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        query = """ UPDATE avg_temps SET avg_temp="0", total_temp, count="0" WHERE ski_area_name = "{}"; """.format(data["name"])
+        query = """ UPDATE avg_temps SET avg_temp="0", total_temp="0", count="0" WHERE ski_area_name = "{}"; """.format(data["name"])
         cursor.execute(query)
         db.commit()
         print("[DEBUG] Reset avg temp for {}\n\n".format(data["name"]))
