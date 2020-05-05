@@ -93,12 +93,12 @@ CREATE TABLE avg_temps (
 ) ENGINE=InnoDB;
 
 INSERT INTO avg_temps VALUES 
-(1, "Alpental", "0", 0),
-(2, "Big Sky", "0", 0),
-(3, "Bridger Bowl", "0", 0),
-(4, "Jackson Hole", "0", 0),
-(5, "Mt Bachelor", "0", 0),
-(6, "Mt Hood", "0", 0),
-(7, "49 Degrees North", "0", 0),
-(8, "Snowbird", "0", 0),
-(9, "Whitefish", "0", 0);
+(1, "Alpental", "0", "0", 0),
+(2, "Big Sky", "0","0", 0),
+(3, "Bridger Bowl","0", "0", 0),
+(4, "Jackson Hole","0", "0", 0),
+(5, "Mt Bachelor", "0","0", 0),
+(6, "Mt Hood", "0","0", 0),
+(7, "49 Degrees North", "0","0", 0),
+(8, "Snowbird", "0","0", 0),
+(9, "Whitefish", "0","0", 0);
