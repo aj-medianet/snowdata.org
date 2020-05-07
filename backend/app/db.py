@@ -1,5 +1,6 @@
 from app import app
 from app import utils
+from app import login
 import mysql.connector
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -253,7 +254,6 @@ def login(data):
     cursor.execute(query)
     pwhash = cursor.fetchone()
     return check_password_hash(pwhash[0], data["password"])
-
 
 
 #####################

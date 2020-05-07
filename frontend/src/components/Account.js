@@ -37,10 +37,10 @@ class Account extends Component {
 
   checkEmptyFields = () => {
     if (this.state.username === "" || this.state.email === "" || this.state.password === "") {
-      this.setState({errMessage: "Please fill in all fields"})
+      this.setState({ errMessage: "Please fill in all fields" })
       return false;
     }
-    this.setState({errMessage: ""})
+    this.setState({ errMessage: "" })
     return true;
   }
 
@@ -62,10 +62,10 @@ class Account extends Component {
     }).then((response) => {
       return response.json()
     }).then((data) => {
-      if (data === "Invalid Username") {
+      if (data === "Fail") {
         this.setState({ errMessage: data })
       } else {
-        this.setState({ apiKey: data }); 
+        this.setState({ apiKey: data });
         this.setState({ errMessage: "" });
       }
     }).catch((err) => {
@@ -93,7 +93,7 @@ class Account extends Component {
     }).then((response) => {
       return response.json()
     }).then((data) => {
-      if (data === "Failed") {
+      if (data === "Fail") {
         this.setState({ errMessage: data })
         this.setState({ successMessage: "" });
       } else {
@@ -126,49 +126,43 @@ class Account extends Component {
               <p className="text-success">{this.state.apiKey ? 'Success! API Key: ' + this.state.apiKey : ""}</p>
 
 
-              {this.state.loggedIn ? 
-              
-              <>
-              <h2>Hello {this.state.username}</h2>
+              {this.state.loggedIn ?
+
+                <>
+                  <h2>Hello {this.state.username}</h2>
+                </>
+
+                :
+
+                <>
+                  <h2>Create Account or Login</h2>
+                  <Form>
+                    <Form.Group controlId="formBasicUsername">
+                      <Form.Label>Username</Form.Label>
+                      <Form.Control onChange={this.changeHandler} type="text" name="username" placeholder="Enter Username" required />
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicEmail">
+                      <Form.Label>Email address</Form.Label>
+                      <Form.Control onChange={this.changeHandler} type="email" name="email" placeholder="Enter Email" required />
+                    </Form.Group>
 
 
+                    <Form.Group controlId="formBasicPassword">
+                      <Form.Label>Password</Form.Label>
+                      <Form.Control onChange={this.changeHandler} type="password" name="password" placeholder="Enter Password" required />
+                    </Form.Group>
 
-              </>
-              
-              
-              
-              
-              : 
-            
-              <>
-              <h2>Create Account or Login</h2>
-              <Form>
-                <Form.Group controlId="formBasicUsername">
-                  <Form.Label>Username</Form.Label>
-                  <Form.Control onChange={this.changeHandler} type="text" name="username" placeholder="Enter Username" required/>
-                </Form.Group>
-
-                <Form.Group controlId="formBasicEmail">
-                  <Form.Label>Email address</Form.Label>
-                  <Form.Control onChange={this.changeHandler} type="email" name="email" placeholder="Enter Email" required />
-                </Form.Group>
-
-
-                <Form.Group controlId="formBasicPassword">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control onChange={this.changeHandler} type="password" name="password" placeholder="Enter Password" required />
-                </Form.Group>
-
-                <Button variant="primary" onClick={this.createUser}>
-                  Create Account
+                    <Button variant="primary" onClick={this.createUser}>
+                      Create Account
                 </Button>
-                <Button className="ml-3" variant="primary" onClick={this.login}>
-                  Login
+                    <Button className="ml-3" variant="primary" onClick={this.login}>
+                      Login
               </Button>
-              </Form>
-              </>
+                  </Form>
+                </>
               }
-              
+
             </div>
 
           </div>
