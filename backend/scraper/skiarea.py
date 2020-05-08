@@ -44,11 +44,9 @@ class SkiArea:
         }
 
         print("[DEBUG] update_monthly_data():", data)
+        # db.update_monthly_data(data)
 
-        # TODO
-        # db.update_monthly_data(data) 
-
-        self.reset_avg_temp()  # reset the monthly average temp after we have uased it for new calc
+        self.reset_avg_temp()  # reset so we can start calculating next months avg
 
     # updates avg temp
     def update_avg_temp(self):

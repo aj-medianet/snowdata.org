@@ -6,4 +6,5 @@ db_host = "db"
 db_port = "3306"
 db_name = "snow_db"
 
+api_limit = 20
 

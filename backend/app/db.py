@@ -288,7 +288,8 @@ def verify_api_key(api_key):
     cursor.execute(query)
     res = cursor.fetchone()
     print("\n\n[DEBUG] api_count: {}\n".format(res["api_count"]))
-    if res["api_count"] < 5:
+
+    if res["api_count"] < credentials.api_limit:
         increment_api_count(api_key, res["api_count"])
         return True
     return False
@@ -299,7 +300,7 @@ def increment_api_count(api_key, cur_count):
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")
-    query = """ UPDATE users SET api_count="{}"; """.format(cur_count)
+    query = """ UPDATE users SET api_count="{}" WHERE api_key="{}"; """.format(cur_count, api_key)
     cursor.execute(query)
     db.commit()
 

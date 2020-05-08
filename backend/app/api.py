@@ -28,7 +28,10 @@ def check_pending():
     schedule.run_pending()
 
 
-# schedule tasks to update the database and api
+#
+# schedule tasks to update the database with ski area data
+#
+
 schedule.every(20).minutes.do(skiarea.update_sa)  # update ski area data every 20 min
 schedule.every(120).minutes.do(skiarea.update_avg_temps)  # updates avg temps every 2 hours
 schedule.every().day.at("10:30").do(db.reset_api_counts)  # reset api counts once a day
