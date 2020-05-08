@@ -295,12 +295,12 @@ def verify_api_key(api_key):
     return False
 
 
-def increment_api_count(api_key, cur_count):
-    cur_count += 1
+def increment_api_count(api_key, count):
+    count += 1
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")
-    query = """ UPDATE users SET api_count="{}" WHERE api_key="{}"; """.format(cur_count, api_key)
+    query = """ UPDATE users SET api_count="{}" WHERE api_key="{}"; """.format(count, api_key)
     cursor.execute(query)
     db.commit()
 
