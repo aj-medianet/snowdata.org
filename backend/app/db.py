@@ -1,6 +1,5 @@
 from app import app
 from app import utils
-from app import login
 import mysql.connector
 from werkzeug.security import generate_password_hash, check_password_hash
 
