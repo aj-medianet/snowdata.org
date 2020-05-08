@@ -37,14 +37,14 @@ class SkiArea:
             "ski_area_name": self.name,
             "month": date.today().month,
             "year": date.today().year,
-            "total_new_snow": str(int(self.ytd) - int(previous_month_data["ytd"])),
+            "total_new_snow": int(self.ytd) - int(previous_month_data["ytd"]),
             "snow_depth": self.cur_depth,
             "avg_temp": db.get_avg_temp(self.__dict__),
             "ytd": self.ytd
         }
 
         print("[DEBUG] update_monthly_data():", data)
-        # db.update_monthly_data(data)
+        db.update_monthly_data(data)
 
         self.reset_avg_temp()  # reset so we can start calculating next months avg
 

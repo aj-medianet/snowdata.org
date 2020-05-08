@@ -2,6 +2,7 @@ import mysql.connector
 from werkzeug.security import generate_password_hash, check_password_hash
 import credentials
 
+
 ################
 # DB functions #
 ################
@@ -85,11 +86,30 @@ def delete_ski_area(data):
 ##########################
 
 
+# returns all of the monthly data for every ski area
+def get_all_monthly_data():
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("use snow_db")
+    query = """ SELECT * FROM monthly_data;  """
+    cursor.execute(query)
+    res = cursor.fetchall()
+    return res
+
+
+# returns all monthly data for a single ski area
+def get_ski_areas_monthly_data(ski_area_name):
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("use snow_db")
+    query = """ SELECT * FROM monthly_data WHERE ski_area_name="{}";  """.format(ski_area_name)
+    cursor.execute(query)
+    res = cursor.fetchone()
+    return res
+
+
+# returns the previous months monthly data
 def get_previous_month(ski_area_name, month, year):
-    print("DEBUG db.get_prev_month()")
-    print("DEBUG ski_area_name:", ski_area_name)
-    print("DEBUG month:", month)
-    print("DEBUG year", year)
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")
@@ -100,12 +120,12 @@ def get_previous_month(ski_area_name, month, year):
     return res
 
 
+# creates a new month for a ski area
 def create_new_month(data):
     try:
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        hashed_pwd = generate_password_hash(data["password"])
         query = """INSERT INTO monthly_data (month, year, ski_area_name, total_new_snow, snow_depth, avg_temp, \
          ytd) VALUES  ("{}", "{}", "{}", "{}", "{}", "{}", "{}"); """.format(data["month"], data["year"],
                                                                              data["ski_area_name"],
@@ -118,7 +138,7 @@ def create_new_month(data):
         return False
 
 
-# updates the monthly data db with a ski areas calculated monthly data
+# updates the monthly data table with a ski areas calculated monthly data
 def update_monthly_data(data):
     print("\n\n[DEBUG] db.update_monthly_data() data:", data)
     try:
@@ -126,9 +146,9 @@ def update_monthly_data(data):
         cursor = db.cursor()
         cursor.execute("use snow_db")
         query = """ UPDATE monthly_data SET total_new_snow = "{}", \
-            snow_depth = "{}", avg_temp = "{}", ytd = "{}" WHERE ski_area_name = "{}", month = "{}", year = "{}"; \ 
-            """.format(data["total_new_snow"], data["snow_depth"], data["avg_temp"],
-                       data["ytd"], data["ski_area_name"], data["month"], data["year"])
+            snow_depth = "{}", avg_temp = "{}", ytd = "{}" WHERE (ski_area_name = "{}" AND month = "{}" AND \
+            year = "{}");""".format(data["total_new_snow"], data["snow_depth"], data["avg_temp"],
+                                    data["ytd"], data["ski_area_name"], data["month"], data["year"])
         cursor.execute(query)
         db.commit()
         print("[DEBUG] Updated monthly data for {}\n\n".format(data["ski_area_name"]))
@@ -287,7 +307,7 @@ def verify_api_key(api_key):
     query = """ SELECT api_count FROM users WHERE api_key="{}"; """.format(api_key)
     cursor.execute(query)
     res = cursor.fetchone()
-    print("\n\n[DEBUG] api_count: {}\n".format(res["api_count"]))
+    print("\n\n[DEBUG] verify_api_key api_count: {}\n".format(res["api_count"]))
 
     if res["api_count"] < credentials.api_limit:
         increment_api_count(api_key, res["api_count"])
