@@ -4,16 +4,14 @@ from app import utils
 from scraper import skiarea
 import os
 import schedule
-import time 
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import Flask, request, jsonify, session
+from flask import jsonify, session
 from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse
 from datetime import date
 
 
-api = Api(app) # sets up flask restful api
-
+api = Api(app)  # sets up flask restful api
 app.secret_key = os.urandom(24)  # for cors to work
 app_settings = os.getenv('APP_SETTINGS') 
 app.config.from_object(app_settings)      
@@ -22,18 +20,19 @@ app.config.from_object(app_settings)
 # if it's the first of the month, update the monthly data
 def check_first_month():
     if date.today().day == 1:
-        skiarea.update_monthly_data
+        skiarea.update_monthly_data()
 
 
 # checks all the pending scheduled jobs
 def check_pending():
     schedule.run_pending()
 
+
 # schedule tasks to update the database and api
-schedule.every(20).minutes.do(skiarea.update_sa) # update ski area data every 20 min
-schedule.every(120).minutes.do(skiarea.update_avg_temps) # updates avg temps every 2 hours
-schedule.every().day.at("10:30").do(db.reset_api_counts) # reset api counts once a day
-schedule.every().day.at("02:00").do(check_first_month) # updates monthly data if it's first of month
+schedule.every(20).minutes.do(skiarea.update_sa)  # update ski area data every 20 min
+schedule.every(120).minutes.do(skiarea.update_avg_temps)  # updates avg temps every 2 hours
+schedule.every().day.at("10:30").do(db.reset_api_counts)  # reset api counts once a day
+schedule.every().day.at("02:00").do(check_first_month)  # updates monthly data if it's first of month
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=check_pending, trigger="interval", seconds=300)
 scheduler.start()
@@ -41,6 +40,7 @@ scheduler.start()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    # TODO remove this after it is working
     skiarea.update_monthly_data()
     
     return jsonify('Hello')
@@ -58,7 +58,7 @@ parser.add_argument("email", type=str, location="json")
 parser.add_argument("password", type=str, location="json")
 
 
-class get_all_data(Resource):
+class GetAllData(Resource):
     def get(self, api_key):
         if db.verify_api_key(api_key):
             data = db.get_all_data()
@@ -67,7 +67,7 @@ class get_all_data(Resource):
         return jsonify("Fail")
         
 
-class get_ski_area(Resource):
+class GetSkiArea(Resource):
     def post(self):
         args = parser.parse_args()
         ski_area_name = args["skiareaname"]
@@ -80,7 +80,7 @@ class get_ski_area(Resource):
         return jsonify("Fail")
 
 
-class create_user(Resource):
+class CreateUser(Resource):
     def post(self):
         api_key = utils.generate_api_key()
         args = parser.parse_args()
@@ -99,7 +99,7 @@ class create_user(Resource):
         return jsonify("Fail")
 
 
-class delete_user(Resource):
+class DeleteUser(Resource):
     def post(self):
         args = parser.parse_args()
         data = { "username" : args["username"] }
@@ -112,7 +112,7 @@ class delete_user(Resource):
         return jsonify("Fail")
 
 
-class login(Resource):
+class Login(Resource):
     def post(self):
         args = parser.parse_args()
         data = {
@@ -127,7 +127,7 @@ class login(Resource):
         return jsonify("Fail")
 
 
-class logout(Resource):
+class Logout(Resource):
     def post(self):
         args = parser.parse_args()
         data = { "username" : args["username"] }
@@ -139,7 +139,7 @@ class logout(Resource):
         return jsonify("Fail")
 
 
-class get_api_key(Resource):
+class GetAPIKey(Resource):
     def post(self):
         args = parser.parse_args()
         data = { "username" : args["username"] }
@@ -158,12 +158,12 @@ if __name__ == '__main__':
     app.run()
 
 
-api.add_resource(get_all_data, '/get-all-data/<string:api_key>')
-api.add_resource(get_ski_area, '/get-ski-area')
-api.add_resource(create_user, '/create-user')
-api.add_resource(delete_user, '/delete-user')
-api.add_resource(login, '/login')
-api.add_resource(logout, '/logout')
-api.add_resource(get_api_key, '/get-api-key')
+api.add_resource(GetAllData, '/get-all-data/<string:api_key>')
+api.add_resource(GetSkiArea, '/get-ski-area')
+api.add_resource(CreateUser, '/create-user')
+api.add_resource(DeleteUser, '/delete-user')
+api.add_resource(Login, '/login')
+api.add_resource(Logout, '/logout')
+api.add_resource(GetAPIKey, '/get-api-key')
 
 CORS(app, expose_headers='Authorization')

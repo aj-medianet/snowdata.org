@@ -48,24 +48,24 @@ CREATE TABLE monthly_data (
 ) ENGINE=InnoDB;
 
 INSERT INTO monthly_data VALUES 
-(1, MONTH(curdate()), YEAR(CURDATE()), "Alpental", "0", "0", "0", "0"),
-(2, MONTH(curdate()), YEAR(CURDATE()), "Big Sky", "0", "0", "0", "0"),
-(3, MONTH(curdate()), YEAR(CURDATE()), "Bridger Bowl", "0", "0", "0", "0"),
-(4, MONTH(curdate()), YEAR(CURDATE()), "Jackson Hole", "0", "0", "0", "0"),
-(5, MONTH(curdate()), YEAR(CURDATE()), "Mt Bachelor", "0", "0", "0", "0"),
-(6, MONTH(curdate()), YEAR(CURDATE()), "Mt Hood", "0", "0", "0", "0"),
-(7, MONTH(curdate()), YEAR(CURDATE()), "49 Degrees North", "0", "0", "0", "0"),
-(8, MONTH(curdate()), YEAR(CURDATE()), "Snowbird", "0", "0", "0", "0"),
-(9, MONTH(curdate()), YEAR(CURDATE()), "Whitefish", "0", "0", "0", "0"),
-(10, 4, YEAR(CURDATE()), "Alpental", "0", "0", "0", "0"),
-(11, 4, YEAR(CURDATE()), "Big Sky", "0", "0", "0", "0"),
-(12, 4, YEAR(CURDATE()), "Bridger Bowl", "0", "0", "0", "0"),
-(13, 4, YEAR(CURDATE()), "Jackson Hole", "0", "0", "0", "0"),
-(14, 4, YEAR(CURDATE()), "Mt Bachelor", "0", "0", "0", "0"),
-(15, 4, YEAR(CURDATE()), "Mt Hood", "0", "0", "0", "0"),
-(16, 4, YEAR(CURDATE()), "49 Degrees North", "0", "0", "0", "0"),
-(17, 4, YEAR(CURDATE()), "Snowbird", "0", "0", "0", "0"),
-(18, 4, YEAR(CURDATE()), "Whitefish", "0", "0", "0", "0");
+(1, 5, 2020, "Alpental", "10", "20", "30", "80"),
+(2, 5, 2020, "Big Sky", "10", "20", "30", "80"),
+(3, 5, 2020, "Bridger Bowl", "10", "20", "30", "80"),
+(4, 5, 2020, "Jackson Hole", "10", "20", "30", "80"),
+(5, 5, 2020, "Mt Bachelor", "10", "20", "30", "80"),
+(6, 5, 2020, "Mt Hood", "10", "20", "30", "80"),
+(7, 5, 2020, "49 Degrees North", "10", "20", "30", "80"),
+(8, 5, 2020, "Snowbird", "10", "20", "30", "80"),
+(9, 5, 2020, "Whitefish", "10", "20", "30", "80"),
+(10, 4, 2020, "Alpental", "5", "10", "20", "70"),
+(11, 4, 2020, "Big Sky", "5", "10", "20", "70"),
+(12, 4, 2020, "Bridger Bowl", "5", "10", "20", "70"),
+(13, 4, 2020, "Jackson Hole", "5", "10", "20", "70"),
+(14, 4, 2020, "Mt Bachelor", "5", "10", "20", "70"),
+(15, 4, 2020, "Mt Hood", "5", "10", "20", "70"),
+(16, 4, 2020, "49 Degrees North", "5", "10", "20", "70"),
+(17, 4, 2020, "Snowbird", "5", "10", "20", "70"),
+(18, 4, 2020, "Whitefish", "5", "10", "20", "70");
 
 
 CREATE TABLE users (
