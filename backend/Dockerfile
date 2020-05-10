@@ -1,5 +1,5 @@
 # ubuntu image so we can install inkscape and spacy
-FROM ubuntu
+FROM ubuntu:bionic
 
 # install python & pip
 RUN apt-get update && apt-get upgrade -y && apt-get install -y python3 python3-pip python3-dev && cd /usr/local/bin && ln -s /usr/bin/python3 python && pip3 install --upgrade pip
