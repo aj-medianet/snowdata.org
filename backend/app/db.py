@@ -109,7 +109,7 @@ def get_ski_areas_monthly_data(ski_area_name):
 
 
 # returns the previous months monthly data
-def get_previous_month(ski_area_name, month, year):
+def get_ski_areas_month_year(ski_area_name, month, year):
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")
