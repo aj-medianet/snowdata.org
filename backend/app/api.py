@@ -17,10 +17,10 @@ app_settings = os.getenv('APP_SETTINGS')
 app.config.from_object(app_settings)      
 
 
-# if it's the first of the month, update the monthly data
-def check_first_month():
+# if it's the first of the month, create a new month for each ski area
+def check_first_of_month():
     if date.today().day == 1:
-        skiarea.update_monthly_data()
+        skiarea.create_new_month()
 
 
 # checks all the pending scheduled jobs
@@ -35,7 +35,7 @@ def check_pending():
 schedule.every(20).minutes.do(skiarea.update_sa)  # update ski area data every 20 min
 schedule.every(120).minutes.do(skiarea.update_avg_temps)  # updates avg temps every 2 hours
 schedule.every().day.at("10:30").do(db.reset_api_counts)  # reset api counts once a day
-schedule.every().day.at("02:00").do(check_first_month)  # updates monthly data if it's first of month
+schedule.every().day.at("02:00").do(check_first_of_month)  # updates monthly data if it's first of month
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=check_pending, trigger="interval", seconds=300)
 scheduler.start()
@@ -44,7 +44,7 @@ scheduler.start()
 @app.route('/', methods=['GET', 'POST'])
 def index():
     # TODO remove this after it is working
-    skiarea.update_monthly_data()
+    skiarea.create_new_month()
     
     return jsonify('Hello')
 

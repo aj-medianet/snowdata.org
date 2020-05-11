@@ -1,11 +1,13 @@
-# class for ski areas
 from app import db
 from scraper import resort_scraper
 from app import utils
-from datetime import date, timedelta
 
 # global list of ski areas we're parsing
 SKI_AREAS = ["alpental", "jackson_hole", "mt_bachelor", "mt_hood", "ski49n", "snowbird", "whitefish"]
+
+#
+# used to build a ski area obj so we can update, get data, create monthly data
+#
 
 
 class SkiArea:
@@ -28,24 +30,22 @@ class SkiArea:
         db.update_ski_area(self.__dict__)
 
     # calculates monthly data for a ski area and updates the db
-    def update_monthly_data(self):
-        print("[DEBUG] sa.update_monthly_data()")
+    def create_new_month(self):
         prev = utils.get_prev_month()
-        previous_month_data = db.get_previous_month(self.name, prev.month, prev.year)
-
+        prev_prev = utils.get_two_months_ago()
+        previous_month_data = db.get_ski_areas_month_year(self.name, prev_prev.month, prev_prev.year)
         data = {
             "ski_area_name": self.name,
-            "month": date.today().month,
-            "year": date.today().year,
+            "month": prev.month,
+            "year": prev.year,
             "total_new_snow": int(self.ytd) - int(previous_month_data["ytd"]),
             "snow_depth": self.cur_depth,
             "avg_temp": db.get_avg_temp(self.__dict__),
             "ytd": self.ytd
         }
 
-        print("[DEBUG] update_monthly_data():", data)
-        db.update_monthly_data(data)
-
+        print("[DEBUG] create_new_month():", data)
+        db.create_new_month(data)
         self.reset_avg_temp()  # reset so we can start calculating next months avg
 
     # updates avg temp
@@ -78,11 +78,13 @@ def update_avg_temps():
             print("[DEBUG] Error updating average temp for {}".format(ski_area))
 
 
-def update_monthly_data():
+def create_new_month():
     for ski_area in SKI_AREAS:
         try:
             data = resort_scraper.get_data(ski_area)
             sa = SkiArea(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
-            sa.update_monthly_data()
+            sa.create_new_month()
         except:
-            print("[DEBUG] Error updating monthly data for {}".format(ski_area))
+            print("[DEBUG] Error creating monthly data for {}".format(ski_area))
+
+
