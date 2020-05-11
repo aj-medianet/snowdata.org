@@ -51,6 +51,12 @@ class TestApi(unittest.TestCase):
                             })
         self.assertTrue(res.ok)
 
+    def test_delete_user(self):
+        res = requests.post("http://localhost:7082/delete-user",
+                            data={
+                                "username": "andrew"
+                            })
+
 
 if __name__ == "__main__":
     unittest.main()
