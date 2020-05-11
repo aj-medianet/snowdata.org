@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 //import '../App.css';
+import BarChart from './BarChart';
+import Table from './Table';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 class MainContent extends Component {
   constructor() {
@@ -15,6 +19,13 @@ class MainContent extends Component {
     fetch(url)
       .then(response => response.json())
       .then(skiareas => this.setState({ skiareas }));
+  }
+
+  renderChart() {
+    if (this.state.skiareas.length == 0) {
+      return "no data"
+    }
+    return <BarChart data={this.state.skiareas}/>
   }
 
   render() {
@@ -41,7 +52,8 @@ class MainContent extends Component {
               </div>
             )
           }
-        
+          <div>{this.renderChart()}</div>
+          <Table data={this.state.skiareas} />
       </div>
 
     )

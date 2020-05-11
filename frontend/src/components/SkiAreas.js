@@ -59,6 +59,7 @@ class SkiAreas extends Component {
           <div>48 Hour snowfall: {this.state.skiArea.new_snow_48}</div>
           <div>Current snow depth: {this.state.skiArea.cur_depth}</div>
           <div>YTD: {this.state.skiArea.ytd}</div>
+          
         </div>
 
         :
