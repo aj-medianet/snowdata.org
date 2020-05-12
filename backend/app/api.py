@@ -32,7 +32,6 @@ def check_pending():
 #
 
 schedule.every(20).minutes.do(skiarea.update_sa)  # update ski area data every 20 min
-schedule.every(120).minutes.do(skiarea.update_avg_temps)  # updates avg temps every 2 hours
 schedule.every().day.at("10:30").do(db.reset_api_counts)  # reset api counts once a day
 schedule.every().day.at("02:00").do(check_first_of_month)  # updates monthly data if it's first of month
 scheduler = BackgroundScheduler()
@@ -94,7 +93,11 @@ class CreateUser(Resource):
             "api_key": api_key
         }
 
+        print("DEBUG CreateUser data: ", data)
+
         if db.create_user(data):
+            print("DEBUG created user in db successful")
+            print("DEBUG api_key: ", api_key)
             session["username"] = data["username"]
             print("DEBUG create_user session[username]:", session["username"])
             return jsonify(api_key)
@@ -125,8 +128,7 @@ class Login(Resource):
         if db.login(data):
             session["username"] = data["username"]
             api_key = db.get_api_key(data)
-            print("DEBUG api_key:", api_key)
-            print("DEBUG login session[username]:", session["username"])
+            print("api_key:", api_key)
             return jsonify(api_key)
         return jsonify("Fail")
 
@@ -135,6 +137,7 @@ class Logout(Resource):
     def post(self):
         args = parser.parse_args()
         data = {"username": args["username"]}
+        print("DEBUG logout data:", data)
 
         if data["username"] in session:
             print("DEBUG login session[username]:", session["username"])

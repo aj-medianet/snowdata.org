@@ -27,7 +27,7 @@ class SkiAreas extends Component {
       })
     const dataOut = await response.json();
     this.setState({ skiArea: dataOut});
-    console.log(dataOut)
+    //console.log(dataOut)
 
     this.checkNoData()
   }
@@ -35,7 +35,7 @@ class SkiAreas extends Component {
   checkNoData = () => {
     var hasData = false;
     for (var key in this.state.skiArea) {
-      console.log(key)
+      //console.log(key)
       if (this.state.skiArea[key] !== "" && key !== "name" && key !== "ts") {
         
         hasData = true;

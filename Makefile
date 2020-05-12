@@ -10,3 +10,9 @@ rund:
 br:
 	docker-compose up -d --build
 
+deploy:
+	cd frontend
+	npm install
+	cd ..
+	docker volume prune -f
+	docker-compose up -d --build

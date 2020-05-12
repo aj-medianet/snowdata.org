@@ -307,7 +307,8 @@ def verify_api_key(api_key):
     query = """ SELECT api_count FROM users WHERE api_key="{}"; """.format(api_key)
     cursor.execute(query)
     res = cursor.fetchone()
-    print("\n\n[DEBUG] verify_api_key api_count: {}\n".format(res["api_count"]))
+    print("DEBUG res: ", res)
+    # print("\n\n[DEBUG] verify_api_key api_count: {}\n".format(res["api_count"]))
 
     if res["api_count"] < credentials.api_limit:
         increment_api_count(api_key, res["api_count"])

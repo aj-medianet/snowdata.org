@@ -16,7 +16,7 @@ const Navigation = () => {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav mr-auto">
                             <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                <a className="nav-link dropdown-toggle" href="/#" id="navbarDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Ski Area
                                 </a>
@@ -34,7 +34,7 @@ const Navigation = () => {
                             </li>
 
                             <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                <a className="nav-link dropdown-toggle" href="/#" id="navbarDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     API
                                 </a>
@@ -52,9 +52,9 @@ const Navigation = () => {
                             </li>
                         </ul>
                         <ul className="navbar-nav ml-auto">
-                            <form class="form-inline" action="/skiareas/">
-                                <input class="form-control" type="text" placeholder="Search Ski Areas" name="search"></input>
-                                <button id="searchButton" class="btn btn-outline-primary" type="submit">Search<i class="search"></i></button>
+                            <form className="form-inline" action="/skiareas/">
+                                <input className="form-control" type="text" placeholder="Search Ski Areas" name="search"></input>
+                                <button id="searchButton" className="btn btn-outline-primary ml-2" type="submit">Search<i className="search"></i></button>
                             </form>
                         </ul>
 

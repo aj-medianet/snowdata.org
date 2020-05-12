@@ -56,6 +56,10 @@ class SkiArea:
     def reset_avg_temp(self):
         db.reset_avg_temp(self.__dict__)
 
+#
+# driver functions
+#
+
 
 # loop through the list of ski areas, get the current data and update the db
 def update_sa():
@@ -64,18 +68,9 @@ def update_sa():
             data = resort_scraper.get_data(ski_area)
             sa = SkiArea(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
             sa.update_ski_areas()
-        except:
-            print("[DEBUG] Error scraping and updating {}".format(ski_area))
-
-
-def update_avg_temps():
-    for ski_area in SKI_AREAS:
-        try:
-            data = resort_scraper.get_data(ski_area)
-            sa = SkiArea(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
             sa.update_avg_temp()
         except:
-            print("[DEBUG] Error updating average temp for {}".format(ski_area))
+            print("[DEBUG] Error scraping and updating {}".format(ski_area))
 
 
 def create_new_month():

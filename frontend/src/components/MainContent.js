@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 //import '../App.css';
 import BarChart from './BarChart';
 import Table from './Table';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+//import Row from 'react-bootstrap/Row';
+//import Col from 'react-bootstrap/Col';
 
 class MainContent extends Component {
   constructor() {

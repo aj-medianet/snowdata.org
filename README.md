@@ -54,6 +54,9 @@ The backend is running on
 http://localhost:7072
 
 
+
+
+
 ### Manually load database
 Login to MySQL docker container
 ```
@@ -73,6 +76,12 @@ Password = root
 ### Deployment 
 
 TODO
+
+## Continuous Integration
+
+Using Github actions to build and run the app using our makefile. Configuration can be viewed at:
+
+* [Push Workflow](.github/workflows/push.yml)
 
 ## Built With
 
