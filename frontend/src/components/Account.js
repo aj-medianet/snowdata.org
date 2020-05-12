@@ -142,16 +142,18 @@ class Account extends Component {
         this.setState({ errMessage: "Failed to logout" })
         this.setState({ successMessage: "" });
       } else {
+        console.log("success logout")
         sessionStorage.setItem('status', null);
         sessionStorage.setItem('username', '');
-        window.location.reload();
       }
     }).catch((err) => {
       this.setState({ errMessage: err })
       return
     })
 
-
+    sessionStorage.setItem('status', null);
+    sessionStorage.setItem('username', '');
+    window.location.reload();
 
 
 
