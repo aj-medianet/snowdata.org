@@ -29,40 +29,40 @@ class Pricing extends Component {
                     <div class="columnP">
                         <div class="card">
                             <h1>Tier 1</h1>
-                            <p>This is a description of the specifics of this pricing tier.</p>
+                            <p class="textP">This is a description of the specifics of this pricing tier.</p>
                             <div class="price-bullets">
                                 <li>API Calls per Day</li>
                                 <li>Other Limitation</li>
                                 <li>Price</li>
                             </div>
                             <br></br>
-                            <a href="#" class="btnP btn-primary">Go</a>
+                            <a href="#" class="btnP btn-primary btn-lg">Select</a>
                         </div>
                     </div>
                     <div class="columnP">
                         <div class="card">
                             <h1>Tier 2</h1>
-                            <p>This is a description of the specifics of this pricing tier.</p>
+                            <p class="textP">This is a description of the specifics of this pricing tier.</p>
                             <div class="price-bullets">
                                 <li>API Calls per Day</li>
                                 <li>Other Limitation</li>
                                 <li>Price</li>
                             </div>
                             <br></br>
-                            <a href="#" class="btnP btn-primary">Go</a>
+                            <a href="#" class="btnP btn-primary btn-lg">Select</a>
                         </div>
                     </div>
                     <div class="columnP">
                         <div class="card">
                             <h1>Tier 3</h1>
-                            <p>This is a description of the specifics of this pricing tier.</p>
+                            <p class="textP">This is a description of the specifics of this pricing tier.</p>
                             <div class="price-bullets">
                                 <li>API Calls per Day</li>
                                 <li>Other Limitation</li>
                                 <li>Price</li>
                             </div>
                             <br></br>
-                            <a href="#" class="btnP btn-primary">Go</a>
+                            <a href="#" class="btnP btn-primary btn-lg">Select</a>
                         </div>
                     </div>
                 </div>
