@@ -19,6 +19,16 @@ class Account extends Component {
     }
   }
 
+  componentDidMount() {
+    if (sessionStorage.getItem('status') == 'loggedIn') {
+      this.setState({ loggedIn: true});
+      this.setState({ username: sessionStorage.getItem('name')});
+    }
+    else {
+      this.setState({ loggedIn: false});
+    }
+  }
+
   changeHandler = (event) => {
     let key = event.target.name
     let val = event.target.value
@@ -57,6 +67,8 @@ class Account extends Component {
 
     fetch('https://api.snowdata.org/create-user', {
       method: 'POST',
+      mode: 'cors',
+      withCredentials: 'true',
       headers: { 'Content-Type': 'application/json', },
       body: JSON.stringify(data),
     }).then((response) => {
@@ -75,7 +87,6 @@ class Account extends Component {
 
   }
 
-
   login = (event) => {
     event.preventDefault()
     if (!this.checkEmptyFields()) { return; }
@@ -88,6 +99,8 @@ class Account extends Component {
 
     fetch('https://api.snowdata.org/login', {
       method: 'POST',
+      mode: 'cors',
+      withCredentials: 'true',
       headers: { 'Content-Type': 'application/json', },
       body: JSON.stringify(data),
     }).then((response) => {
@@ -97,6 +110,8 @@ class Account extends Component {
         this.setState({ errMessage: data })
         this.setState({ successMessage: "" });
       } else {
+        sessionStorage.setItem('status', 'loggedIn');
+        sessionStorage.setItem('name', this.state.username);
         this.setState({ errMessage: "" });
         this.setState({ successMessage: data });
         this.setState({ loggedIn: true });
@@ -109,7 +124,16 @@ class Account extends Component {
 
   }
 
+  logout = (event) => {
+    event.preventDefault()
+
+    sessionStorage.setItem('status', null);
+    window.location.reload();
+
+  }
+
   render() {
+
     return (
       <>
         <div className="container-fluid pt-5" >
@@ -130,6 +154,9 @@ class Account extends Component {
 
                 <>
                   <h2>Hello {this.state.username}</h2>
+                  <Button className="ml-3" variant="primary" onClick={this.logout}>
+                      Logout
+                  </Button>
                 </>
 
                 :
