@@ -143,7 +143,7 @@ class Logout(Resource):
             print("DEBUG login session[username]:", session["username"])
             session.pop(data["username"], None)
             return jsonify("Success")
-        return jsonify("Fail")
+        return jsonify("Success")
 
 
 class GetAPIKey(Resource):
