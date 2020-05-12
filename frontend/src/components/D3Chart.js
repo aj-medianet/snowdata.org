@@ -23,7 +23,7 @@ class D3Chart {
             vis.yAxisGroup = vis.svg.append("g")
 
             const ytd = data.filter(area => {
-            return area.ytd != "";
+            return area.ytd !== "";
             }).map(area => {
             const data = {}
             data.name = area.name;
@@ -32,7 +32,7 @@ class D3Chart {
             })
 
             const cur_depth = data.filter(area => {
-            return area.cur_depth != "";
+            return area.cur_depth !== "";
             }).map(area => {
             const data = {}
             data.name = area.name;
@@ -41,7 +41,7 @@ class D3Chart {
             })
 
             const cur_temp = data.filter(area => {
-            return area.temp != "";
+            return area.temp !== "";
             }).map(area => {
             const data = {}
             data.name = area.name;
@@ -50,7 +50,7 @@ class D3Chart {
             })
 
             const wind_speed = data.filter(area => {
-            return area.wind_speed != "";
+            return area.wind_speed !== "";
             }).map(area => {
             const data = {}
             data.name = area.name;

@@ -10,11 +10,10 @@ from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse
 from datetime import date
 
-
 api = Api(app)  # sets up flask restful api
 app.secret_key = os.urandom(24)  # for cors to work
-app_settings = os.getenv('APP_SETTINGS') 
-app.config.from_object(app_settings)      
+app_settings = os.getenv('APP_SETTINGS')
+app.config.from_object(app_settings)
 
 
 # if it's the first of the month, create a new month for each ski area
@@ -45,7 +44,7 @@ scheduler.start()
 def index():
     # TODO remove this after it is working
     skiarea.create_new_month()
-    
+
     return jsonify('Hello')
 
 
@@ -68,7 +67,7 @@ class GetAllData(Resource):
             if data:
                 return jsonify(data)
         return jsonify("Fail")
-        
+
 
 class GetSkiArea(Resource):
     def post(self):
@@ -89,10 +88,10 @@ class CreateUser(Resource):
         args = parser.parse_args()
 
         data = {
-            "username" : args["username"],
-            "email" : args["email"],
-            "password" : args["password"],
-            "api_key" : api_key
+            "username": args["username"],
+            "email": args["email"],
+            "password": args["password"],
+            "api_key": api_key
         }
 
         if db.create_user(data):
@@ -105,9 +104,9 @@ class CreateUser(Resource):
 class DeleteUser(Resource):
     def post(self):
         args = parser.parse_args()
-        data = { "username" : args["username"] }
+        data = {"username": args["username"]}
 
-        if data["username"] in session: 
+        if data["username"] in session:
             if db.delete_user(data):
                 session.pop(data["username"], None)
                 return jsonify("Success")
@@ -119,21 +118,23 @@ class Login(Resource):
     def post(self):
         args = parser.parse_args()
         data = {
-            "username" : args["username"],
-            "password" : args["password"]
+            "username": args["username"],
+            "password": args["password"]
         }
 
         if db.login(data):
             session["username"] = data["username"]
+            api_key = db.get_api_key(data)
+            print("DEBUG api_key:", api_key)
             print("DEBUG login session[username]:", session["username"])
-            return jsonify("Success")
+            return jsonify(api_key)
         return jsonify("Fail")
 
 
 class Logout(Resource):
     def post(self):
         args = parser.parse_args()
-        data = { "username" : args["username"] }
+        data = {"username": args["username"]}
 
         if data["username"] in session:
             print("DEBUG login session[username]:", session["username"])
@@ -145,11 +146,11 @@ class Logout(Resource):
 class GetAPIKey(Resource):
     def post(self):
         args = parser.parse_args()
-        data = { "username" : args["username"] }
+        data = {"username": args["username"]}
 
         print("DEBUG get_api_key session[username]:", session["username"])
 
-        if data["username"] in session: 
+        if data["username"] in session:
             print("DEBUG login session[username]:", session["username"])
             api_key = db.get_api_key(data)
             print("DEBUG api_key:", api_key)
@@ -159,7 +160,6 @@ class GetAPIKey(Resource):
 
 if __name__ == '__main__':
     app.run()
-
 
 api.add_resource(GetAllData, '/get-all-data/<string:api_key>')
 api.add_resource(GetSkiArea, '/get-ski-area')

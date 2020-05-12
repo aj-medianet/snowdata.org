@@ -22,7 +22,7 @@ class MainContent extends Component {
   }
 
   renderChart() {
-    if (this.state.skiareas.length == 0) {
+    if (this.state.skiareas.length === 0) {
       return "no data"
     }
     return <BarChart data={this.state.skiareas}/>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import Cookies from 'js-cookie';
 
 // displays user account info
 class Account extends Component {
@@ -20,9 +21,10 @@ class Account extends Component {
   }
 
   componentDidMount() {
-    if (sessionStorage.getItem('status') == 'loggedIn') {
+    if (sessionStorage.getItem('status') === 'loggedIn') {
       this.setState({ loggedIn: true});
       this.setState({ username: sessionStorage.getItem('name')});
+      console.log("Username: " + this.state.username)
     }
     else {
       this.setState({ loggedIn: false});
@@ -79,6 +81,7 @@ class Account extends Component {
       } else {
         this.setState({ apiKey: data });
         this.setState({ errMessage: "" });
+        this.setState({ loggedIn: true });
       }
     }).catch((err) => {
       this.setState({ errMessage: err })
@@ -100,22 +103,24 @@ class Account extends Component {
     fetch('https://api.snowdata.org/login', {
       method: 'POST',
       mode: 'cors',
-      withCredentials: 'true',
+      withCredentials: 'include',
       headers: { 'Content-Type': 'application/json', },
       body: JSON.stringify(data),
     }).then((response) => {
       return response.json()
     }).then((data) => {
+      console.log("data: " + data)
       if (data === "Fail") {
         this.setState({ errMessage: data })
         this.setState({ successMessage: "" });
       } else {
-        sessionStorage.setItem('status', 'loggedIn');
-        sessionStorage.setItem('name', this.state.username);
+        this.setState({ apiKey: data });
+        //sessionStorage.setItem('status', 'loggedIn');
+        //sessionStorage.setItem('name', this.state.username);
         this.setState({ errMessage: "" });
-        this.setState({ successMessage: data });
         this.setState({ loggedIn: true });
-
+        //let cookies = Cookies.get("token")
+        //console.log("cookies: " + cookies)
       }
     }).catch((err) => {
       this.setState({ errMessage: err })
@@ -126,9 +131,71 @@ class Account extends Component {
 
   logout = (event) => {
     event.preventDefault()
+    const data = {
+      username: this.state.username,
+    }
+    fetch('https://api.snowdata.org/logout', {
+      method: 'POST',
+      mode: 'cors',
+      withCredentials: 'include',
+      headers: { 'Content-Type': 'application/json', },
+      body: JSON.stringify(data),
+    }).then((response) => {
+      return response.json()
+    }).then((data) => {
+      if (data === "Fail") {
+        this.setState({ errMessage: "Failed to logout" })
+        this.setState({ successMessage: "" });
+      } else {        
+        this.setState({ loggedIn: false });
+      }
+    }).catch((err) => {
+      this.setState({ errMessage: err })
+      return
+    })
+
 
     sessionStorage.setItem('status', null);
     window.location.reload();
+
+  }
+
+  areYouSure = () => {
+    return false;
+  }
+
+  deleteAccount = (event) => {
+    event.preventDefault()
+    if (this.areYouSure()) {
+      const data = {
+        username: this.state.username,
+      }
+      fetch('https://api.snowdata.org/delete-user', {
+        method: 'POST',
+        mode: 'cors',
+        withCredentials: 'include',
+        headers: { 'Content-Type': 'application/json', },
+        body: JSON.stringify(data),
+      }).then((response) => {
+        return response.json()
+      }).then((data) => {
+        if (data === "Fail") {
+          this.setState({ errMessage: "Failed to delete account" })
+          this.setState({ successMessage: "" });
+        } else {        
+          this.setState({ loggedIn: false });
+          this.setState({ successMessage: "Account Deleted" });
+        }
+      }).catch((err) => {
+        this.setState({ errMessage: err })
+        return
+      })
+  
+  
+      sessionStorage.setItem('status', null);
+      window.location.reload();
+    }
+
 
   }
 
@@ -147,15 +214,21 @@ class Account extends Component {
             <div className="col text-left m-3">
               <p className="text-danger">{this.state.passwordError ? 'Password must be at least 10 characters' : ''}</p>
               <p className="text-danger">{this.state.errMessage ? this.state.errMessage : ''}</p>
-              <p className="text-success">{this.state.apiKey ? 'Success! API Key: ' + this.state.apiKey : ""}</p>
+              <p className="text-success">{this.state.successMessage ? this.state.successMessage : ""}</p>
 
 
               {this.state.loggedIn ?
 
                 <>
                   <h2>Hello {this.state.username}</h2>
-                  <Button className="ml-3" variant="primary" onClick={this.logout}>
+                  
+                  <p>API Key: {this.state.apiKey}</p>
+
+                  <Button className="" variant="primary" onClick={this.logout}>
                       Logout
+                  </Button>
+                  <Button className="ml-3" variant="danger" onClick={this.deleteAccount}>
+                      Delete Account
                   </Button>
                 </>
 
