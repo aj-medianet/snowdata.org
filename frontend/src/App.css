@@ -36,6 +36,36 @@
   color: #61dafb;
 }
 
+.column {
+  position: relative;
+  float: left;
+  width: 33.33%;
+}
+
+.row {
+  margin-top: 5%;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  border-radius: 10px;
+  width: 66.66%;
+  height: 100%;
+  margin: 0 auto;
+  float: none;
+  margin-bottom: 10px;
+}
+
+.btn {
+  margin: 0 auto;
+  width: 50%;
+}
+
+.price-bullets {
+  align-items: left;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
