@@ -1,6 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/js/bootstrap.bundle';
 
+
 // site navigation bar
 const Navigation = () => {
         return (
@@ -13,7 +14,7 @@ const Navigation = () => {
                     </button>
 
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav ml-auto">
+                        <ul className="navbar-nav mr-auto">
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -49,8 +50,16 @@ const Navigation = () => {
                             <li className="nav-item">
                                 <a className="nav-link" href="/account">Account</a>
                             </li>
-
                         </ul>
+                        <ul className="navbar-nav ml-auto">
+                            <form class="form-inline" action="/skiareas/">
+                                <input class="form-control" type="text" placeholder="Search Ski Areas" name="search"></input>
+                                <button id="searchButton" class="btn btn-outline-primary" type="submit">Search<i class="search"></i></button>
+                            </form>
+                        </ul>
+
+
+                        
                     </div>
                 </nav>
             </header>
