@@ -248,14 +248,12 @@ def delete_user(data):
         cursor = db.cursor()
         cursor.execute("use snow_db")
         hashed_pwd = generate_password_hash(data["password"])
-        print("\n\nDEBUG hashed pwd", hashed_pwd)
-        print("\n")
         query = """ DELETE from users where username="{}" and password="{}"; """.format(data["username"], hashed_pwd)
         cursor.execute(query)
-        if db.commit():
-            return True
-        return False
-    except:
+        db.commit()
+        return True
+    except mysql.connector.Error as error:
+        print("mysql error:", error)
         return False
 
 
@@ -270,7 +268,8 @@ def update_password(data):
         cursor.execute(query)
         db.commit()
         return True
-    except:
+    except mysql.connector.Error as error:
+        print("mysql error:", error)
         return False
 
 
