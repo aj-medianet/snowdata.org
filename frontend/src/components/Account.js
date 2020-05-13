@@ -186,7 +186,6 @@ class Account extends Component {
       }
     }).catch((err) => {
       this.setState({ errMessage: err })
-      return
     })
   }
 
