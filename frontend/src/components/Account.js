@@ -166,16 +166,15 @@ class Account extends Component {
     }
     fetch('https://api.snowdata.org/delete-user', {
       method: 'POST',
-      mode: 'cors',
-      withCredentials: 'include',
       headers: { 'Content-Type': 'application/json', },
       body: JSON.stringify(data),
     }).then((response) => {
       return response.json()
     }).then((data) => {
       if (data === "Fail") {
-        this.setState({ errMessage: "Failed to delete account" })
+        this.setState({ errMessage: "Failed to delete account. Please log back in and retry." })
         this.setState({ successMessage: "" });
+        this.logout()
       } else {
         this.setState({ loggedIn: false });
         this.setState({ successMessage: "Account Deleted" });
@@ -186,14 +185,6 @@ class Account extends Component {
       this.setState({ errMessage: err })
       return
     })
-
-
-    sessionStorage.setItem('status', null);
-    sessionStorage.setItem('username', '');
-    window.location.reload();
-
-
-
   }
 
   render() {
