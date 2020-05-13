@@ -160,6 +160,7 @@ class Account extends Component {
 
   }
   deleteAccount = (event) => {
+    event.preventDefault()
     const data = {
       username: sessionStorage.getItem("username"),
       password: sessionStorage.getItem("password")
@@ -217,7 +218,7 @@ class Account extends Component {
                   <Button className="" variant="primary" onClick={this.logout}>
                     Logout
                   </Button>
-                  <Button className="ml-3" variant="danger" onClick={() => { if (window.confirm('Are you sure you want to delete your account?')) { this.deleteAccount() }; }}>
+                  <Button className="ml-3" variant="danger" onClick={() => { if (window.confirm('Are you sure you want to delete your account?')) { this.deleteAccount }; }}>
                     Delete Account
                   </Button>
                 </>
