@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-//import Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 
 // displays user account info
 class Account extends Component {
@@ -21,6 +21,7 @@ class Account extends Component {
   }
 
   componentDidMount() {
+    console.log("cookies: " + Cookies.get())
     if (sessionStorage.getItem('status') === 'loggedIn') {
       console.log("logged in Username: " + sessionStorage.getItem("username"))
     }
@@ -74,12 +75,13 @@ class Account extends Component {
       return response.json()
     }).then((data) => {
       if (data === "Fail") {
-        this.setState({ errMessage: "Failed to log in. Please try a different username" });
+        this.setState({ errMessage: "Account creation failed. Please try a different username" });
         this.setState({ successMessage: "" });
         sessionStorage.setItem('status', null);
       } else {
         sessionStorage.setItem('status', 'loggedIn');
         sessionStorage.setItem('username', this.state.username);
+        sessionStorage.setItem('password', this.state.password);
         sessionStorage.setItem("apiKey", data);
         this.setState({ errMessage: "" });
       }
@@ -107,15 +109,14 @@ class Account extends Component {
     }).then((response) => {
       return response.json()
     }).then((data) => {
-      console.log("data: " + data)
       if (data === "Fail") {
-        console.log("data: " + data)
         this.setState({ errMessage: data })
         this.setState({ successMessage: "" });
         sessionStorage.setItem('status', null);
       } else {
         sessionStorage.setItem('status', 'loggedIn');
         sessionStorage.setItem('username', this.state.username);
+        sessionStorage.setItem('password', this.state.password);
         sessionStorage.setItem("apiKey", data)
         this.setState({ errMessage: "" });
       }
@@ -129,7 +130,7 @@ class Account extends Component {
   logout = (event) => {
     event.preventDefault()
     const data = {
-      username: this.state.username,
+      username: sessionStorage.getItem("username"),
     }
     fetch('https://api.snowdata.org/logout', {
       method: 'POST',
@@ -161,7 +162,8 @@ class Account extends Component {
   deleteAccount = (event) => {
     event.preventDefault()
     const data = {
-      username: this.state.username,
+      username: sessionStorage.getItem("username"),
+      password: sessionStorage.getItem("password")
     }
     fetch('https://api.snowdata.org/delete-user', {
       method: 'POST',

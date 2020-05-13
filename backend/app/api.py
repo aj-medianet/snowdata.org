@@ -93,13 +93,8 @@ class CreateUser(Resource):
             "api_key": api_key
         }
 
-        print("DEBUG CreateUser data: ", data)
-
         if db.create_user(data):
-            print("DEBUG created user in db successful")
-            print("DEBUG api_key: ", api_key)
             session["username"] = data["username"]
-            print("DEBUG create_user session[username]:", session["username"])
             return jsonify(api_key)
         return jsonify("Fail")
 
@@ -107,10 +102,18 @@ class CreateUser(Resource):
 class DeleteUser(Resource):
     def post(self):
         args = parser.parse_args()
-        data = {"username": args["username"]}
+        data = {
+            "username": args["username"],
+            "password": args["password"]
+        }
 
-        if data["username"] in session:
+        print("DEBUG data:", data)
+        print("DEBUG session:", session)
+
+        if data["username"] == session["username"]:
+            print("DEBUG user in sess")
             if db.delete_user(data):
+                print("DEBUG deleted user")
                 session.pop(data["username"], None)
                 return jsonify("Success")
             return jsonify("Fail")
@@ -128,7 +131,6 @@ class Login(Resource):
         if db.login(data):
             session["username"] = data["username"]
             api_key = db.get_api_key(data)
-            print("api_key:", api_key)
             return jsonify(api_key)
         return jsonify("Fail")
 
@@ -137,10 +139,8 @@ class Logout(Resource):
     def post(self):
         args = parser.parse_args()
         data = {"username": args["username"]}
-        print("DEBUG logout data:", data)
 
         if data["username"] in session:
-            print("DEBUG login session[username]:", session["username"])
             session.pop(data["username"], None)
             return jsonify("Success")
         return jsonify("Success")

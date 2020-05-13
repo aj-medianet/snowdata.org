@@ -247,7 +247,7 @@ def delete_user(data):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        query = """ SET FOREIGN_KEY_CHECKS=0; DELETE from users where username="{}"; """.format(data["username"])
+        query = """ DELETE from users where username="{}"; """.format(data["username"])
         cursor.execute(query)
         db.commit()
         return True
@@ -297,7 +297,7 @@ def get_api_key(data):
 
 def verify_api_key(api_key):
     # if the api_key is from our web frontend
-    # TODO - make this better
+    # TODO - make this better - create proxy flask server to relay api key
     if api_key == "tmpkey":
         return True
 
@@ -307,12 +307,11 @@ def verify_api_key(api_key):
     query = """ SELECT api_count FROM users WHERE api_key="{}"; """.format(api_key)
     cursor.execute(query)
     res = cursor.fetchone()
-    print("DEBUG res: ", res)
     # print("\n\n[DEBUG] verify_api_key api_count: {}\n".format(res["api_count"]))
-
-    if res["api_count"] < credentials.api_limit:
-        increment_api_count(api_key, res["api_count"])
-        return True
+    if res is not None:
+        if res["api_count"] < credentials.api_limit:
+            increment_api_count(api_key, res["api_count"])
+            return True
     return False
 
 
