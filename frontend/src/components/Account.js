@@ -179,7 +179,9 @@ class Account extends Component {
         this.setState({ loggedIn: false });
         this.setState({ successMessage: "Account Deleted" });
         sessionStorage.setItem('status', null);
-        sessionStorage.setItem('username', '')
+        sessionStorage.setItem('username', '');
+        sessionStorage.setItem('password', '');
+        window.location.reload();
       }
     }).catch((err) => {
       this.setState({ errMessage: err })
