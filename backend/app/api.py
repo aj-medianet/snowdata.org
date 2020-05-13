@@ -131,6 +131,7 @@ class Login(Resource):
         if db.login(data):
             session["username"] = data["username"]
             api_key = db.get_api_key(data)
+            print("DEBUG login session:", session)
             return jsonify(api_key)
         return jsonify("Fail")
 
