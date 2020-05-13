@@ -160,7 +160,6 @@ class Account extends Component {
 
   }
   deleteAccount = (event) => {
-    event.preventDefault()
     const data = {
       username: sessionStorage.getItem("username"),
       password: sessionStorage.getItem("password")
