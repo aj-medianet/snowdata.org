@@ -110,13 +110,10 @@ class DeleteUser(Resource):
         print("DEBUG data:", data)
         print("DEBUG session:", session)
 
-        if data["username"] == session["username"]:
-            print("DEBUG user in sess")
-            if db.delete_user(data):
-                print("DEBUG deleted user")
-                session.pop(data["username"], None)
-                return jsonify("Success")
-            return jsonify("Fail")
+        if db.delete_user(data):
+            print("DEBUG deleted user")
+            # session.pop(data["username"], None)
+            return jsonify("Success")
         return jsonify("Fail")
 
 
