@@ -247,7 +247,8 @@ def delete_user(data):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        query = """ DELETE from users where username="{}" and password="{}"; """.format(data["username"], data["password"])
+        hashed_pwd = generate_password_hash(data["password"])
+        query = """ DELETE from users where username="{}" and password="{}"; """.format(data["username"], hashed_pwd)
         cursor.execute(query)
         db.commit()
         return True
