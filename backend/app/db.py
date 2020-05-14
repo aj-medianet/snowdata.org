@@ -239,6 +239,7 @@ def create_user(data):
         db.commit()
         return True
     except:
+        print("DEBUG create_user mysql error")
         return False
 
 
@@ -247,18 +248,16 @@ def delete_user(data):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        hashed_pwd = generate_password_hash(data["password"])
-        query = """ DELETE from users where username="{}" and password="{}"; """.format(data["username"], hashed_pwd)
+        query = """ DELETE from users where username="{}"; """.format(data["username"])
         cursor.execute(query)
         db.commit()
         return True
-    except mysql.connector.Error as error:
-        print("mysql error:", error)
+    except:
+        print("DEBUG delete_user mysql error")
         return False
 
 
 def update_password(data):
-    print("\n\n[DEBUG] db.update_password() data:", data)
     try:
         db = get_db()
         cursor = db.cursor()
@@ -268,19 +267,23 @@ def update_password(data):
         cursor.execute(query)
         db.commit()
         return True
-    except mysql.connector.Error as error:
-        print("mysql error:", error)
+    except:
+        print("DEBUG update_password mysql error")
         return False
 
 
-def login(data):
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute("use snow_db")
-    query = """ SELECT password FROM users WHERE username="{}"; """.format(data["username"])
-    cursor.execute(query)
-    pw_hash = cursor.fetchone()
-    return check_password_hash(pw_hash[0], data["password"])
+def check_password(data):
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("use snow_db")
+        query = """ SELECT password FROM users WHERE username="{}"; """.format(data["username"])
+        cursor.execute(query)
+        pw_hash = cursor.fetchone()
+        return check_password_hash(pw_hash[0], data["password"])
+    except:
+        print("DEBUG check_password mysql error")
+        return False
 
 
 #####################

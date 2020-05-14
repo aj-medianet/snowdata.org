@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
 
 // displays user account info
 class Account extends Component {
@@ -16,12 +16,10 @@ class Account extends Component {
       errMessage: "",
       successMessage: "",
       apiKey: "",
-      loggedIn: false,
     }
   }
 
   componentDidMount() {
-    console.log("cookies: " + Cookies.get())
     if (sessionStorage.getItem('status') === 'loggedIn') {
       console.log("logged in Username: " + sessionStorage.getItem("username"))
     }
@@ -34,6 +32,21 @@ class Account extends Component {
     let key = event.target.name
     let val = event.target.value
     this.setState({ [key]: val })
+  }
+
+  checkEmailAddress = (event) => {
+    
+    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if ( re.test(this.state.email) ) {
+      //emaill address is valid so update it
+      return true;
+    }
+    else {
+        // invalid email, maybe show an error to the user.
+        this.setState({ errMessage: "Please enter a valid email address" })
+        return false;
+    }
   }
 
   // check that the password length and has special chacters etc
@@ -60,13 +73,15 @@ class Account extends Component {
     event.preventDefault()
     if (!this.checkEmptyFields()) { return; }
     if (!this.checkPassword()) { return; }
+    if (!this.checkEmailAddress()) { return; }
 
     const data = {
       username: this.state.username,
       email: this.state.email,
       password: this.state.password
     }
-
+    
+    //fetch('http://localhost:7082/create-user', {
     fetch('https://api.snowdata.org/create-user', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', },
@@ -74,7 +89,7 @@ class Account extends Component {
     }).then((response) => {
       return response.json()
     }).then((data) => {
-      if (data === "Fail") {
+      if (data["message"] !== "Success") {
         this.setState({ errMessage: "Account creation failed. Please try a different username" });
         this.setState({ successMessage: "" });
         sessionStorage.setItem('status', null);
@@ -82,12 +97,11 @@ class Account extends Component {
         sessionStorage.setItem('status', 'loggedIn');
         sessionStorage.setItem('username', this.state.username);
         sessionStorage.setItem('password', this.state.password);
-        sessionStorage.setItem("apiKey", data);
+        sessionStorage.setItem("apiKey", data["api_key"]);
         this.setState({ errMessage: "" });
       }
     }).catch((err) => {
       this.setState({ errMessage: err })
-      return
     })
 
   }
@@ -96,12 +110,14 @@ class Account extends Component {
     event.preventDefault()
     if (!this.checkEmptyFields()) { return; }
     if (!this.checkPassword()) { return; }
+    if (!this.checkEmailAddress()) { return; }
 
     const data = {
       username: this.state.username,
       password: this.state.password
     }
-
+    
+    //fetch('http://localhost:7082/login', {
     fetch('https://api.snowdata.org/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', },
@@ -109,15 +125,15 @@ class Account extends Component {
     }).then((response) => {
       return response.json()
     }).then((data) => {
-      if (data === "Fail") {
-        this.setState({ errMessage: data })
+      if (data["message"] !== "Success") {
+        this.setState({ errMessage: "Failed to login. Please check username and password" })
         this.setState({ successMessage: "" });
         sessionStorage.setItem('status', null);
       } else {
         sessionStorage.setItem('status', 'loggedIn');
         sessionStorage.setItem('username', this.state.username);
         sessionStorage.setItem('password', this.state.password);
-        sessionStorage.setItem("apiKey", data)
+        sessionStorage.setItem("apiKey", data["api_key"])
         this.setState({ errMessage: "" });
       }
     }).catch((err) => {
@@ -128,43 +144,26 @@ class Account extends Component {
   }
 
   logout = (event) => {
-    event.preventDefault()
-    const data = {
-      username: sessionStorage.getItem("username"),
-    }
-    fetch('https://api.snowdata.org/logout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', },
-      body: JSON.stringify(data),
-    }).then((response) => {
-      return response.json()
-    }).then((data) => {
-      if (data === "Fail") {
-        this.setState({ errMessage: "Failed to logout" })
-        this.setState({ successMessage: "" });
-      } else {
-        console.log("success logout")
-        sessionStorage.setItem('status', null);
-        sessionStorage.setItem('username', '');
-      }
-    }).catch((err) => {
-      this.setState({ errMessage: err })
-      return
-    })
-
     sessionStorage.setItem('status', null);
     sessionStorage.setItem('username', '');
+    sessionStorage.setItem('password', '');
+    this.setState({username: ""});
+    this.setState({password: ""});
     window.location.reload();
-
-
-
   }
+
+  reloadWindow = () => {
+    window.location.reload()
+  }
+
+
   deleteAccount = (event) => {
-    //event.preventDefault()
     const data = {
       username: sessionStorage.getItem("username"),
       password: sessionStorage.getItem("password")
     }
+
+    //fetch('http://localhost:7082/delete-user', {
     fetch('https://api.snowdata.org/delete-user', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', },
@@ -172,17 +171,17 @@ class Account extends Component {
     }).then((response) => {
       return response.json()
     }).then((data) => {
-      if (data === "Fail") {
+      if (data["message"] !== "Success") {
         this.setState({ errMessage: "Failed to delete account. Please log back in and retry." })
         this.setState({ successMessage: "" });
         this.logout()
       } else {
-        this.setState({ loggedIn: false });
         this.setState({ successMessage: "Account Deleted" });
         sessionStorage.setItem('status', null);
         sessionStorage.setItem('username', '');
         sessionStorage.setItem('password', '');
-        window.location.reload();
+        window.setTimeout(this.reloadWindow, 2000);
+        
       }
     }).catch((err) => {
       this.setState({ errMessage: err })
@@ -245,10 +244,10 @@ class Account extends Component {
 
                     <Button variant="primary" onClick={this.createUser}>
                       Create Account
-                </Button>
+                    </Button>
                     <Button className="ml-3" variant="primary" onClick={this.login}>
                       Login
-              </Button>
+                    </Button>
                   </Form>
                 </>
               }

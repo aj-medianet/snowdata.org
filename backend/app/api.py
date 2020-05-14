@@ -5,10 +5,11 @@ from scraper import skiarea
 import os
 import schedule
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import jsonify, session
+from flask import jsonify
 from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse
 from datetime import date
+import json
 
 api = Api(app)  # sets up flask restful api
 app.secret_key = os.urandom(24)  # for cors to work
@@ -94,8 +95,11 @@ class CreateUser(Resource):
         }
 
         if db.create_user(data):
-            session["username"] = data["username"]
-            return jsonify(api_key)
+            res = {
+                "message": "Success",
+                "api_key": api_key
+            }
+            return jsonify(**res)
         return jsonify("Fail")
 
 
@@ -107,13 +111,12 @@ class DeleteUser(Resource):
             "password": args["password"]
         }
 
-        print("DEBUG data:", data)
-        print("DEBUG session:", session)
-
-        if db.delete_user(data):
-            print("DEBUG deleted user")
-            # session.pop(data["username"], None)
-            return jsonify("Success")
+        if db.check_password(data):
+            if db.delete_user(data):
+                res = {
+                    "message": "Success"
+                }
+                return jsonify(**res)
         return jsonify("Fail")
 
 
@@ -125,23 +128,25 @@ class Login(Resource):
             "password": args["password"]
         }
 
-        if db.login(data):
-            session["username"] = data["username"]
+        if db.check_password(data):
             api_key = db.get_api_key(data)
-            print("DEBUG login session:", session)
-            return jsonify(api_key)
+            res = {
+                "message": "Success",
+                "api_key": api_key
+            }
+            return jsonify(**res)
         return jsonify("Fail")
 
+# doing this on the frontend for now
+# class Logout(Resource):
+#     def post(self):
+#         args = parser.parse_args()
+#         data = {"username": args["username"]}
 
-class Logout(Resource):
-    def post(self):
-        args = parser.parse_args()
-        data = {"username": args["username"]}
-
-        if data["username"] in session:
-            session.pop(data["username"], None)
-            return jsonify("Success")
-        return jsonify("Success")
+#         if data["username"] in session:
+#             session.pop(data["username"], None)
+#             return jsonify("Success")
+#         return jsonify("Success")
 
 
 class GetAPIKey(Resource):
@@ -167,7 +172,7 @@ api.add_resource(GetSkiArea, '/get-ski-area')
 api.add_resource(CreateUser, '/create-user')
 api.add_resource(DeleteUser, '/delete-user')
 api.add_resource(Login, '/login')
-api.add_resource(Logout, '/logout')
+# api.add_resource(Logout, '/logout')
 api.add_resource(GetAPIKey, '/get-api-key')
 
 CORS(app, expose_headers='Authorization')
