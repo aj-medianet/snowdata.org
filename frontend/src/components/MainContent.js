@@ -9,11 +9,14 @@ class MainContent extends Component {
   constructor() {
     super()
     this.state = {
-      skiareas: []
+      skiareas: [],
+      apiKey: ""
     }
   }
 
   componentDidMount() {
+    this.setState({apiKey: process.env.REACT_APP_API_KEY})
+    console.log("apiKey: " + this.state.apiKey)
     const url = 'https://api.snowdata.org/get-all-data/tmpkey';
     //const url = 'http://localhost:7082/get-all-data/tmpkey';
     fetch(url)

@@ -302,19 +302,18 @@ def get_api_key(data):
 
 
 def verify_api_key(api_key):
-    # if the api_key is from our web frontend
-    # TODO - make this better - create proxy flask server to relay api key
-    if api_key == "tmpkey":
-        return True
-
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")
     query = """ SELECT api_count FROM users WHERE api_key="{}"; """.format(api_key)
     cursor.execute(query)
     res = cursor.fetchone()
-    # print("\n\n[DEBUG] verify_api_key api_count: {}\n".format(res["api_count"]))
+
     if res is not None:
+        # if the api_key is from our web frontend / proxy server
+        if api_key == "tmpkey" and res["api_count"] < 10000000:
+            increment_api_count(api_key, res["api_count"])
+            return True
         if res["api_count"] < credentials.api_limit:
             increment_api_count(api_key, res["api_count"])
             return True

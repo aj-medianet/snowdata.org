@@ -5,7 +5,7 @@ from scraper import skiarea
 import os
 import schedule
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import jsonify
+from flask import jsonify, request
 from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse
 from datetime import date
@@ -62,6 +62,9 @@ parser.add_argument("password", type=str, location="json")
 
 class GetAllData(Resource):
     def get(self, api_key):
+        client_ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+        print("\n\nDEBUG client_ip:", client_ip)
+        print("\n\n")
         if db.verify_api_key(api_key):
             data = db.get_all_data()
             if data:
