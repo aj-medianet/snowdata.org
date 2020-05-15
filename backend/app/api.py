@@ -62,8 +62,10 @@ parser.add_argument("password", type=str, location="json")
 
 class GetAllData(Resource):
     def get(self, api_key):
-        client_ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
-        print("\n\nDEBUG client_ip:", client_ip)
+        real_ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
+        fwd_ip = request.environ.get('REMOTE_ADDR', request.remote_addr)
+        print("\n\nDEBUG real_ip:", real_ip)
+        print("DEBUG fwd_ip", fwd_ip)
         print("\n\n")
         if db.verify_api_key(api_key):
             data = db.get_all_data()

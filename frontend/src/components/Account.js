@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import Spinner from 'react-bootstrap/Spinner'
 //import Cookies from 'js-cookie';
 
 // displays user account info
@@ -16,6 +17,7 @@ class Account extends Component {
       errMessage: "",
       successMessage: "",
       apiKey: "",
+      isLoading: false,
     }
   }
 
@@ -28,6 +30,11 @@ class Account extends Component {
     }
   }
 
+  // handles loading spinner
+  LoadingSpinner = () => {
+    return this.state.isLoading ? <Spinner className="ml-2" animation="border" variant="success" /> : ''
+  }
+
   changeHandler = (event) => {
     let key = event.target.name
     let val = event.target.value
@@ -35,17 +42,17 @@ class Account extends Component {
   }
 
   checkEmailAddress = (event) => {
-    
+
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if ( re.test(this.state.email) ) {
+    if (re.test(this.state.email)) {
       //emaill address is valid so update it
       return true;
     }
     else {
-        // invalid email, maybe show an error to the user.
-        this.setState({ errMessage: "Please enter a valid email address" })
-        return false;
+      // invalid email, maybe show an error to the user.
+      this.setState({ errMessage: "Please enter a valid email address" })
+      return false;
     }
   }
 
@@ -71,16 +78,18 @@ class Account extends Component {
 
   createUser = (event) => {
     event.preventDefault()
+    this.setState({ isLoading: true })
     if (!this.checkEmptyFields()) { return; }
     if (!this.checkPassword()) { return; }
     if (!this.checkEmailAddress()) { return; }
+    this.setState({ successMessage: "" });
 
     const data = {
       username: this.state.username,
       email: this.state.email,
       password: this.state.password
     }
-    
+
     //fetch('http://localhost:7082/create-user', {
     fetch('https://api.snowdata.org/create-user', {
       method: 'POST',
@@ -93,21 +102,21 @@ class Account extends Component {
         this.setState({ errMessage: "Account creation failed. Please try a different username" });
         this.setState({ successMessage: "" });
         sessionStorage.setItem('status', null);
+        this.setState({ isLoading: false })
       } else {
         sessionStorage.setItem('status', 'loggedIn');
         sessionStorage.setItem('username', this.state.username);
         sessionStorage.setItem('password', this.state.password);
         sessionStorage.setItem("apiKey", data["api_key"]);
         this.setState({ errMessage: "" });
+        this.setState({ isLoading: false })
       }
-    }).catch((err) => {
-      this.setState({ errMessage: err })
     })
-
   }
 
   login = (event) => {
     event.preventDefault()
+    this.setState({ isLoading: true })
     if (!this.checkEmptyFields()) { return; }
     if (!this.checkPassword()) { return; }
     if (!this.checkEmailAddress()) { return; }
@@ -116,7 +125,7 @@ class Account extends Component {
       username: this.state.username,
       password: this.state.password
     }
-    
+
     //fetch('http://localhost:7082/login', {
     fetch('https://api.snowdata.org/login', {
       method: 'POST',
@@ -129,12 +138,14 @@ class Account extends Component {
         this.setState({ errMessage: "Failed to login. Please check username and password" })
         this.setState({ successMessage: "" });
         sessionStorage.setItem('status', null);
+        this.setState({ isLoading: false })
       } else {
         sessionStorage.setItem('status', 'loggedIn');
         sessionStorage.setItem('username', this.state.username);
         sessionStorage.setItem('password', this.state.password);
         sessionStorage.setItem("apiKey", data["api_key"])
         this.setState({ errMessage: "" });
+        this.setState({ isLoading: false })
       }
     }).catch((err) => {
       this.setState({ errMessage: err })
@@ -147,9 +158,8 @@ class Account extends Component {
     sessionStorage.setItem('status', null);
     sessionStorage.setItem('username', '');
     sessionStorage.setItem('password', '');
-    this.setState({username: ""});
-    this.setState({password: ""});
-    window.location.reload();
+    this.setState({ username: "" });
+    this.setState({ password: "" });
   }
 
   reloadWindow = () => {
@@ -158,6 +168,7 @@ class Account extends Component {
 
 
   deleteAccount = (event) => {
+    this.setState({ isLoading: true })
     const data = {
       username: sessionStorage.getItem("username"),
       password: sessionStorage.getItem("password")
@@ -175,13 +186,13 @@ class Account extends Component {
         this.setState({ errMessage: "Failed to delete account. Please log back in and retry." })
         this.setState({ successMessage: "" });
         this.logout()
+        this.setState({ isLoading: false })
       } else {
         this.setState({ successMessage: "Account Deleted" });
         sessionStorage.setItem('status', null);
         sessionStorage.setItem('username', '');
         sessionStorage.setItem('password', '');
-        window.setTimeout(this.reloadWindow, 2000);
-        
+        this.setState({ isLoading: false })
       }
     }).catch((err) => {
       this.setState({ errMessage: err })
@@ -199,62 +210,69 @@ class Account extends Component {
             </div>
           </div>
 
-          <div className="row">
-            <div className="col text-left m-3">
-              <p className="text-danger">{this.state.passwordError ? 'Password must be at least 10 characters' : ''}</p>
-              <p className="text-danger">{this.state.errMessage ? this.state.errMessage : ''}</p>
-              <p className="text-success">{this.state.successMessage ? this.state.successMessage : ""}</p>
+          <>
+            { this.state.isLoading ? <div className="pt-5 pb-5"><this.LoadingSpinner /></div> :
+
+              <div className="row">
+                <div className="col text-left m-3">
+                  <p className="text-danger">{this.state.passwordError ? 'Password must be at least 10 characters' : ''}</p>
+                  <p className="text-danger">{this.state.errMessage ? this.state.errMessage : ''}</p>
+                  <p className="text-success">{this.state.successMessage ? this.state.successMessage : ""}</p>
 
 
-              {sessionStorage.getItem("status") === "loggedIn" ?
+                  {sessionStorage.getItem("status") === "loggedIn" ?
 
-                <>
-                  <h2>Hello {sessionStorage.getItem("username")}</h2>
+                    <>
+                      <h2>Hello {sessionStorage.getItem("username")}</h2>
 
-                  <p>API Key: {sessionStorage.getItem("apiKey")}</p>
+                      <p>API Key: {sessionStorage.getItem("apiKey")}</p>
 
-                  <Button className="" variant="primary" onClick={this.logout}>
-                    Logout
+                      <Button className="" variant="primary" onClick={this.logout}>
+                        Logout
                   </Button>
-                  <Button className="ml-3" variant="danger" onClick={() => { if (window.confirm('Are you sure you want to delete your account?')) { this.deleteAccount() }; }}>
-                    Delete Account
+                      <Button className="ml-3" variant="danger" onClick={() => { if (window.confirm('Are you sure you want to delete your account?')) { this.deleteAccount() }; }}>
+                        Delete Account
                   </Button>
-                </>
+                    </>
 
-                :
+                    :
 
-                <>
-                  <h2>Create Account or Login</h2>
-                  <Form>
-                    <Form.Group controlId="formBasicUsername">
-                      <Form.Label>Username</Form.Label>
-                      <Form.Control onChange={this.changeHandler} type="text" name="username" placeholder="Enter Username" required />
-                    </Form.Group>
+                    <>
+                      <h2>Create Account or Login</h2>
+                      <Form>
+                        <Form.Group controlId="formBasicUsername">
+                          <Form.Label>Username</Form.Label>
+                          <Form.Control onChange={this.changeHandler} type="text" name="username" placeholder="Enter Username" required />
+                        </Form.Group>
 
-                    <Form.Group controlId="formBasicEmail">
-                      <Form.Label>Email address</Form.Label>
-                      <Form.Control onChange={this.changeHandler} type="email" name="email" placeholder="Enter Email" required />
-                    </Form.Group>
+                        <Form.Group controlId="formBasicEmail">
+                          <Form.Label>Email address</Form.Label>
+                          <Form.Control onChange={this.changeHandler} type="email" name="email" placeholder="Enter Email" required />
+                        </Form.Group>
 
 
-                    <Form.Group controlId="formBasicPassword">
-                      <Form.Label>Password</Form.Label>
-                      <Form.Control onChange={this.changeHandler} type="password" name="password" placeholder="Enter Password" required />
-                    </Form.Group>
+                        <Form.Group controlId="formBasicPassword">
+                          <Form.Label>Password</Form.Label>
+                          <Form.Control onChange={this.changeHandler} type="password" name="password" placeholder="Enter Password" required />
+                        </Form.Group>
 
-                    <Button variant="primary" onClick={this.createUser}>
-                      Create Account
+                        <Button variant="primary" onClick={this.createUser}>
+                          Create Account
                     </Button>
-                    <Button className="ml-3" variant="primary" onClick={this.login}>
-                      Login
+                        <Button className="ml-3" variant="primary" onClick={this.login}>
+                          Login
                     </Button>
-                  </Form>
-                </>
-              }
+                      </Form>
+                    </>
+                  }
 
-            </div>
+                </div>
 
-          </div>
+
+
+              </div>
+            }
+          </>
         </div>
       </>
     )
