@@ -1,26 +1,19 @@
-import React, {Component} from 'react'
+import React from 'react'
 
-class FooterContent extends Component {
-    constructor() {
-        super()
-
-        this.state = {
-        }
-    }
-
-    render() {
-        return (
-            <footer className="footer container mt-5 border-top text-center">
-                <div className="row">
-                    <div className="col">
-                        test footer
-                    </div>
+const Footer = () => {
+    return (
+        <footer className="footer pt-5 pb-3 bg-secondary text-light">
+            
+            <div className="row">
+                <div className="col text-center">
+                    SnowData.org
                 </div>
-
                 
-            </footer>
-        )
-    }
+            </div>
+
+
+        </footer>
+    )
 }
 
-export default FooterContent
+export default Footer

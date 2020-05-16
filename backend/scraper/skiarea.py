@@ -34,7 +34,7 @@ class SkiArea:
         prev = utils.get_prev_month()
         prev_prev = utils.get_two_months_ago()
         previous_month_data = db.get_ski_areas_month_year(self.name, prev_prev.month, prev_prev.year)
-        
+
         data = {
             "ski_area_name": self.name,
             "month": prev.month,

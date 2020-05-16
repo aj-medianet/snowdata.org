@@ -14,6 +14,7 @@ import Documentation from './components/Documentation'
 import Pricing from './components/Pricing'
 import SkiAreas from './components/SkiAreas'
 import Chart from './components/Chart'
+import Footer from './components/FooterContent'
 
 class App extends Component {
   constructor() {
