@@ -6,7 +6,7 @@ from app import utils
 SKI_AREAS = ["alpental", "jackson_hole", "mt_bachelor", "mt_hood", "ski49n", "snowbird", "whitefish"]
 
 #
-# used to build a ski area obj so we can update, get data, create monthly data
+# used to build a ski area obj so we can update data, get data, create monthly data etc
 #
 
 
@@ -34,6 +34,7 @@ class SkiArea:
         prev = utils.get_prev_month()
         prev_prev = utils.get_two_months_ago()
         previous_month_data = db.get_ski_areas_month_year(self.name, prev_prev.month, prev_prev.year)
+        
         data = {
             "ski_area_name": self.name,
             "month": prev.month,

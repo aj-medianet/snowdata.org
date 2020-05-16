@@ -9,7 +9,6 @@ from flask import jsonify, request
 from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse
 from datetime import date
-import json
 
 api = Api(app)  # sets up flask restful api
 app.secret_key = os.urandom(24)  # for cors to work
@@ -38,14 +37,6 @@ schedule.every().day.at("02:00").do(check_first_of_month)  # updates monthly dat
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=check_pending, trigger="interval", seconds=300)
 scheduler.start()
-
-
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    # TODO remove this after it is working
-    # skiarea.create_new_month()
-
-    return jsonify('Hello')
 
 
 #####################
