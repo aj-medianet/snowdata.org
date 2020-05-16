@@ -43,7 +43,7 @@ scheduler.start()
 @app.route('/', methods=['GET', 'POST'])
 def index():
     # TODO remove this after it is working
-    skiarea.create_new_month()
+    # skiarea.create_new_month()
 
     return jsonify('Hello')
 
