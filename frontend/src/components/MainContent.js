@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import '../App.css';
 import BarChart from './BarChart';
 import Table from './Table';
 import Spinner from 'react-bootstrap/Spinner'
@@ -11,24 +10,28 @@ class MainContent extends Component {
     super()
     this.state = {
       skiareas: [],
-      apiKey: "",
+      skiAreasMonthly: [],
       isLoading: false,
     }
   }
 
   componentDidMount() {
     this.setState({ isLoading: true })
-    this.setState({ apiKey: process.env.REACT_APP_API_KEY })
-    console.log("apiKey: " + this.state.apiKey)
-    const url = 'https://api.snowdata.org/get-all-data/tmpkey';
-    //const url = 'http://localhost:7082/get-all-data/tmpkey';
-    fetch(url)
+    fetch('https://api.snowdata.org/get-all-data/tmpkey')
       .then(response => response.json())
       .then((skiareas) => {
         this.setState({ skiareas })
         this.setState({ isLoading: false })
-      }) 
-    
+      })
+
+    fetch('https://api.snowdata.org/get-all-monthly-data/tmpkey')
+      .then(response => response.json())
+      .then((skiAreasMonthly) => {
+        this.setState({ skiAreasMonthly })
+        console.log(skiAreasMonthly)
+        this.setState({ isLoading: false })
+      })
+
   }
 
   // handles loading spinner
