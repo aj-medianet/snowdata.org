@@ -54,6 +54,8 @@ def index():
 
 parser = reqparse.RequestParser()
 parser.add_argument("skiareaname", type=str, location="json")
+parser.add_argument("month", type=str, location="json")
+parser.add_argument("year", type=str, location="json")
 parser.add_argument("api_key", type=str, location="json")
 parser.add_argument("username", type=str, location="json")
 parser.add_argument("email", type=str, location="json")
@@ -62,13 +64,17 @@ parser.add_argument("password", type=str, location="json")
 
 class GetAllData(Resource):
     def get(self, api_key):
-        real_ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
-        fwd_ip = request.environ.get('REMOTE_ADDR', request.remote_addr)
-        print("\n\nDEBUG real_ip:", real_ip)
-        print("DEBUG fwd_ip", fwd_ip)
-        print("\n\n")
         if db.verify_api_key(api_key):
             data = db.get_all_data()
+            if data:
+                return jsonify(data)
+        return jsonify("Fail")
+
+
+class GetAllMonthlyData(Resource):
+    def get(self, api_key):
+        if db.verify_api_key(api_key):
+            data = db.get_all_monthly_data()
             if data:
                 return jsonify(data)
         return jsonify("Fail")
@@ -82,6 +88,34 @@ class GetSkiArea(Resource):
 
         if db.verify_api_key(api_key):
             data = db.get_ski_area(ski_area_name)
+            if data:
+                return jsonify(data)
+        return jsonify("Fail")
+
+
+class GetSkiAreaMonthlyData(Resource):
+    def post(self):
+        args = parser.parse_args()
+        ski_area_name = args["skiareaname"]
+        api_key = args["api_key"]
+
+        if db.verify_api_key(api_key):
+            data = db.get_ski_areas_monthly_data(ski_area_name)
+            if data:
+                return jsonify(data)
+        return jsonify("Fail")
+
+
+class GetSkiAreaMonthYear(Resource):
+    def post(self):
+        args = parser.parse_args()
+        ski_area_name = args["skiareaname"]
+        month = args["month"]
+        year = args["year"]
+        api_key = args["api_key"]
+
+        if db.verify_api_key(api_key):
+            data = db.get_ski_areas_month_year(ski_area_name, month, year)
             if data:
                 return jsonify(data)
         return jsonify("Fail")
@@ -142,42 +176,17 @@ class Login(Resource):
             return jsonify(**res)
         return jsonify("Fail")
 
-# doing this on the frontend for now
-# class Logout(Resource):
-#     def post(self):
-#         args = parser.parse_args()
-#         data = {"username": args["username"]}
-
-#         if data["username"] in session:
-#             session.pop(data["username"], None)
-#             return jsonify("Success")
-#         return jsonify("Success")
-
-
-class GetAPIKey(Resource):
-    def post(self):
-        args = parser.parse_args()
-        data = {"username": args["username"]}
-
-        print("DEBUG get_api_key session[username]:", session["username"])
-
-        if data["username"] in session:
-            print("DEBUG login session[username]:", session["username"])
-            api_key = db.get_api_key(data)
-            print("DEBUG api_key:", api_key)
-            return jsonify(api_key)
-        return jsonify("Fail")
-
 
 if __name__ == '__main__':
     app.run()
 
 api.add_resource(GetAllData, '/get-all-data/<string:api_key>')
+api.add_resource(GetAllMonthlyData, '/get-all-monthly-data/<string:api_key>')
 api.add_resource(GetSkiArea, '/get-ski-area')
+api.add_resource(GetSkiAreaMonthlyData, '/get-ski-area-monthly-data')
+api.add_resource(GetSkiAreaMonthYear, '/get-ski-area-month-year')
 api.add_resource(CreateUser, '/create-user')
 api.add_resource(DeleteUser, '/delete-user')
 api.add_resource(Login, '/login')
-# api.add_resource(Logout, '/logout')
-api.add_resource(GetAPIKey, '/get-api-key')
 
 CORS(app, expose_headers='Authorization')

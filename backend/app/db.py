@@ -94,30 +94,39 @@ def get_all_monthly_data():
     query = """ SELECT * FROM monthly_data;  """
     cursor.execute(query)
     res = cursor.fetchall()
+    for item in res:
+        del item["id"]
     return res
 
 
 # returns all monthly data for a single ski area
 def get_ski_areas_monthly_data(ski_area_name):
-    db = get_db()
-    cursor = db.cursor(dictionary=True)
-    cursor.execute("use snow_db")
-    query = """ SELECT * FROM monthly_data WHERE ski_area_name="{}";  """.format(ski_area_name)
-    cursor.execute(query)
-    res = cursor.fetchone()
-    return res
+    try:
+        db = get_db()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute("use snow_db")
+        query = """ SELECT * FROM monthly_data WHERE ski_area_name="{}";  """.format(ski_area_name)
+        cursor.execute(query)
+        res = cursor.fetchall()
+        return res
+    except:
+        return "Error getting data. Data may not exist"
 
 
 # returns the previous months monthly data
 def get_ski_areas_month_year(ski_area_name, month, year):
-    db = get_db()
-    cursor = db.cursor(dictionary=True)
-    cursor.execute("use snow_db")
-    query = """ SELECT * FROM monthly_data WHERE (ski_area_name="{}" AND month="{}" AND year="{}");  """.format(
-        ski_area_name, month, year)
-    cursor.execute(query)
-    res = cursor.fetchone()
-    return res
+    try:
+        db = get_db()
+        cursor = db.cursor(dictionary=True)
+        cursor.execute("use snow_db")
+        query = """ SELECT * FROM monthly_data WHERE (ski_area_name="{}" AND month="{}" AND year="{}");  """.format(
+            ski_area_name, month, year)
+        cursor.execute(query)
+        res = cursor.fetchone()
+        del res["id"]
+        return res
+    except:
+        return "Error getting data. Data may not exist"
 
 
 # creates a new month for a ski area
