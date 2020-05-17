@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import BarChart from './BarChart';
+import MainDepthChart from './charts/MainDepthChart';
+import MainTempChart from './charts/MainTempChart';
+import MainWindChart from './charts/MainWindChart';
+import MainYTDChart from './charts/MainYTDChart';
 import Table from './Table';
 import Spinner from 'react-bootstrap/Spinner'
 //import Row from 'react-bootstrap/Row';
@@ -65,7 +68,10 @@ class MainContent extends Component {
                 </div>
               )
             }
-            
+            <MainYTDChart data={this.state.skiareas} />
+            <MainDepthChart data={this.state.skiareas} />
+            <MainTempChart data={this.state.skiareas} />
+            <MainWindChart data={this.state.skiareas} />
             <Table data={this.state.skiareas} />
           </div>
         }
