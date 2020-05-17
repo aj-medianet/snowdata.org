@@ -39,13 +39,6 @@ class MainContent extends Component {
     return this.state.isLoading ? <Spinner className="ml-2" animation="border" variant="success" /> : ''
   }
 
-  renderChart() {
-    if (this.state.skiareas.length === 0) {
-      return "no data"
-    }
-    return <BarChart data={this.state.skiareas} />
-  }
-
   render() {
     return (
       <>
@@ -72,7 +65,7 @@ class MainContent extends Component {
                 </div>
               )
             }
-            <div>{this.renderChart()}</div>
+            
             <Table data={this.state.skiareas} />
           </div>
         }
