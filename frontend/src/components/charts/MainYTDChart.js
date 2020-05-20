@@ -16,7 +16,16 @@ class MainYTDChart extends Component {
             data.val = Number(area.ytd);
             return data;
         })
-        const ytd_arr = ytd.map(Object.values)
+        const ytd_arr_big = ytd.map(Object.values).sort(function(x,y) {
+            return y[1] - x[1];
+        })
+
+        let ytd_arr = [];
+        for(let i=0; i<5; i++) {
+            ytd_arr.push(ytd_arr_big[i]);
+        }
+
+        //console.log(ytd_arr);
 
         const options = {
             chart: {

@@ -17,7 +17,14 @@ class MainDepthChart extends Component {
             data.val = Number(area.cur_depth);
             return data;
         })
-        const depth_arr = depth.map(Object.values)
+        const depth_arr_big = depth.map(Object.values).sort(function(x,y) {
+            return y[1] - x[1];
+        })
+
+        let depth_arr = [];
+        for(let i=0; i<5; i++) {
+            depth_arr.push(depth_arr_big[i]);
+        }
         
         const options = {
             chart: {
