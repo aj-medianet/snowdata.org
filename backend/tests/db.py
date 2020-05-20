@@ -1,10 +1,9 @@
-from app import db
 import unittest
 
 
 class TestDB(unittest.TestCase):
 
-    def test_db(self):
+    def test_get_db(self):
         pass
 
 
