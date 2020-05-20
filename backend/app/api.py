@@ -15,6 +15,9 @@ app.secret_key = os.urandom(24)  # for cors to work
 app_settings = os.getenv('APP_SETTINGS')
 app.config.from_object(app_settings)
 
+# update the db when rebooting the server just in case
+skiarea.update_sa()
+
 
 # if it's the first of the month, create a new month for each ski area
 def check_first_of_month():
@@ -27,10 +30,7 @@ def check_pending():
     schedule.run_pending()
 
 
-#
 # schedule tasks to update the database with ski area data
-#
-
 schedule.every(20).minutes.do(skiarea.update_sa)  # update ski area data every 20 min
 schedule.every().day.at("10:30").do(db.reset_api_counts)  # reset api counts once a day
 schedule.every().day.at("02:00").do(check_first_of_month)  # updates monthly data if it's first of month

@@ -5,9 +5,9 @@ from app import utils
 # global list of ski areas we're parsing
 SKI_AREAS = ["alpental", "jackson_hole", "mt_bachelor", "mt_hood", "ski49n", "snowbird", "whitefish"]
 
-#
-# used to build a ski area obj so we can update data, get data, create monthly data etc
-#
+"""
+used to build a ski area obj so we can update data, get data, create monthly data etc
+"""
 
 
 class SkiArea:
@@ -57,9 +57,10 @@ class SkiArea:
     def reset_avg_temp(self):
         db.reset_avg_temp(self.__dict__)
 
-#
-# driver functions
-#
+
+"""
+ driver functions
+"""
 
 
 # loop through the list of ski areas, get the current data and update the db
@@ -82,5 +83,4 @@ def create_new_month():
             sa.create_new_month()
         except:
             print("[DEBUG] Error creating monthly data for {}".format(ski_area))
-
 

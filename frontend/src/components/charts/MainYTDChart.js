@@ -5,31 +5,31 @@ import HighchartsReact from 'highcharts-react-official';
 class MainYTDChart extends Component {
     constructor(props) {
         super(props);
-        
+
     }
-    cleanOptions(){
+    cleanOptions() {
         const ytd = this.props.data.filter(area => {
             return area.ytd !== "";
-            }).map(area => {
+        }).map(area => {
             const data = {}
             data.name = area.name;
             data.val = Number(area.ytd);
             return data;
         })
         const ytd_arr = ytd.map(Object.values)
-        
+
         const options = {
             chart: {
-              type: 'column'
-            },
-            style: {
-                color: "#ff0000"
+                type: 'column',
+                style: {
+                    color: "#ff0000"
+                }
             },
             credits: {
                 enabled: false,
             },
             title: {
-              text: 'Year To Date'
+                text: 'Year To Date'
             },
             xAxis: {
                 type: 'category',
@@ -55,7 +55,7 @@ class MainYTDChart extends Component {
             },
             series: [{
                 name: 'YTD',
-                data: 
+                data:
                     ytd_arr
                 ,
                 dataLabels: {
@@ -63,24 +63,24 @@ class MainYTDChart extends Component {
                     rotation: -90,
                     color: '#FFFFFF',
                     align: 'right',
-                    format: '{point.y:f}', 
-                    y: 15, 
+                    format: '{point.y:f}',
+                    y: 15,
                     style: {
                         fontSize: '13px',
                         fontFamily: 'Verdana, sans-serif'
                     }
                 }
-          }]
-        } 
+            }]
+        }
         return options
     }
     render() {
-        return ( 
+        return (
             <div>
-            <HighchartsReact highcharts={Highcharts} options={this.cleanOptions()} />
+                <HighchartsReact highcharts={Highcharts} options={this.cleanOptions()} />
             </div>
         )
     }
-      
- }
+
+}
 export default MainYTDChart
