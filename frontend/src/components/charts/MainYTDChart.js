@@ -21,9 +21,6 @@ class MainYTDChart extends Component {
         const options = {
             chart: {
                 type: 'column',
-                style: {
-                    color: "#ff0000"
-                }
             },
             credits: {
                 enabled: false,
