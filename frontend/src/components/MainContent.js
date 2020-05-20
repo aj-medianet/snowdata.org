@@ -3,10 +3,8 @@ import MainDepthChart from './charts/MainDepthChart';
 import MainTempChart from './charts/MainTempChart';
 import MainWindChart from './charts/MainWindChart';
 import MainYTDChart from './charts/MainYTDChart';
-import Table from './Table';
-import Spinner from 'react-bootstrap/Spinner'
-//import Row from 'react-bootstrap/Row';
-//import Col from 'react-bootstrap/Col';
+import Spinner from 'react-bootstrap/Spinner';
+//import Table from './Table';
 
 class MainContent extends Component {
   constructor() {
@@ -45,11 +43,13 @@ class MainContent extends Component {
   render() {
     return (
       <>
-        {this.state.isLoading ? <div className="pt-5 pb-5"><this.LoadingSpinner /></div> :
-          <div className="pt-5 pb-5">
+        <h1 className="mt-5">SnowData</h1>
+        <div className="m-5">
+          {this.state.isLoading ? <div className="pt-5 pb-5"><this.LoadingSpinner /></div> :
+            <div className="pt-5 pb-5">
 
 
-            {
+              {/*
               this.state.skiareas.map(area =>
                 <div key={area.id}>
                   {
@@ -67,14 +67,32 @@ class MainContent extends Component {
                   }
                 </div>
               )
-            }
-            <MainYTDChart data={this.state.skiareas} />
-            <MainDepthChart data={this.state.skiareas} />
-            <MainTempChart data={this.state.skiareas} />
-            <MainWindChart data={this.state.skiareas} />
-            <Table data={this.state.skiareas} />
-          </div>
-        }
+                */}
+
+              <div className="row">
+                <div className="col">
+                  <MainYTDChart data={this.state.skiareas} />
+                </div>
+                <div className="col">
+                  <MainDepthChart data={this.state.skiareas} />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col">
+                  <MainTempChart data={this.state.skiareas} />
+                </div>
+                <div className="col">
+                  <MainWindChart data={this.state.skiareas} />
+                </div>
+              </div>
+
+
+
+
+              {/*<Table data={this.state.skiareas} /> */}
+            </div>
+          }
+        </div>
       </>
     )
   }

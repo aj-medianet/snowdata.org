@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-//import D3Chart from './D3Chart';
-//import React from 'react';
-import { render } from 'react-dom';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
@@ -24,6 +21,12 @@ class MainYTDChart extends Component {
         const options = {
             chart: {
               type: 'column'
+            },
+            style: {
+                color: "#ff0000"
+            },
+            credits: {
+                enabled: false,
             },
             title: {
               text: 'Year To Date'

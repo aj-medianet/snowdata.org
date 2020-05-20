@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-//import D3Chart from './D3Chart';
-//import React from 'react';
-import { render } from 'react-dom';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
@@ -25,6 +22,9 @@ class MainDepthChart extends Component {
         const options = {
             chart: {
               type: 'column'
+            },
+            credits: {
+                enabled: false,
             },
             title: {
               text: 'Snow Depth'

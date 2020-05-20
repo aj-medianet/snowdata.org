@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
@@ -23,6 +22,9 @@ class TempChart extends Component {
         const options = {
             chart: {
             type: 'column'
+            },
+            credits: {
+                enabled: false,
             },
             title: {
             text: 'Current Temperature'
