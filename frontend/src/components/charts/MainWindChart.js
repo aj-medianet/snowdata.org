@@ -8,9 +8,9 @@ import HighchartsReact from 'highcharts-react-official';
 //"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"
 
 class WindChart extends Component {
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
     cleanOptions(){
     

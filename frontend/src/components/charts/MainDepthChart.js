@@ -3,10 +3,10 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 class MainDepthChart extends Component {
-    constructor(props) {
-        super(props);
+    // constructor(props) {
+    //     super(props);
         
-    }
+    // }
 
     cleanOptions(){
         const depth = this.props.data.filter(area => {

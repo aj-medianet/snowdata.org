@@ -46,12 +46,12 @@ class Account extends Component {
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (re.test(this.state.email)) {
-      //emaill address is valid so update it
       return true;
     }
     else {
       // invalid email, maybe show an error to the user.
       this.setState({ errMessage: "Please enter a valid email address" })
+      this.setState({isLoading: false})
       return false;
     }
   }

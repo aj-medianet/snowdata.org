@@ -3,10 +3,10 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 class MainYTDChart extends Component {
-    constructor(props) {
-        super(props);
+    // constructor(props) {
+    //     super(props);
 
-    }
+    // }
     cleanOptions() {
         const ytd = this.props.data.filter(area => {
             return area.ytd !== "";

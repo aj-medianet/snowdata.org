@@ -3,9 +3,9 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 class TempChart extends Component {
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
     cleanOptions(){
     
         const temp = this.props.data.filter(area => {

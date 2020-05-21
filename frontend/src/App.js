@@ -14,7 +14,7 @@ import Documentation from './components/Documentation'
 import Pricing from './components/Pricing'
 import SkiAreas from './components/SkiAreas'
 
-import Footer from './components/FooterContent'
+//import Footer from './components/FooterContent'
 
 class App extends Component {
   constructor() {
@@ -37,7 +37,6 @@ class App extends Component {
               <Route path="/api-documentation" component={Documentation}/>
               <Route path="/api-pricing" component={Pricing}/>
               <Route path="/skiareas/:skiArea" component={SkiAreas}/>
-              
             </Switch>
         </div>
       </BrowserRouter>
