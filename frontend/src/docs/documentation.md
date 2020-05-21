@@ -1,11 +1,11 @@
 
 Access ski areas snow and weather data directly from the source. 
-Users get 20 API calls per day for free and our dataset is updated every 30 minutes.
+Users get 20 API calls per day for free and our dataset is updated every 20 minutes.
 Create an account to receive an API key.
 
 
 
-### Get All Ski Area Data
+### Get all ski area data
 ***
 Description: 
 
@@ -13,11 +13,11 @@ You can get all of the current ski area data from our dataset with a GET request
 
 API call: 
 
-http://api.snowdata.org/get-all-data/{your-api-key}
+http://api.snowdata.org/get-all-data/{api_key}
 
 
 
-### Get a Single Ski Area's Data
+### Get a single ski area's data
 ***
 Description: 
 
@@ -30,14 +30,59 @@ http://api.snowdata.org/get-ski-area
 POST request body:
 ```
 {
-	"skiareaname" : "your-ski-area",
-	"api_key" : "your-api-key"
+	"skiareaname" : "{ski_area_name}",
+	"api_key" : "{api_key}"
 }
 ```
 
 
-### Get Monthly Data for a Ski Area
+### Get all monthly data 
 ***
+Description:
 
-TODO
+You can get all monthly data with one GET request API call.
 
+API call:
+
+https://api.snowdata.org/get-all-monthly-data/{api_key}
+
+
+### Get monthly data for a ski area
+***
+Description:
+
+You can get all of the monthly data for one ski area with one POST request API call.
+
+API call:
+
+https://api.snowdata.org/get-ski-area-monthly-data
+
+POST request body:
+```
+{
+	"skiareaname" : "{ski_area_name}",
+	"api_key" : "{api_key}"
+}
+```
+
+### Get one months data for a ski area
+***
+Description:
+
+You can get just one month of data for a ski area with a POST request API call.
+
+API call:
+
+https://api.snowdata.org/get-ski-area-month-year
+
+POST request body:
+```
+{
+	"skiareaname" : "{ski_area_name}",
+	"api_key" : "{api_key}",
+	"month" : "{month}",
+	"year" : "{year}"
+}
+```
+
+Where month is an integer, 1 being January and 12 being December. Year is full 4 digit year.
