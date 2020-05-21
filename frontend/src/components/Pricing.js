@@ -25,6 +25,7 @@ class Pricing extends Component {
                 <h1>Pricing</h1>
                 <br></br>
                 <h3><ReactMarkdown source={text} /></h3>
+                {/*
                 <div className="rowP">
                     <div className="columnP">
                         <div className="card">
@@ -66,6 +67,7 @@ class Pricing extends Component {
                         </div>
                     </div>
                 </div>
+                */}
             </div>
 
         )
