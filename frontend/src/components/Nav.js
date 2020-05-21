@@ -5,16 +5,16 @@ import Select from 'react-select';
 
 
 const skiAreaChoices = [
-    { label: "Alpental"},
-    { label: "Big Sky"},
-    { label: "Bridger Bowl"},
-    { label: "Jackson Hole"},
-    { label: "Mt Bachelor"},
-    { label: "Mt Hood"},
-    { label: "49 Degrees North"},
-    { label: "Snowbird"},
-    { label: "Whitefish"},
-  ];
+    { label: "Alpental" },
+    { label: "Big Sky" },
+    { label: "Bridger Bowl" },
+    { label: "Jackson Hole" },
+    { label: "Mt Bachelor" },
+    { label: "Mt Hood" },
+    { label: "49 Degrees North" },
+    { label: "Snowbird" },
+    { label: "Whitefish" },
+];
 
 class Navigation extends Component {
 
@@ -27,18 +27,18 @@ class Navigation extends Component {
                         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div style={{width: '250px'}}>
-                        <Select 
-                        onChange={opt => window.location.href = "/skiareas/" + opt.label}
-                        placeholder={'Search Ski Areas'}
-                        menuPlacement="auto"
-                        menuPosition="fixed"
-                        options={skiAreaChoices} />
-                    </div>
-
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-
                         <ul className="navbar-nav ml-auto">
+                        <li>
+                                <div className="" style={{ width: '250px' }}>
+                                    <Select
+                                        onChange={opt => window.location.href = "/skiareas/" + opt.label}
+                                        placeholder={'Search Ski Areas'}
+                                        menuPlacement="auto"
+                                        menuPosition="fixed"
+                                        options={skiAreaChoices} />
+                                </div>
+                            </li>
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="/#" id="navbarDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -56,7 +56,7 @@ class Navigation extends Component {
                             <li className="nav-item">
                                 <a className="nav-link" href="/account">Account</a>
                             </li>
-                        </ul>                        
+                        </ul>
                     </div>
                 </nav>
             </header>
