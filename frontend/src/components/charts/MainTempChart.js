@@ -17,7 +17,14 @@ class TempChart extends Component {
             data.y = Number(area.cur_temp);
             return data;
         })
-        const temp_arr = temp.map(Object.values)
+        const temp_arr_big = temp.map(Object.values).sort(function(x,y) {
+            return y[1] - x[1];
+        })
+
+        let temp_arr = [];
+        for(let i=0; i<5; i++) {
+            temp_arr.push(temp_arr_big[i]);
+        }
         
         const options = {
             chart: {

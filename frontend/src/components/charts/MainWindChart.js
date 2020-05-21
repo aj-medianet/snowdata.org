@@ -21,13 +21,21 @@ class WindChart extends Component {
             const data = {}
             data.name = area.name;
             data.y = Number(area.wind_speed);
-            data.dir = area.wind_dir;
+            //data.dir = area.wind_dir;
             return data;
         })
     
-        //wind_arr = [area name, wind speed, wind direction]
-        const wind_arr = wind.map(Object.values)
         
+        //wind_arr = [area name, wind speed, wind direction]
+        const wind_arr_big = wind.map(Object.values).sort(function(x,y) {
+            return y[1] - x[1];
+        })
+
+        let wind_arr = [];
+        for(let i=0; i<5; i++) {
+            wind_arr.push(wind_arr_big[i]);
+        }
+
         const options = {
             chart: {
             type: 'column'
