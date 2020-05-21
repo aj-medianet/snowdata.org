@@ -52,6 +52,7 @@ class Account extends Component {
     else {
       // invalid email, maybe show an error to the user.
       this.setState({ errMessage: "Please enter a valid email address" })
+      this.setState({ successMessage: "" });
       this.setState({ isLoading: false })
       return false;
     }
@@ -61,9 +62,11 @@ class Account extends Component {
   checkPassword = () => {
     if (this.state.password.length < 10) {
       this.setState({ passwordError: true })
+      this.setState({isLoading: false})
       return false
     }
     this.setState({ passwordError: false })
+    this.setState({isLoading: false})
     return true
   }
 
@@ -189,7 +192,6 @@ class Account extends Component {
       password: this.state.password
     }
 
-    //fetch('http://localhost:7082/login', {
     fetch('https://api.snowdata.org/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', },
