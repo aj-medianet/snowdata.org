@@ -14,7 +14,7 @@ const Navigation = () => {
                     </button>
 
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav mr-auto">
+                        <ul className="navbar-nav ml-auto">
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="/#" id="navbarDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -51,12 +51,14 @@ const Navigation = () => {
                                 <a className="nav-link" href="/account">Account</a>
                             </li>
                         </ul>
+                        {/* 
                         <ul className="navbar-nav ml-auto">
                             <form className="form-inline" action="/skiareas/">
                                 <input className="form-control" type="text" placeholder="Search Ski Areas" name="search"></input>
                                 <button id="searchButton" className="btn btn-outline-primary ml-2" type="submit">Search<i className="search"></i></button>
                             </form>
                         </ul>
+                        */}
 
 
                         
