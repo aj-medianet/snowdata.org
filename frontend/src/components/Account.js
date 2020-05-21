@@ -13,7 +13,6 @@ class Account extends Component {
       username: "",
       email: "",
       password: "",
-      passwordError: false,
       errMessage: "",
       successMessage: "",
       apiKey: "",
@@ -61,11 +60,11 @@ class Account extends Component {
   // check that the password length and has special chacters etc
   checkPassword = () => {
     if (this.state.password.length < 10) {
-      this.setState({ passwordError: true })
+      this.setState({ errMessage: "Password must be at least 10 characters" })
       this.setState({isLoading: false})
       return false
     }
-    this.setState({ passwordError: false })
+    this.setState({ errMessage: "" })
     this.setState({isLoading: false})
     return true
   }
@@ -225,6 +224,8 @@ class Account extends Component {
     sessionStorage.setItem('password', '');
     this.setState({ username: "" });
     this.setState({ password: "" });
+    this.setState({errMessage: ""});
+    this.setState({ successMessage: "" });
   }
 
   reloadWindow = () => {
@@ -279,7 +280,6 @@ class Account extends Component {
 
               <div className="row">
                 <div className="col text-left m-3">
-                  <p className="text-danger">{this.state.passwordError ? 'Password must be at least 10 characters' : ''}</p>
                   <p className="text-danger">{this.state.errMessage ? this.state.errMessage : ''}</p>
                   <p className="text-success">{this.state.successMessage ? this.state.successMessage : ""}</p>
 
@@ -323,7 +323,6 @@ class Account extends Component {
                           <Button className="" variant="primary" onClick={this.updatePassword}>
                             Update Password
                           </Button>
-
                         </div>
                       </div>
                     </>
