@@ -271,13 +271,27 @@ def update_password(data):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        hashed_pwd = generate_password_hash(data["password"])
+        hashed_pwd = generate_password_hash(data["new_password"])
         query = """ UPDATE users SET password="{}" WHERE username="{}"; """.format(hashed_pwd, data["username"])
         cursor.execute(query)
         db.commit()
         return True
     except:
         print("DEBUG update_password mysql error")
+        return False
+
+
+def update_email(data):
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("use snow_db")
+        query = """ UPDATE users SET email="{}" WHERE username="{}"; """.format(data["new_email"], data["username"])
+        cursor.execute(query)
+        db.commit()
+        return True
+    except:
+        print("DEBUG update_email mysql error")
         return False
 
 

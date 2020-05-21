@@ -24,6 +24,7 @@ class Account extends Component {
   componentDidMount() {
     if (sessionStorage.getItem('status') === 'loggedIn') {
       console.log("logged in Username: " + sessionStorage.getItem("username"))
+      console.log("logged in Password: " + sessionStorage.getItem("password"))
     }
     else {
       console.log("logged out Username: " + sessionStorage.getItem("username"))
@@ -51,7 +52,7 @@ class Account extends Component {
     else {
       // invalid email, maybe show an error to the user.
       this.setState({ errMessage: "Please enter a valid email address" })
-      this.setState({isLoading: false})
+      this.setState({ isLoading: false })
       return false;
     }
   }
@@ -76,6 +77,69 @@ class Account extends Component {
     return true;
   }
 
+  updateEmail = (event) => {
+    event.preventDefault()
+    this.setState({ isLoading: true })
+    if (!this.checkEmailAddress()) { return; }
+    this.setState({ successMessage: "" });
+
+    const data = {
+      username: sessionStorage.getItem("username"),
+      newemail: this.state.email,
+      password: sessionStorage.getItem("password")
+    }
+
+    fetch('https://api.snowdata.org/update-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', },
+      body: JSON.stringify(data),
+    }).then((response) => {
+      return response.json()
+    }).then((data) => {
+      if (data["message"] !== "Success") {
+        this.setState({ errMessage: "Update email failed." });
+        this.setState({ successMessage: "" });
+        this.setState({ isLoading: false })
+      } else {
+        this.setState({ errMessage: "" });
+        this.setState({ successMessage: "Email Updated Successfully" });
+        this.setState({ isLoading: false })
+      }
+    })
+  }
+
+  updatePassword = (event) => {
+    event.preventDefault()
+    this.setState({ isLoading: true })
+    if (!this.checkPassword()) { return; }
+    this.setState({ successMessage: "" });
+    const data = {
+      username: sessionStorage.getItem("username"),
+      newpassword: this.state.password,
+      password: sessionStorage.getItem("password")
+    }
+
+    fetch('https://api.snowdata.org/update-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', },
+      body: JSON.stringify(data),
+    }).then((response) => {
+      return response.json()
+    }).then((data) => {
+      if (data["message"] !== "Success") {
+        this.setState({ errMessage: "Update password failed." });
+        this.setState({ successMessage: "" });
+        this.setState({ isLoading: false })
+      } else {
+        sessionStorage.setItem("password", this.state.password)
+        this.setState({ errMessage: "" });
+        this.setState({ successMessage: "Password Updated Successfully" });
+        this.setState({ isLoading: false })
+      }
+    })
+
+  }
+
   createUser = (event) => {
     event.preventDefault()
     this.setState({ isLoading: true })
@@ -90,7 +154,6 @@ class Account extends Component {
       password: this.state.password
     }
 
-    //fetch('http://localhost:7082/create-user', {
     fetch('https://api.snowdata.org/create-user', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', },
@@ -99,7 +162,7 @@ class Account extends Component {
       return response.json()
     }).then((data) => {
       if (data["message"] !== "Success") {
-        this.setState({ errMessage: "Account creation failed. Please try a different username" });
+        this.setState({ errMessage: "Account creation failed. Please try a different username." });
         this.setState({ successMessage: "" });
         sessionStorage.setItem('status', null);
         this.setState({ isLoading: false })
@@ -135,7 +198,7 @@ class Account extends Component {
       return response.json()
     }).then((data) => {
       if (data["message"] !== "Success") {
-        this.setState({ errMessage: "Failed to login. Please check username and password" })
+        this.setState({ errMessage: "Failed to login. Please check username and password." })
         this.setState({ successMessage: "" });
         sessionStorage.setItem('status', null);
         this.setState({ isLoading: false })
@@ -174,7 +237,6 @@ class Account extends Component {
       password: sessionStorage.getItem("password")
     }
 
-    //fetch('http://localhost:7082/delete-user', {
     fetch('https://api.snowdata.org/delete-user', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', },
@@ -211,7 +273,7 @@ class Account extends Component {
           </div>
 
           <>
-            { this.state.isLoading ? <div className="pt-5 pb-5"><this.LoadingSpinner /></div> :
+            {this.state.isLoading ? <div className="pt-5 pb-5"><this.LoadingSpinner /></div> :
 
               <div className="row">
                 <div className="col text-left m-3">
@@ -224,15 +286,44 @@ class Account extends Component {
 
                     <>
                       <h2>Hello {sessionStorage.getItem("username")}</h2>
+                      <div className="row">
+                        <div className="col-sm my-3">
+                          <p className=""><b>API Key:</b> {sessionStorage.getItem("apiKey")}</p>
+                          <Button className="" variant="primary" onClick={this.logout}>
+                            Logout
+                          </Button>
+                          <Button className="ml-3" variant="danger" onClick={() => { if (window.confirm('Are you sure you want to delete your account?')) { this.deleteAccount() }; }}>
+                            Delete Account
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-sm my-3">
+                          <Form>
+                            <Form.Group controlId="formBasicEmail" >
+                              <Form.Label>Update Email</Form.Label>
+                              <Form.Control className="w-25" onChange={this.changeHandler} type="email" name="email" placeholder="Enter New Email" required />
+                            </Form.Group>
+                          </Form>
+                          <Button className="" variant="primary" onClick={this.updateEmail}>
+                            Update Email
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-sm my-3">
+                          <Form>
+                            <Form.Group controlId="formBasicPassword">
+                              <Form.Label>Update Password</Form.Label>
+                              <Form.Control className="w-25" onChange={this.changeHandler} type="password" name="password" placeholder="Enter New Password" required />
+                            </Form.Group>
+                          </Form>
+                          <Button className="" variant="primary" onClick={this.updatePassword}>
+                            Update Password
+                          </Button>
 
-                      <p>API Key: {sessionStorage.getItem("apiKey")}</p>
-
-                      <Button className="" variant="primary" onClick={this.logout}>
-                        Logout
-                  </Button>
-                      <Button className="ml-3" variant="danger" onClick={() => { if (window.confirm('Are you sure you want to delete your account?')) { this.deleteAccount() }; }}>
-                        Delete Account
-                  </Button>
+                        </div>
+                      </div>
                     </>
 
                     :
@@ -242,26 +333,25 @@ class Account extends Component {
                       <Form>
                         <Form.Group controlId="formBasicUsername">
                           <Form.Label>Username</Form.Label>
-                          <Form.Control onChange={this.changeHandler} type="text" name="username" placeholder="Enter Username" required />
+                          <Form.Control className="w-25" onChange={this.changeHandler} type="text" name="username" placeholder="Enter Username" required />
                         </Form.Group>
 
                         <Form.Group controlId="formBasicEmail">
                           <Form.Label>Email address</Form.Label>
-                          <Form.Control onChange={this.changeHandler} type="email" name="email" placeholder="Enter Email" required />
+                          <Form.Control className="w-25" onChange={this.changeHandler} type="email" name="email" placeholder="Enter Email" required />
                         </Form.Group>
-
 
                         <Form.Group controlId="formBasicPassword">
                           <Form.Label>Password</Form.Label>
-                          <Form.Control onChange={this.changeHandler} type="password" name="password" placeholder="Enter Password" required />
+                          <Form.Control className="w-25" onChange={this.changeHandler} type="password" name="password" placeholder="Enter Password" required />
                         </Form.Group>
 
                         <Button variant="primary" onClick={this.createUser}>
                           Create Account
-                    </Button>
+                        </Button>
                         <Button className="ml-3" variant="primary" onClick={this.login}>
                           Login
-                    </Button>
+                        </Button>
                       </Form>
                     </>
                   }

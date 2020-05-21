@@ -16,7 +16,7 @@ app_settings = os.getenv('APP_SETTINGS')
 app.config.from_object(app_settings)
 
 # update the db when rebooting the server just in case
-skiarea.update_sa()
+# skiarea.update_sa()
 
 
 # if it's the first of the month, create a new month for each ski area
@@ -50,7 +50,9 @@ parser.add_argument("year", type=str, location="json")
 parser.add_argument("api_key", type=str, location="json")
 parser.add_argument("username", type=str, location="json")
 parser.add_argument("email", type=str, location="json")
+parser.add_argument("newemail", type=str, location="json")
 parser.add_argument("password", type=str, location="json")
+parser.add_argument("newpassword", type=str, location="json")
 
 
 class GetAllData(Resource):
@@ -168,6 +170,42 @@ class Login(Resource):
         return jsonify("Fail")
 
 
+class UpdatePassword(Resource):
+    def post(self):
+        args = parser.parse_args()
+        data = {
+            "username": args["username"],
+            "password": args["password"],
+            "new_password": args["newpassword"]
+        }
+
+        if db.check_password(data):
+            if db.update_password(data):
+                res = {
+                    "message": "Success"
+                }
+                return jsonify(**res)
+        return jsonify("Fail")
+
+
+class UpdateEmail(Resource):
+    def post(self):
+        args = parser.parse_args()
+        data = {
+            "username": args["username"],
+            "password": args["password"],
+            "new_email": args["newemail"]
+        }
+
+        if db.check_password(data):
+            if db.update_email(data):
+                res = {
+                    "message": "Success"
+                }
+                return jsonify(**res)
+        return jsonify("Fail")
+
+
 if __name__ == '__main__':
     app.run()
 
@@ -179,5 +217,7 @@ api.add_resource(GetSkiAreaMonthYear, '/get-ski-area-month-year')
 api.add_resource(CreateUser, '/create-user')
 api.add_resource(DeleteUser, '/delete-user')
 api.add_resource(Login, '/login')
+api.add_resource(UpdateEmail, '/update-email')
+api.add_resource(UpdatePassword, '/update-password')
 
 CORS(app, expose_headers='Authorization')
