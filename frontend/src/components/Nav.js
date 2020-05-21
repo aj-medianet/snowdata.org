@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import 'bootstrap/dist/js/bootstrap.bundle';
+import Select from 'react-select';
 
 
-// site navigation bar
-const Navigation = () => {
+const skiAreaChoices = [
+    { label: "Alpental"},
+    { label: "Big Sky"},
+    { label: "Bridger Bowl"},
+    { label: "Jackson Hole"},
+    { label: "Mt Bachelor"},
+    { label: "Mt Hood"},
+    { label: "49 Degrees North"},
+    { label: "Snowbird"},
+    { label: "Whitefish"},
+  ];
+
+class Navigation extends Component {
+
+    render() {
         return (
             <header className="">
                 <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -12,27 +27,18 @@ const Navigation = () => {
                         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
+                    <div style={{width: '250px'}}>
+                        <Select 
+                        onChange={opt => window.location.href = "/skiareas/" + opt.label}
+                        placeholder={'Search Ski Areas'}
+                        menuPlacement="auto"
+                        menuPosition="fixed"
+                        options={skiAreaChoices} />
+                    </div>
 
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav ml-auto">
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="/#" id="navbarDropdown" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Ski Area
-                                </a>
-                                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a className="dropdown-item" href="/skiareas/Alpental">Alpental</a>
-                                    <a className="dropdown-item" href="/skiareas/Big Sky">Big Sky</a>
-                                    <a className="dropdown-item" href="/skiareas/Bridger Bowl">Bridger Bowl</a>
-                                    <a className="dropdown-item" href="/skiareas/Jackson Hole">Jackson Hole</a>
-                                    <a className="dropdown-item" href="/skiareas/Mt Bachelor">Mt Bachelor</a>
-                                    <a className="dropdown-item" href="/skiareas/Mt Hood">Mt Hood</a>
-                                    <a className="dropdown-item" href="/skiareas/49 Degrees North">49 Degrees North</a>
-                                    <a className="dropdown-item" href="/skiareas/Snowbird">Snowbird</a>
-                                    <a className="dropdown-item" href="/skiareas/Whitefish">Whitefish</a>
-                                </div>
-                            </li>
 
+                        <ul className="navbar-nav ml-auto">
                             <li className="nav-item dropdown">
                                 <a className="nav-link dropdown-toggle" href="/#" id="navbarDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,22 +56,12 @@ const Navigation = () => {
                             <li className="nav-item">
                                 <a className="nav-link" href="/account">Account</a>
                             </li>
-                        </ul>
-                        {/* 
-                        <ul className="navbar-nav ml-auto">
-                            <form className="form-inline" action="/skiareas/">
-                                <input className="form-control" type="text" placeholder="Search Ski Areas" name="search"></input>
-                                <button id="searchButton" className="btn btn-outline-primary ml-2" type="submit">Search<i className="search"></i></button>
-                            </form>
-                        </ul>
-                        */}
-
-
-                        
+                        </ul>                        
                     </div>
                 </nav>
             </header>
         )
     }
+}
 
 export default Navigation;
