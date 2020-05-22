@@ -38,7 +38,10 @@ class WindChart extends Component {
 
         const options = {
             chart: {
-            type: 'column'
+                borderColor: "#000000",
+                borderWidth: 2,
+                type: 'line',
+                type: 'column'
             },
             credits: {
                 enabled: false,

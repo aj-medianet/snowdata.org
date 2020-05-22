@@ -69,24 +69,29 @@ class MainContent extends Component {
               )
                 */}
 
-              <div className="row">
-                <div className="col-sm">
-                  <MainYTDChart data={this.state.skiareas} />
+                <div className="row">
+                  <div className="col-sm">
+                    <MainYTDChart data={this.state.skiareas} />
+                  </div>
                 </div>
-                <div className="col-sm">
-                  <MainDepthChart data={this.state.skiareas} />
+                <br></br>
+                <div className="row">
+                  <div className="col-sm">
+                    <MainDepthChart data={this.state.skiareas} />
+                  </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-sm">
-                  <MainTempChart data={this.state.skiareas} />
+                <br></br>
+                <div className="row">
+                  <div className="col-sm">
+                    <MainTempChart data={this.state.skiareas} />
+                  </div>
                 </div>
-                <div className="col-sm">
-                  <MainWindChart data={this.state.skiareas} />
+                <br></br>
+                <div className="row">
+                  <div className="col-sm">
+                    <MainWindChart data={this.state.skiareas} />
+                  </div>
                 </div>
-              </div>
-
-
 
 
               {/*<Table data={this.state.skiareas} /> */}

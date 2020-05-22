@@ -57,6 +57,28 @@
   padding: 10px;
 }
 
+.skiCard {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.6);
+  border-radius: 10px;
+  width: 250px;
+  height: auto;
+  margin: auto;
+  float: auto;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.mainCard {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.6);
+  border-radius: 10px;
+  width: auto;
+  height: auto;
+  margin: auto;
+  float: auto;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
 .btnP {
   margin: 0 auto;
   width: 50%;
