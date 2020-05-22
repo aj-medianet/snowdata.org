@@ -1,4 +1,4 @@
-# ubuntu image so we can install inkscape and spacy
+# ubuntu image 
 FROM ubuntu:bionic
 
 # install python & pip
