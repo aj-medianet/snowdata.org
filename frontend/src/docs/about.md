@@ -1,3 +1,6 @@
+### Project Details
+&nbsp
+
 The goal of the project is to create an application that allows the public
 to access real time mountain snow data by scraping ski resorts web pages.
 The application will provide a website with all of the data (charts/graphs etc)
@@ -21,3 +24,18 @@ Authors:
  - Andrew Joseph
  - Rustin Winger
  - Robert Pfingsten
+
+&nbsp
+
+### Open Source
+
+&nbsp
+
+SnowData.org is an Open Source Software project and we'd love for you to contribute! Visit our [GitHub page](https://github.com/aj-medianet/snowdata.org) and be sure to view the [contribute.md](https://github.com/aj-medianet/snowdata.org/blob/master/contribute.md) page. If you have any questions please send us an email at [snowdataorg@gmail.com](mailto:snowdataorg@gmail.com), we're happy to help!
+
+&nbsp
+### Terms & Conditions
+
+&nbsp
+
+SnowData's terms and conditions can be reviewed [here](/tc)
