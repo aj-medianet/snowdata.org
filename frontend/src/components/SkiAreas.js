@@ -83,17 +83,17 @@ class SkiAreas extends Component {
           <>
 
             {this.state.data ?
-              <div >
-
-                <div>Current temperature: {this.state.skiArea.cur_temp}</div>
-                <div>Wind speed: {this.state.skiArea.wind_speed}</div>
-                <div>Wind direction: {this.state.skiArea.wind_dir}</div>
-                <div>12 Hour snowfall: {this.state.skiArea.new_snow_12}</div>
-                <div>24 Hour snowfall: {this.state.skiArea.new_snow_24}</div>
-                <div>48 Hour snowfall: {this.state.skiArea.new_snow_48}</div>
-                <div>Current snow depth: {this.state.skiArea.cur_depth}</div>
-                <div>YTD: {this.state.skiArea.ytd}</div>
-
+              <div className="col">
+                <div className="skiCard">
+                  <p>Current Temperature: {this.state.skiArea.cur_temp}&#176;</p>
+                  <p>Wind Speed: {this.state.skiArea.wind_speed} mph</p>
+                  <p>Wind Direction: {this.state.skiArea.wind_dir}</p>
+                  <p>12 Hour Snowfall: {this.state.skiArea.new_snow_12}"</p>
+                  <p>24 Hour Snowfall: {this.state.skiArea.new_snow_24}"</p>
+                  <p>48 Hour Snowfall: {this.state.skiArea.new_snow_48}"</p>
+                  <p>Current Snow Depth: {this.state.skiArea.cur_depth}"</p>
+                  <p>YTD: {this.state.skiArea.ytd}"</p>
+                </div>
               </div>
 
               :
