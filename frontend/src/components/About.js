@@ -21,6 +21,7 @@ class About extends Component {
         return (
             <div className="mt-5">
                 <h1 className="mb-3">About</h1>
+                <br></br>
                 <div className="text-left m-3">
                     <ReactMarkdown source={text} />
                 </div>   
