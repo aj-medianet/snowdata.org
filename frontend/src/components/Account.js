@@ -304,7 +304,7 @@ class Account extends Component {
                           <Form>
                             <Form.Group controlId="formBasicEmail" >
                               <Form.Label>Update Email</Form.Label>
-                              <Form.Control className="w-25" onChange={this.changeHandler} type="email" name="email" placeholder="Enter New Email" required />
+                              <Form.Control className="w-50" onChange={this.changeHandler} type="email" name="email" placeholder="Enter New Email" required />
                             </Form.Group>
                           </Form>
                           <Button className="" variant="primary" onClick={this.updateEmail}>
@@ -317,7 +317,7 @@ class Account extends Component {
                           <Form>
                             <Form.Group controlId="formBasicPassword">
                               <Form.Label>Update Password</Form.Label>
-                              <Form.Control className="w-25" onChange={this.changeHandler} type="password" name="password" placeholder="Enter New Password" required />
+                              <Form.Control className="w-50" onChange={this.changeHandler} type="password" name="password" placeholder="Enter New Password" required />
                             </Form.Group>
                           </Form>
                           <Button className="" variant="primary" onClick={this.updatePassword}>
@@ -334,17 +334,17 @@ class Account extends Component {
                       <Form>
                         <Form.Group controlId="formBasicUsername">
                           <Form.Label>Username</Form.Label>
-                          <Form.Control className="w-25" onChange={this.changeHandler} type="text" name="username" placeholder="Enter Username" required />
+                          <Form.Control className="w-50" onChange={this.changeHandler} type="text" name="username" placeholder="Enter Username" required />
                         </Form.Group>
 
                         <Form.Group controlId="formBasicEmail">
                           <Form.Label>Email address</Form.Label>
-                          <Form.Control className="w-25" onChange={this.changeHandler} type="email" name="email" placeholder="Enter Email" required />
+                          <Form.Control className="w-50" onChange={this.changeHandler} type="email" name="email" placeholder="Enter Email" required />
                         </Form.Group>
 
                         <Form.Group controlId="formBasicPassword">
                           <Form.Label>Password</Form.Label>
-                          <Form.Control className="w-25" onChange={this.changeHandler} type="password" name="password" placeholder="Enter Password" required />
+                          <Form.Control className="w-50" onChange={this.changeHandler} type="password" name="password" placeholder="Enter Password" required />
                         </Form.Group>
 
                         <Button variant="primary" onClick={this.createUser}>
