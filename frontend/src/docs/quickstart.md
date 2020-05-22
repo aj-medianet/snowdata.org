@@ -12,7 +12,7 @@ Our API is free to use; however, we will be looking into paid models in the futu
 ### The Data
 ***
 
-When you make an API request the response will be in JSON. You can make requests for current snow data for all ski areas or one ski area. You can all make requests for monthly data for all ski areas, one ski area, and one ski areas single month.
+When you make an API request the response will be in JSON. You can make requests for current snow data for all ski areas or one ski area. You can make requests for monthly data for all ski areas, one ski area, and one ski areas single month.
 
 
 &nbsp
