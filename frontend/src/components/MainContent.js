@@ -70,21 +70,21 @@ class MainContent extends Component {
                 */}
 
               <div className="row">
-                <div className="col-sm py-4">
+                <div className="col-sm m-4 skiCard">
                   <MainYTDChart data={this.state.skiareas} />
                 </div>
 
-                <div className="col-sm py-4">
+                <div className="col-sm m-4 skiCard">
                   <MainDepthChart data={this.state.skiareas} />
                 </div>
               </div>
 
               <div className="row">
-                <div className="col-sm py-4">
+                <div className="col-sm m-4 skiCard">
                   <MainTempChart data={this.state.skiareas} />
                 </div>
 
-                <div className="col-sm py-4">
+                <div className="col-sm m-4 skiCard">
                   <MainWindChart data={this.state.skiareas} />
                 </div>
               </div>
