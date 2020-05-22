@@ -27,6 +27,7 @@ class App extends Component {
       <BrowserRouter>
         <div className="App">
           <Navigation/>
+          <div className="container-fluid">
             <Switch>
               <Route path="/" component={MainContent} exact/>
               <Route path="/about" component={About}/>
@@ -37,6 +38,7 @@ class App extends Component {
               <Route path="/tc" component={TC}/>
               <Route path="/skiareas/:skiArea" component={SkiAreas}/>
             </Switch>
+            </div>
           <Footer/>
         </div>
       </BrowserRouter>
