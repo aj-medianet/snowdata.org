@@ -37,7 +37,7 @@ class App extends Component {
               <Route path="/tc" component={TC}/>
               <Route path="/skiareas/:skiArea" component={SkiAreas}/>
             </Switch>
-            <Footer/>
+          <Footer/>
         </div>
       </BrowserRouter>
     );
