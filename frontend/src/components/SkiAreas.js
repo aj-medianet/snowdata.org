@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Spinner from 'react-bootstrap/Spinner'
+import AreaCombo from './charts/AreaCombo';
 //import { useState, useEffect } from 'react';
 
 
@@ -58,8 +59,6 @@ class SkiAreas extends Component {
     })
   }
 
-
-
   // handles loading spinner
   LoadingSpinner = () => {
     return this.state.isLoading ? <Spinner className="ml-2" animation="border" variant="success" /> : ''
@@ -93,6 +92,11 @@ class SkiAreas extends Component {
                   <p>48 Hour Snowfall: {this.state.skiArea.new_snow_48}"</p>
                   <p>Current Snow Depth: {this.state.skiArea.cur_depth}"</p>
                   <p>YTD: {this.state.skiArea.ytd}"</p>
+                </div>
+                <div className="row">
+                <div className="col-sm m-4 mainCard">
+                <AreaCombo data={this.state.SkiAreas} data_monthly={this.state.skiAreaMonthly} />
+                </div>
                 </div>
               </div>
 
