@@ -14,10 +14,10 @@ app.secret_key = os.urandom(24)  # for cors to work
 app_settings = os.getenv('APP_SETTINGS')
 app.config.from_object(app_settings)
 
-# update the db when rebooting the server just in case
+# DB dev function calls
 # skiarea.update_sa()
 # skiarea.check_website_change() # TODO get this working and then set a schedule for it
-
+# skiarea.create_new_month()
 
 # if it's the first of the month, create a new month for each ski area
 def check_first_of_month():

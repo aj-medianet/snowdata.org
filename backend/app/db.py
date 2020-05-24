@@ -39,11 +39,11 @@ def get_all_data():
 
 
 # returns a single ski areas data
-def get_ski_area(name):
+def get_ski_area(ski_area):
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")
-    cursor.execute(" SELECT * FROM ski_areas WHERE name=%(name)s", name);
+    cursor.execute(""" SELECT * FROM ski_areas WHERE name= %(ski_area)s;""", {'ski_area': ski_area})
     res = cursor.fetchone()
     del res["id"]
     return res
@@ -56,14 +56,15 @@ def update_ski_area(data):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        query = """ UPDATE ski_areas SET cur_temp = "{}", cur_depth = "{}", ytd = "{}", \
-            wind_dir = "{}", wind_speed = "{}", new_snow_12 = "{}", new_snow_24 = "{}", \
-                new_snow_48 = "{}", ts = curdate() WHERE name = "{}";  """.format(data["cur_temp"],
-                                                                                  data["cur_depth"], data["ytd"],
-                                                                                  data["wind_dir"], data["wind_speed"],
-                                                                                  data["new_snow_12"],
-                                                                                  data["new_snow_24"],
-                                                                                  data["new_snow_48"], data["name"])
+        query = """ UPDATE ski_areas SET cur_temp = %(cur_temp)s, cur_depth = %(cur_depth)s, ytd = %(ytd)s, \
+            wind_dir = %(wind_dir)s, wind_speed = %(wind_speed)s, new_snow_12 = %(new_snow_12)s, \
+            new_snow_24 = %(new_snow_24)s, new_snow_48 = %(new_snow_48)s, ts = curdate() \
+            WHERE name = %(name)s;""", {"cur_temp": data["cur_temp"], "cur_depth": data["cur_depth"],
+                                        "ytd": data["ytd"], "wind_dir": data["wind_dir"],
+                                        "wind_speed": data["wind_speed"], "new_snow_12": data["new_snow_12"],
+                                        "new_snow_24": data["new_snow_24"], "new_snow_48": data["new_snow_48"],
+                                        "name": data["name"]
+                                        }
         cursor.execute(query)
         db.commit()
         print("[DEBUG] Updated {}\n\n".format(data["name"]))
@@ -100,13 +101,12 @@ def get_all_monthly_data():
 
 
 # returns all monthly data for a single ski area
-def get_ski_areas_monthly_data(ski_area_name):
+def get_ski_areas_monthly_data(ski_area):
     try:
         db = get_db()
         cursor = db.cursor(dictionary=True)
         cursor.execute("use snow_db")
-        query = """ SELECT * FROM monthly_data WHERE ski_area_name="{}";  """.format(ski_area_name)
-        cursor.execute(query)
+        cursor.execute("""SELECT * FROM monthly_data WHERE ski_area_name = %(ski_area)s;""", {"ski_area": ski_area})
         res = cursor.fetchall()
         return res
     except:
@@ -114,14 +114,13 @@ def get_ski_areas_monthly_data(ski_area_name):
 
 
 # returns the previous months monthly data
-def get_ski_areas_month_year(ski_area_name, month, year):
+def get_ski_areas_month_year(ski_area, month, year):
     try:
         db = get_db()
         cursor = db.cursor(dictionary=True)
         cursor.execute("use snow_db")
-        query = """ SELECT * FROM monthly_data WHERE (ski_area_name="{}" AND month="{}" AND year="{}");  """.format(
-            ski_area_name, month, year)
-        cursor.execute(query)
+        cursor.execute("""SELECT * FROM monthly_data WHERE (ski_area_name = %(ski_area)s AND month=%(month)s \
+         AND year=%(year)s);""", {"ski_area": ski_area, "month": month, "year": year})
         res = cursor.fetchone()
         del res["id"]
         return res
@@ -135,15 +134,16 @@ def create_new_month(data):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        query = """INSERT INTO monthly_data (month, year, ski_area_name, total_new_snow, snow_depth, avg_temp, \
-         ytd) VALUES  ("{}", "{}", "{}", "{}", "{}", "{}", "{}"); """.format(data["month"], data["year"],
-                                                                             data["ski_area_name"],
-                                                                             data["total_new_snow"], data["snow_depth"],
-                                                                             data["avg_temp"], data["ytd"])
-        cursor.execute(query)
+        cursor.execute("""INSERT INTO monthly_data (month, year, ski_area_name, total_new_snow, snow_depth, avg_temp, \
+         ytd) VALUES  (%(month)s, %(year)s, %(ski_area_name)s, %(total_new_snow)s, %(snow_depth)s, %(avg_temp)s, \
+          %(ytd)s);""", {"month": data["month"], "year": data["year"], "ski_area_name": data["ski_area_name"],
+                         "total_new_snow": data["total_new_snow"], "snow_depth": data["snow_depth"],
+                         "avg_temp": data["avg_temp"], "ytd": data["ytd"]})
         db.commit()
+        print("[DEBUG] Updated monthly data for {}\n\n".format(data["ski_area_name"]))
         return True
     except:
+        utils.print_error_message("DB error creating new month")
         return False
 
 
@@ -154,11 +154,11 @@ def update_monthly_data(data):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        query = """ UPDATE monthly_data SET total_new_snow = "{}", \
-            snow_depth = "{}", avg_temp = "{}", ytd = "{}" WHERE (ski_area_name = "{}" AND month = "{}" AND \
-            year = "{}");""".format(data["total_new_snow"], data["snow_depth"], data["avg_temp"],
-                                    data["ytd"], data["ski_area_name"], data["month"], data["year"])
-        cursor.execute(query)
+        cursor.execute(""" UPDATE monthly_data SET total_new_snow = %(total_new_snow)s, snow_depth = %(snow_depth)s, \
+         avg_temp = %(avg_temp)s, ytd = %(ytd)s WHERE (ski_area_name = %(ski_area_name)s AND month = %(month)s AND \
+         year = %(year)s);""", {"total_new_snow": data["total_new_snow"],"snow_depth": data["snow_depth"],
+                                "avg_temp": data["avg_temp"], "ytd": data["ytd"], "ski_area_name": data["ski_area_name"],
+                                "month": data["month"], "year": data["year"]})
         db.commit()
         print("[DEBUG] Updated monthly data for {}\n\n".format(data["ski_area_name"]))
     except:
@@ -176,8 +176,8 @@ def get_avg_temp(data):
         db = get_db()
         cursor = db.cursor(dictionary=True)
         cursor.execute("use snow_db")
-        query = """ SELECT * FROM avg_temps WHERE ski_area_name="{}";  """.format(data["name"])
-        cursor.execute(query)
+        cursor.execute("""SELECT * FROM avg_temps WHERE ski_area_name=%(ski_area_name)s;""",
+                       {"ski_area_name": data["name"]})
         res = cursor.fetchone()
         return res["avg_temp"]
     except:
@@ -192,8 +192,8 @@ def update_avg_temp(data):
         db = get_db()
         cursor = db.cursor(dictionary=True)
         cursor.execute("use snow_db")
-        query = """ SELECT * FROM avg_temps WHERE ski_area_name="{}";  """.format(data["name"])
-        cursor.execute(query)
+        cursor.execute(""" SELECT * FROM avg_temps WHERE ski_area_name=%(ski_area_name)s;  """,
+                       {"ski_area_name": data["name"]})
         res = cursor.fetchone()
         new_total_temp = float(res["total_temp"]) + float(data["cur_temp"])
         new_count = res["count"] + 1
@@ -206,9 +206,9 @@ def update_avg_temp(data):
             db = get_db()
             cursor = db.cursor()
             cursor.execute("use snow_db")
-            query = """ UPDATE avg_temps SET avg_temp="{}", total_temp="{}", count="{}" WHERE \
-            ski_area_name = "{}"; """.format(new_avg_temp, new_total_temp, new_count, data["name"])
-            cursor.execute(query)
+            cursor.execute(""" UPDATE avg_temps SET avg_temp=%(avg_temp)s, total_temp=%(total_temp)s, count=%(count)s \
+            WHERE ski_area_name = %(ski_area_name)s; """, {"avg_temp": new_avg_temp, "total_temp": new_total_temp,
+                                                           "count": new_count, "ski_area_name": data["name"]})
             db.commit()
             print("[DEBUG] Updated average temp for {}\n\n".format(data["name"]))
         except:
@@ -221,9 +221,8 @@ def reset_avg_temp(data):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        query = """ UPDATE avg_temps SET avg_temp="0", total_temp="0", count="0" WHERE ski_area_name = "{}"; """.format(
-            data["name"])
-        cursor.execute(query)
+        cursor.execute(""" UPDATE avg_temps SET avg_temp="0", total_temp="0", count="0" WHERE ski_area_name = \
+        %(ski_area_name)s; """, {"ski_area_name": data["name"]})
         db.commit()
         print("[DEBUG] Reset avg temp for {}\n\n".format(data["name"]))
     except:
@@ -242,9 +241,9 @@ def create_user(data):
         cursor = db.cursor()
         cursor.execute("use snow_db")
         hashed_pwd = generate_password_hash(data["password"])
-        query = """INSERT INTO users (username, email, password, api_key, api_count)  \
-        VALUES ("{}", "{}", "{}", "{}", 0);""".format(data["username"], data["email"], hashed_pwd, data["api_key"])
-        cursor.execute(query)
+        cursor.execute("""INSERT INTO users (username, email, password, api_key, api_count) VALUES (%(username)s, \
+        %(email)s, %(password)s, %(api_key)s, 0);""", {"username": data["username"], "email": data["email"],
+                                                       "password": hashed_pwd, "api_key": data["api_key"]})
         db.commit()
         return True
     except:
@@ -257,8 +256,7 @@ def delete_user(data):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        query = """ DELETE from users where username="{}"; """.format(data["username"])
-        cursor.execute(query)
+        cursor.execute("""DELETE from users where username=%(username)s;""", {"username": data["username"]})
         db.commit()
         return True
     except:
@@ -272,8 +270,8 @@ def update_password(data):
         cursor = db.cursor()
         cursor.execute("use snow_db")
         hashed_pwd = generate_password_hash(data["new_password"])
-        query = """ UPDATE users SET password="{}" WHERE username="{}"; """.format(hashed_pwd, data["username"])
-        cursor.execute(query)
+        cursor.execute(""" UPDATE users SET password=%(password)s WHERE username=%(username)s; """,
+                       {"password": hashed_pwd, "username": data["username"]})
         db.commit()
         return True
     except:
@@ -286,8 +284,8 @@ def update_email(data):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        query = """ UPDATE users SET email="{}" WHERE username="{}"; """.format(data["new_email"], data["username"])
-        cursor.execute(query)
+        cursor.execute(""" UPDATE users SET email=%(email)s WHERE username=%(username)s; """,
+                       {"email": data["new_email"], "username": data["username"]})
         db.commit()
         return True
     except:
@@ -300,8 +298,7 @@ def check_password(data):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        query = """ SELECT password FROM users WHERE username="{}"; """.format(data["username"])
-        cursor.execute(query)
+        cursor.execute(""" SELECT password FROM users WHERE username=%(username)s; """, {"username": data["username"]})
         pw_hash = cursor.fetchone()
         return check_password_hash(pw_hash[0], data["password"])
     except:
@@ -318,8 +315,7 @@ def get_api_key(data):
     db = get_db()
     cursor = db.cursor()
     cursor.execute("use snow_db")
-    query = """ SELECT api_key FROM users WHERE username="{}"; """.format(data["username"])
-    cursor.execute(query)
+    cursor.execute("""SELECT api_key FROM users WHERE username=%(username)s;""", {"username": data["username"]})
     res = cursor.fetchone()
     return res
 
@@ -328,8 +324,7 @@ def verify_api_key(api_key):
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")
-    query = """ SELECT api_count FROM users WHERE api_key="{}"; """.format(api_key)
-    cursor.execute(query)
+    cursor.execute("""SELECT api_count FROM users WHERE api_key=%(api_key)s;""", {"api_key": api_key})
     res = cursor.fetchone()
 
     if res is not None:
@@ -348,8 +343,8 @@ def increment_api_count(api_key, count):
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")
-    query = """ UPDATE users SET api_count="{}" WHERE api_key="{}"; """.format(count, api_key)
-    cursor.execute(query)
+    cursor.execute("""UPDATE users SET api_count=%(api_count)s WHERE api_key=%(api_key)s;""",
+                   {"api_count": count, "api_key": api_key})
     db.commit()
 
 
@@ -357,7 +352,7 @@ def reset_api_counts():
     db = get_db()
     cursor = db.cursor()
     cursor.execute("use snow_db")
-    query = """ UPDATE users SET api_count="0"; """
+    query = """UPDATE users SET api_count="0";"""
     cursor.execute(query)
     db.commit()
 
@@ -371,8 +366,8 @@ def get_content(ski_area):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        query = """ SELECT content FROM websites WHERE ski_area_name="{}"; """.format(ski_area)
-        cursor.execute(query)
+        cursor.execute("""SELECT content FROM websites WHERE ski_area_name=%(ski_area_name)s;""",
+                       {"ski_area_name": ski_area})
         res = cursor.fetchone()
         return res[0]
     except:
@@ -384,8 +379,8 @@ def set_content(new_content, ski_area):
         db = get_db()
         cursor = db.cursor()
         cursor.execute("use snow_db")
-        query = """ UPDATE websites SET content="{}" WHERE ski_area_name="{}"; """.format(new_content, ski_area)
-        cursor.execute(query)
+        cursor.execute("""UPDATE websites SET content=%(content)s WHERE ski_area_name=%(ski_area_name)s;""",
+                       {"content": new_content, "ski_area_name": ski_area})
         db.commit()
         print("DEBUG commited")
         return True

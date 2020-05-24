@@ -77,7 +77,7 @@ def create_new_month():
             sa = SkiArea(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
             sa.create_new_month()
         except:
-            utils.print_error_message("Error creating monthly snow_data for {}".format(ski_area))
+            utils.print_error_message("SkiAreas error creating monthly snow_data for {}".format(ski_area))
 
 
 def check_website_change():
