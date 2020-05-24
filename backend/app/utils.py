@@ -1,7 +1,7 @@
 import secrets
 from datetime import date, timedelta, datetime
 import smtplib
-import env
+import credentials
 
 
 # randomly generates an api key 40 characters long
@@ -34,7 +34,7 @@ def strip_special_chars(string):
 def send_email(message):
     s = smtplib.SMTP('smtp.gmail.com', 587)
     s.starttls()
-    s.login("snowdataorg@gmail.com", env.email_password)
+    s.login("snowdataorg@gmail.com", credentials.email_password)
     s.sendmail("snowdataorg@gmail.com", "snowdataorg@gmail.com", message)
     s.quit()
 
