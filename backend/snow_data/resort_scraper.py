@@ -3,7 +3,7 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import argparse
 import requests
-from app import utils
+#from app import utils
 
 
 """
@@ -161,32 +161,30 @@ def mt_bachelor():
 
 
 def mt_hood():
-    url = 'https://www.skihood.com/en/the-mountain/conditions'
+    url = 'https://www.skihood.com/the-mountain/conditions'
     bs = SSLfix(url)
-    # added check to make sure that 'data-depth' is actually a variable
-    cur_temp = bs.find('div', {'class': 'conditions-glance-widget conditions-at-elevation'}).find('dd', {
-        'class': 'metric temperature', 'data-temperature': True})['data-temperature']
-    wind_speed = bs.find('div', {'class': 'conditions-glance-widget conditions-at-elevation'}).find('dd', {
-        'class': 'reading windspeed', 'data-windspeed': True})['data-windspeed']
+    #print (bs)
+    # added check to make sure that 'data-depth' is actually a variable 
+    cur_temp = bs.find('div', {'class': 'conditions-glance-widget conditions-current'}).find('dd', {'class': 'reading temperature', 'data-temperature': True})['data-temperature']
+    #wind_speed = bs.find('div', {'class': 'conditions-glance-widget conditions-at-elevation'}).find('dd', {'class': 'reading windspeed', 'data-windspeed': True})['data-windspeed']
     snow = bs.find('div', {'class': 'conditions-glance-widget conditions-snowfall'}).find_all('dl')
     new_snow_12 = snow[0].find('dd', {'class': 'reading depth', 'data-depth': True})['data-depth']
     new_snow_24 = snow[1].find('dd', {'class': 'reading depth', 'data-depth': True})['data-depth']
     new_snow_48 = snow[2].find('dd', {'class': 'reading depth', 'data-depth': True})['data-depth']
-    cur_depth = bs.find('div', {'class': 'snowdepth-mid'}).find('span', {'class': 'reading depth', 'data-depth': True})[
-        'data-depth']
-    ytd = bs.find('dl', {'class': 'snowdepth-ytd'}).find('dd', {'class': 'reading depth', 'data-depth': True})[
-        'data-depth']
+    cur_depth = bs.find('div', {'class': 'snowdepth-mid'}).find('span', {'class': 'reading depth', 'data-depth': True})['data-depth']
+    ytd = bs.find('dl', {'class': 'snowdepth-ytd'}).find('dd', {'class': 'reading depth', 'data-depth': True})['data-depth']
 
     url2 = 'https://forecast.weather.gov/MapClick.php?lat=45.340579&lon=-121.670934&site=pdt&smap=1&unit=0&lg=en&FcstType=text#.Vky-y3arS71'
     bs2 = SSLfix(url2)
     wind = bs2.find(id="current_conditions_detail").find('b', text="Wind Speed").find_next('td').string
     wind_dir = wind.split(' ', 1)[0]
+    wind_speed = wind.split(' ')[1]
 
     data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
-
+    #print(wind_speed)
     # todo - remove as no longer necessary, there are no special chars in this instance
     for i, j in enumerate(data):
-        data[i] = utils.strip_special_chars(j)
+        data[i] = strip_special_chars(j)
 
     data.insert(0, "Mt Hood")  # insert ski area name after stripping special chars
     return data
