@@ -22,6 +22,7 @@ env3.*/
 .pypyenv
 .pytest_cache/
 env*
+credentials*
 
 # Distribution / packaging
 env/
