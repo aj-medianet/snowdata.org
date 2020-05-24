@@ -18,16 +18,16 @@ class MainContent extends Component {
 
   componentDidMount() {
     this.setState({ isLoading: true })
-    fetch('http://localhost:7082/get-all-data/tmpkey')
-    //fetch('https://api.snowdata.org/get-all-data/tmpkey')
+    //fetch('http://localhost:7082/get-all-data/tmpkey')
+    fetch('https://api.snowdata.org/get-all-data/tmpkey')
       .then(response => response.json())
       .then((skiareas) => {
         this.setState({ skiareas })
         this.setState({ isLoading: false })
       })
 
-    fetch('http://localhost:7082/get-all-data/tmpkey')
-    //fetch('https://api.snowdata.org/get-all-monthly-data/tmpkey')
+    //fetch('http://localhost:7082/get-all-data/tmpkey')
+    fetch('https://api.snowdata.org/get-all-monthly-data/tmpkey')
       .then(response => response.json())
       .then((skiAreasMonthly) => {
         this.setState({ skiAreasMonthly })
