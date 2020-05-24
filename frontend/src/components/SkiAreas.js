@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Spinner from 'react-bootstrap/Spinner'
 import AreaCombo from './charts/AreaCombo';
+import ErrorBoundary from './ErrorBoundary';
 //import { useState, useEffect } from 'react';
 
 
@@ -93,11 +94,13 @@ class SkiAreas extends Component {
                   <p>Current Snow Depth: {this.state.skiArea.cur_depth}"</p>
                   <p>YTD: {this.state.skiArea.ytd}"</p>
                 </div>
+                <ErrorBoundary>
                 <div className="row">
                 <div className="col-sm m-4 mainCard">
                 <AreaCombo data={this.state.SkiAreas} data_monthly={this.state.skiAreaMonthly} />
                 </div>
                 </div>
+                </ErrorBoundary>
               </div>
 
               :

@@ -4,6 +4,7 @@ import MainTempChart from './charts/MainTempChart';
 import MainWindChart from './charts/MainWindChart';
 import MainYTDChart from './charts/MainYTDChart';
 import Spinner from 'react-bootstrap/Spinner';
+import ErrorBoundary from './ErrorBoundary';
 //import Table from './Table';
 
 class MainContent extends Component {
@@ -70,7 +71,7 @@ class MainContent extends Component {
                 </div>
               )
                 */}
-
+              <ErrorBoundary>
               <div className="row">
                 <div className="col-sm m-4 mainCard">
                   <MainYTDChart data={this.state.skiareas} />
@@ -90,9 +91,7 @@ class MainContent extends Component {
                   <MainWindChart data={this.state.skiareas} />
                 </div>
               </div>
-
-
-              {/*<Table data={this.state.skiareas} /> */}
+              </ErrorBoundary>
             </div>
           }
         </div>
