@@ -7,28 +7,31 @@ class AreaCombo extends Component {
     
     cleanOptions() {
         
-        //TODO hook up to actual site
-        var month_data = [
+        //Fake data for testing
+        /*var month_data = [
         {"avg_temp":"20","id":0,"month":"5","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2020","ytd":"100"},
         {"avg_temp":"20","id":1,"month":"12","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2019","ytd":"50"},
         {"avg_temp":"20","id":2,"month":"1","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2020","ytd":"60"},
         {"avg_temp":"20","id":3,"month":"2","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2020","ytd":"70"},
         {"avg_temp":"20","id":4,"month":"4","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2020","ytd":"80"},
         {"avg_temp":"20","id":5,"month":"3","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2020","ytd":"90"}
-        ]; 
+        ]; */
 
-        // convert to nums 
+        // something fishy with data returned from req
+        const month_data = Array.from(this.props.data_monthly);
+
+        // convert strs to nums 
         const season = month_data.map(month => {
             var grouped = {}
             grouped.avg_temp = Number(month.avg_temp);
             grouped.month = Number(month.month);
             grouped.year = Number(month.year);
             grouped.ytd = Number(month.ytd);
-            return grouped
-        })
+            return grouped;
+        });
 
         // sort array by year and month
-        let sorted = season.sort((a, b) => (a.year > b.year) ? 1 : (a.year === b.year) ? ((a.month > b.month) ? 1 : -1) : -1 )
+        let sorted = season.sort((a, b) => (a.year > b.year) ? 1 : (a.year === b.year) ? ((a.month > b.month) ? 1 : -1) : -1 );
         
         // convert month numbers into month names
         const month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -38,9 +41,9 @@ class AreaCombo extends Component {
         })
         
         // create arrays for highcahrts
-        const months = sorted_month_name.map(x => x.month)
-        const ytds = sorted_month_name.map(x => x.ytd)
-        const temps = sorted_month_name.map(x => x.avg_temp)
+        const months = sorted_month_name.map(x => x.month);
+        const ytds = sorted_month_name.map(x => x.ytd);
+        const temps = sorted_month_name.map(x => x.avg_temp);
 
         // Get max year - useful when working with multiple seasons
         /*const max_year = years.reduce(function(x,y) {
