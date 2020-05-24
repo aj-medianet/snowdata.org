@@ -8,7 +8,7 @@ class SkiArea:
     """
 
     def __init__(self, name, cur_temp=None, cur_depth=None, ytd=None, wind_dir=None, wind_speed=None, new_snow_12=None,
-                 new_snow_24=None, new_snow_48=None, avg_temp=None):
+                 new_snow_24=None, new_snow_48=None, avg_temp=""):
         self.name = name
         self.cur_temp = cur_temp
         self.cur_depth = cur_depth
@@ -61,13 +61,12 @@ class SkiArea:
 # loop through the list of ski areas, get the current snow_data and update the db
 def update_sa():
     for ski_area in const.SKI_AREAS:
-        try:
-            data = resort_scraper.get_data(ski_area)
-            sa = SkiArea(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
-            sa.update_ski_areas()
-            sa.update_avg_temp()
-        except:
-            utils.print_error_message("Error scraping and updating {}".format(ski_area))
+
+        data = resort_scraper.get_data(ski_area)
+        sa = SkiArea(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
+        sa.update_ski_areas()
+        sa.update_avg_temp()
+
 
 
 def create_new_month():
