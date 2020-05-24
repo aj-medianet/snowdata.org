@@ -1,11 +1,10 @@
 from app import app
-from app import db
-from app import utils
-from scraper import skiarea
+from app import db, utils
+from snow_data import skiarea
 import os
 import schedule
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import jsonify, request
+from flask import jsonify
 from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse
 from datetime import date
@@ -17,6 +16,7 @@ app.config.from_object(app_settings)
 
 # update the db when rebooting the server just in case
 # skiarea.update_sa()
+# skiarea.check_website_change() # TODO get this working and then set a schedule for it
 
 
 # if it's the first of the month, create a new month for each ski area

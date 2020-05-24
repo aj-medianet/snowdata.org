@@ -9,12 +9,12 @@ class AreaCombo extends Component {
         
         //TODO hook up to actual site
         var month_data = [
-        {"avg_temp":"20","id":0,"month":"5","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2020","ytd":"100"},
-        {"avg_temp":"20","id":1,"month":"12","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2019","ytd":"50"},
-        {"avg_temp":"20","id":2,"month":"1","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2020","ytd":"60"},
-        {"avg_temp":"20","id":3,"month":"2","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2020","ytd":"70"},
-        {"avg_temp":"20","id":4,"month":"4","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2020","ytd":"80"},
-        {"avg_temp":"20","id":5,"month":"3","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2020","ytd":"90"}
+            {"avg_temp":"20","id":0,"month":"5","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2020","ytd":"100"},
+            {"avg_temp":"20","id":1,"month":"12","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2019","ytd":"50"},
+            {"avg_temp":"20","id":2,"month":"1","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2020","ytd":"60"},
+            {"avg_temp":"20","id":3,"month":"2","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2020","ytd":"70"},
+            {"avg_temp":"20","id":4,"month":"4","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2020","ytd":"80"},
+            {"avg_temp":"20","id":5,"month":"3","ski_area_name":"Alpental","snow_depth":"10","total_new_snow":"10",year:"2020","ytd":"90"}
         ]; 
 
         // convert to nums 

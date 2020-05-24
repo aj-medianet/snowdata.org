@@ -1,4 +1,4 @@
-from scraper import skiarea
+from snow_data import skiarea
 import unittest
 
 

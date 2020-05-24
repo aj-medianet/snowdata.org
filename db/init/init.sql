@@ -1,4 +1,5 @@
 /* drop tables in reverse order so fk constraints dont break it first */
+DROP TABLE IF EXISTS websites;
 DROP TABLE IF EXISTS avg_temps;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS monthly_data;
@@ -102,3 +103,22 @@ INSERT INTO avg_temps VALUES
 (7, "49 Degrees North", "0","0", 0),
 (8, "Snowbird", "0","0", 0),
 (9, "Whitefish", "0","0", 0);
+
+
+CREATE TABLE websites (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ski_area_name` varchar(255) NOT NULL,
+  `content` TEXT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+INSERT INTO websites VALUES
+(1, "Alpental", ""),
+(2, "Big Sky", ""),
+(3, "Bridger Bowl",""),
+(4, "Jackson Hole",""),
+(5, "Mt Bachelor", ""),
+(6, "Mt Hood", ""),
+(7, "49 Degrees North", ""),
+(8, "Snowbird", ""),
+(9, "Whitefish", "");

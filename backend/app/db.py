@@ -1,6 +1,7 @@
 import mysql.connector
 from werkzeug.security import generate_password_hash, check_password_hash
 import credentials
+from app import utils
 
 
 ################
@@ -42,14 +43,13 @@ def get_ski_area(name):
     db = get_db()
     cursor = db.cursor(dictionary=True)
     cursor.execute("use snow_db")
-    query = """ SELECT * FROM ski_areas WHERE name="{}";  """.format(name)
-    cursor.execute(query)
+    cursor.execute(" SELECT * FROM ski_areas WHERE name=%(name)s", name);
     res = cursor.fetchone()
     del res["id"]
     return res
 
 
-# updates a ski area with all of its data
+# updates a ski area with all of data
 def update_ski_area(data):
     print("\n\n[DEBUG] db.update_ski_area() data:", data)
     try:
@@ -68,7 +68,7 @@ def update_ski_area(data):
         db.commit()
         print("[DEBUG] Updated {}\n\n".format(data["name"]))
     except:
-        print("[DEBUG] Error updating {}\n\n".format(data["name"]))
+        utils.print_error_message("Error updating {}".format(data["name"]))
 
 
 # possible TODO if we have an admin web page
@@ -149,7 +149,7 @@ def create_new_month(data):
 
 # updates the monthly data table with a ski areas calculated monthly data
 def update_monthly_data(data):
-    print("\n\n[DEBUG] db.update_monthly_data() data:", data)
+    print("\n\n[DEBUG] db.update_monthly_data() snow_data:", data)
     try:
         db = get_db()
         cursor = db.cursor()
@@ -162,7 +162,7 @@ def update_monthly_data(data):
         db.commit()
         print("[DEBUG] Updated monthly data for {}\n\n".format(data["ski_area_name"]))
     except:
-        print("[DEBUG] Error updating monthly data for {}\n\n".format(data["ski_area_name"]))
+        utils.print_error_message("Error updating monthly data for {}".format(data["ski_area_name"]))
 
 
 #######################
@@ -181,7 +181,7 @@ def get_avg_temp(data):
         res = cursor.fetchone()
         return res["avg_temp"]
     except:
-        print("[DEBUG] Error getting avg_temp from db")
+        utils.print_error_message("Error getting avg_temp from db")
 
 
 # updates the average temperature for a ski area
@@ -199,7 +199,7 @@ def update_avg_temp(data):
         new_count = res["count"] + 1
         new_avg_temp = int(new_total_temp / new_count)
     except:
-        print("[DEBUG] Error getting temps")
+        utils.print_error_message("Error getting temps")
 
     if new_avg_temp and new_total_temp and new_count:
         try:
@@ -212,7 +212,7 @@ def update_avg_temp(data):
             db.commit()
             print("[DEBUG] Updated average temp for {}\n\n".format(data["name"]))
         except:
-            print("[DEBUG] Error updating average temp for {}\n\n".format(data["name"]))
+            utils.print_error_message("Error updating average temp for {}\n\n".format(data["name"]))
 
 
 def reset_avg_temp(data):
@@ -227,7 +227,7 @@ def reset_avg_temp(data):
         db.commit()
         print("[DEBUG] Reset avg temp for {}\n\n".format(data["name"]))
     except:
-        print("[DEBUG] Error resetting avg temp for {}\n\n".format(data["name"]))
+        utils.print_error_message("Error resetting avg temp for {}\n\n".format(data["name"]))
 
 
 ##################
@@ -236,7 +236,7 @@ def reset_avg_temp(data):
 
 
 def create_user(data):
-    print("\n\n[DEBUG] db.create_user() data:", data)
+    print("\n\n[DEBUG] db.create_user() snow_data:", data)
     try:
         db = get_db()
         cursor = db.cursor()
@@ -248,7 +248,7 @@ def create_user(data):
         db.commit()
         return True
     except:
-        print("DEBUG create_user mysql error")
+        utils.print_error_message("create_user mysql error")
         return False
 
 
@@ -262,7 +262,7 @@ def delete_user(data):
         db.commit()
         return True
     except:
-        print("DEBUG delete_user mysql error")
+        utils.print_error_message("delete_user mysql error")
         return False
 
 
@@ -277,7 +277,7 @@ def update_password(data):
         db.commit()
         return True
     except:
-        print("DEBUG update_password mysql error")
+        utils.print_error_message("update_password mysql error")
         return False
 
 
@@ -291,7 +291,7 @@ def update_email(data):
         db.commit()
         return True
     except:
-        print("DEBUG update_email mysql error")
+        utils.print_error_message("update_email mysql error")
         return False
 
 
@@ -305,7 +305,7 @@ def check_password(data):
         pw_hash = cursor.fetchone()
         return check_password_hash(pw_hash[0], data["password"])
     except:
-        print("DEBUG check_password mysql error")
+        utils.print_error_message("check_password mysql error")
         return False
 
 
@@ -360,3 +360,35 @@ def reset_api_counts():
     query = """ UPDATE users SET api_count="0"; """
     cursor.execute(query)
     db.commit()
+
+
+##########################
+# website content checks #
+##########################
+
+def get_content(ski_area):
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("use snow_db")
+        query = """ SELECT content FROM websites WHERE ski_area_name="{}"; """.format(ski_area)
+        cursor.execute(query)
+        res = cursor.fetchone()
+        return res[0]
+    except:
+        return None
+
+
+def set_content(new_content, ski_area):
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("use snow_db")
+        query = """ UPDATE websites SET content="{}" WHERE ski_area_name="{}"; """.format(new_content, ski_area)
+        cursor.execute(query)
+        db.commit()
+        print("DEBUG commited")
+        return True
+    except:
+        utils.print_error_message("Error setting content for {}".format(ski_area))
+        return False

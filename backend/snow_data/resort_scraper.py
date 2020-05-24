@@ -3,16 +3,12 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import argparse
 import requests
-
-
-# strips all special characters from string
-def strip_special_chars(string):
-    return ''.join(e for e in string if e.isalnum())
+from app import utils
 
 
 """
- The scraper functions following each return an array 'data' with the necessary ski area information 
- data = [
+ The snow_data functions following each return an array 'snow_data' with the necessary ski area information 
+ snow_data = [
     name,         - ski area name
     cur_temp,     - the current temperature at the ski area in Fahrenheit
     cur_depth,    - the measured snow pack depth in inches
@@ -47,17 +43,17 @@ def alpental():
     url2 = 'https://forecast.weather.gov/MapClick.php?lat=47.439538&lon=-121.434713&site=pdt&smap=1&unit=0&lg=en&FcstType=text#.Vky-y3arS71'
     bs = SSLfix(url)
 
-    # select the elements that have the data and take that directly
+    # select the elements that have the snow_data and take that directly
     cur_temp = bs.find_all('div', {'class': 'box box_flats2'})[1].find_next('span').find_next('span').find_next('span')[
-        'data-usc']
-    new_snow_12 = bs.find_all('span', {'class': 'js-measurement'})[42]['data-usc']
-    new_snow_24 = bs.find_all('span', {'class': 'js-measurement'})[43]['data-usc']
-    new_snow_48 = bs.find_all('span', {'class': 'js-measurement'})[44]['data-usc']
-    ytd = bs.find_all('span', {'class': 'js-measurement'})[45]['data-usc']
-    cur_depth = bs.find_all('span', {'class': 'js-measurement'})[46]['data-usc']
+        'snow_data-usc']
+    new_snow_12 = bs.find_all('span', {'class': 'js-measurement'})[42]['snow_data-usc']
+    new_snow_24 = bs.find_all('span', {'class': 'js-measurement'})[43]['snow_data-usc']
+    new_snow_48 = bs.find_all('span', {'class': 'js-measurement'})[44]['snow_data-usc']
+    ytd = bs.find_all('span', {'class': 'js-measurement'})[45]['snow_data-usc']
+    cur_depth = bs.find_all('span', {'class': 'js-measurement'})[46]['snow_data-usc']
     wind_speed = bs.find_all('span', {
         'class': 'text text_48 text_72Md mix-text_color7 mix-text_alignCenter mix-text_alignLeftMd mix-text_strict'})[
-        2].find_next('span')['data-usc']
+        2].find_next('span')['snow_data-usc']
 
     # wind direction not reported by alpental so get from weather.gov
     bs2 = SSLfix(url2)
@@ -68,16 +64,16 @@ def alpental():
 
     # strip any special chars
     for i, j in enumerate(data):
-        data[i] = strip_special_chars(j)
+        data[i] = utils.strip_special_chars(j)
 
     # add the name of the 
     data.insert(0, "Alpental")
     return data
 
 
-# todo - not reporting data anymore
+# todo - not reporting snow_data anymore
 def big_sky():
-    # i think we should do a few that aren't currently working and not presenting data
+    # i think we should do a few that aren't currently working and not presenting snow_data
     # that way we can handle that 'error' correctly and make sure it works
     # since this is what will happen to all the ski areas in the summer most likely
     pass
@@ -107,7 +103,7 @@ def jackson_hole():
     wind_speed = ' '.join(speedList)
     wind_speed = ''.join(e for e in wind_speed if e.isdecimal())
 
-    # removed the wind speed as jackson hole stopped reporting mid mountain data for this mid april
+    # removed the wind speed as jackson hole stopped reporting mid mountain snow_data for this mid april
     # speedList = wind.split()[-2:]
     # wind_speed = ' '.join(speedList).strip('mph').strip()
 
@@ -117,20 +113,20 @@ def jackson_hole():
     cur_depth = snowDepth_raw.replace("\n", "")
     ytd = snowYTD_raw.replace("\n", "")
 
-    # set any unknown data points to empty strings
+    # set any unknown snow_data points to empty strings
     new_snow_12 = ""
 
     data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
 
     for i, j in enumerate(data):
-        data[i] = strip_special_chars(j)
+        data[i] = utils.strip_special_chars(j)
 
     data.insert(0, "Jackson Hole")  # insert ski area name after stripping special chars
     return data
 
 
 def mt_bachelor():
-    # mt bachelor required scraping a second noaa site for wind speed and direction data as they did not report it on their site
+    # mt bachelor required scraping a second noaa site for wind speed and direction snow_data as they did not report it on their site
     url2 = 'https://forecast.weather.gov/MapClick.php?lat=43.98886243884903&lon=-121.68182373046875&site=pdt&smap=1&unit=0&lg=en&FcstType=text#.Vky-y3arS71'
     bs2 = SSLfix(url2)
     wind = bs2.find(id="current_conditions_detail").find('b', text="Wind Speed").find_next('td').string
@@ -150,14 +146,14 @@ def mt_bachelor():
     cur_depth = snowfall.find('div', 'section-block full').find('div', {'class': 'key'}).string
     ytd = snowfall.find('div', 'section-block full first').find('div', {'class': 'key'}).string
 
-    # set any unknown data points to empty strings
+    # set any unknown snow_data points to empty strings
     new_snow_12 = ""
     new_snow_48 = ""
 
-    # strip special chars from the data and return it as a list in correct order
+    # strip special chars from the snow_data and return it as a list in correct order
     data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
     for i, j in enumerate(data):
-        data[i] = strip_special_chars(j)
+        data[i] = utils.strip_special_chars(j)
 
     # insert ski area name
     data.insert(0, "Mt Bachelor")
@@ -167,19 +163,19 @@ def mt_bachelor():
 def mt_hood():
     url = 'https://www.skihood.com/en/the-mountain/conditions'
     bs = SSLfix(url)
-    # added check to make sure that 'data-depth' is actually a variable 
+    # added check to make sure that 'snow_data-depth' is actually a variable
     cur_temp = bs.find('div', {'class': 'conditions-glance-widget conditions-at-elevation'}).find('dd', {
-        'class': 'metric temperature', 'data-temperature': True})['data-temperature']
+        'class': 'metric temperature', 'snow_data-temperature': True})['snow_data-temperature']
     wind_speed = bs.find('div', {'class': 'conditions-glance-widget conditions-at-elevation'}).find('dd', {
-        'class': 'reading windspeed', 'data-windspeed': True})['data-windspeed']
+        'class': 'reading windspeed', 'snow_data-windspeed': True})['snow_data-windspeed']
     snow = bs.find('div', {'class': 'conditions-glance-widget conditions-snowfall'}).find_all('dl')
-    new_snow_12 = snow[0].find('dd', {'class': 'reading depth', 'data-depth': True})['data-depth']
-    new_snow_24 = snow[1].find('dd', {'class': 'reading depth', 'data-depth': True})['data-depth']
-    new_snow_48 = snow[2].find('dd', {'class': 'reading depth', 'data-depth': True})['data-depth']
-    cur_depth = bs.find('div', {'class': 'snowdepth-mid'}).find('span', {'class': 'reading depth', 'data-depth': True})[
-        'data-depth']
-    ytd = bs.find('dl', {'class': 'snowdepth-ytd'}).find('dd', {'class': 'reading depth', 'data-depth': True})[
-        'data-depth']
+    new_snow_12 = snow[0].find('dd', {'class': 'reading depth', 'snow_data-depth': True})['snow_data-depth']
+    new_snow_24 = snow[1].find('dd', {'class': 'reading depth', 'snow_data-depth': True})['snow_data-depth']
+    new_snow_48 = snow[2].find('dd', {'class': 'reading depth', 'snow_data-depth': True})['snow_data-depth']
+    cur_depth = bs.find('div', {'class': 'snowdepth-mid'}).find('span', {'class': 'reading depth', 'snow_data-depth': True})[
+        'snow_data-depth']
+    ytd = bs.find('dl', {'class': 'snowdepth-ytd'}).find('dd', {'class': 'reading depth', 'snow_data-depth': True})[
+        'snow_data-depth']
 
     url2 = 'https://forecast.weather.gov/MapClick.php?lat=45.340579&lon=-121.670934&site=pdt&smap=1&unit=0&lg=en&FcstType=text#.Vky-y3arS71'
     bs2 = SSLfix(url2)
@@ -190,7 +186,7 @@ def mt_hood():
 
     # todo - remove as no longer necessary, there are no special chars in this instance
     for i, j in enumerate(data):
-        data[i] = strip_special_chars(j)
+        data[i] = utils.strip_special_chars(j)
 
     data.insert(0, "Mt Hood")  # insert ski area name after stripping special chars
     return data
@@ -208,7 +204,7 @@ def ski49n():
     ytd = bs.find(text="Snowfall YTD (summit)").find_next('h3').string
 
     # wind_speed_check = bs.find_all('div', {'class':'row'})[4].find(text="Wind").find_next('h3').string.strip('mph')
-    # Remove "Calm" because it is not quantitative data
+    # Remove "Calm" because it is not quantitative snow_data
     # if wind_speed_check == "Calm ":
     #    wind_speed = ""
     # else:
@@ -226,7 +222,7 @@ def ski49n():
 
     # remove special chars
     for i, j in enumerate(data):
-        data[i] = strip_special_chars(j)
+        data[i] = utils.strip_special_chars(j)
 
     data.insert(0, "49 Degrees North")
     return data
@@ -235,7 +231,7 @@ def ski49n():
 def snowbird():
     url = 'https://www.snowbird.com/mountain-report/'
     bs = SSLfix(url)
-    # data was nicely organized for scraping on this site, everything needed had the class 'sb-condition_value'
+    # snow_data was nicely organized for scraping on this site, everything needed had the class 'sb-condition_value'
     sbList = bs.find('div', {'class': 'conditions'}).find_all('div', {'class': 'sb-condition_value'})
     new_snow_12 = sbList[0].string
     new_snow_24 = sbList[1].string
@@ -254,7 +250,7 @@ def snowbird():
     # strip special chars
     data = [cur_temp, cur_depth, ytd, wind_dir, new_snow_12, new_snow_24, new_snow_48]
     for i, j in enumerate(data):
-        data[i] = strip_special_chars(j)
+        data[i] = utils.strip_special_chars(j)
 
     # convert back to string for db
     data.insert(4, str(wind_speed))
@@ -287,37 +283,37 @@ def whitefish():
     terminal = weatherString[:tempIndex].split()
     cur_temp = terminal[-1]
 
-    # whitefish does not report 24h or 48h snow data so set as empty strings
+    # whitefish does not report 24h or 48h snow snow_data so set as empty strings
     new_snow_24 = ""
     new_snow_48 = ""
 
     data = [cur_temp, cur_depth, ytd, wind_dir, wind_speed, new_snow_12, new_snow_24, new_snow_48]
     for i, j in enumerate(data):
-        data[i] = strip_special_chars(j)
+        data[i] = utils.strip_special_chars(j)
 
     data.insert(0, "Whitefish")
     return data
 
 
-# main switch statement to get data based on which ski area you want
+# main switch statement to get snow_data based on which ski area you want
 def get_data(ski_area):
-    if ski_area == "alpental":
+    if ski_area == "Alpental":
         return alpental()
-    elif ski_area == "big_sky":
+    elif ski_area == "Big Sky":
         return big_sky()
-    elif ski_area == "bridger_bowl":
+    elif ski_area == "Bridger Bowl":
         return bridger_bowl()
-    elif ski_area == "jackson_hole":
+    elif ski_area == "Jackson Hole":
         return jackson_hole()
-    elif ski_area == "mt_bachelor":
+    elif ski_area == "Mt Bachelor":
         return mt_bachelor()
-    elif ski_area == "mt_hood":
+    elif ski_area == "Mt Hood":
         return mt_hood()
-    elif ski_area == "ski49n":
+    elif ski_area == "49 Degrees North":
         return ski49n()
-    elif ski_area == "snowbird":
+    elif ski_area == "Snowbird":
         return snowbird()
-    elif ski_area == "whitefish":
+    elif ski_area == "Whitefish":
         return whitefish()
 
 

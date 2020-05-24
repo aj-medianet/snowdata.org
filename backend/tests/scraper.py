@@ -1,4 +1,4 @@
-from scraper import resort_scraper
+from snow_data import resort_scraper
 import unittest
 
 
