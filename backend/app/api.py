@@ -15,7 +15,7 @@ app_settings = os.getenv('APP_SETTINGS')
 app.config.from_object(app_settings)
 
 # DB dev function calls
-# skiarea.update_sa()
+skiarea.update_sa()
 # skiarea.check_website_change() # TODO get this working and then set a schedule for it
 # skiarea.create_new_month()
 
