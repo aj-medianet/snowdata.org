@@ -61,12 +61,13 @@ class SkiArea:
 # loop through the list of ski areas, get the current snow_data and update the db
 def update_sa():
     for ski_area in const.SKI_AREAS:
-
-        data = resort_scraper.get_data(ski_area)
-        sa = SkiArea(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
-        sa.update_ski_areas()
-        sa.update_avg_temp()
-
+        try:
+            data = resort_scraper.get_data(ski_area)
+            sa = SkiArea(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
+            sa.update_ski_areas()
+            sa.update_avg_temp()
+        except:
+            utils.print_error_message("Error scraping and updating {}".format(ski_area))
 
 
 def create_new_month():

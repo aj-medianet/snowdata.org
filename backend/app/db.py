@@ -52,20 +52,23 @@ def get_ski_area(ski_area):
 # updates a ski area with all of data
 def update_ski_area(data):
     print("\n\n[DEBUG] db.update_ski_area() data:", data)
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute("use snow_db")
-    cursor.execute("""UPDATE ski_areas SET cur_temp = %(cur_temp)s, cur_depth = %(cur_depth)s, ytd = %(ytd)s, \
-        wind_dir = %(wind_dir)s, wind_speed = %(wind_speed)s, new_snow_12 = %(new_snow_12)s, \
-        new_snow_24 = %(new_snow_24)s, new_snow_48 = %(new_snow_48)s, ts = curdate() \
-        WHERE name = %(name)s;""", {"cur_temp": data["cur_temp"], "cur_depth": data["cur_depth"],
-                                    "ytd": data["ytd"], "wind_dir": data["wind_dir"],
-                                    "wind_speed": data["wind_speed"], "new_snow_12": data["new_snow_12"],
-                                    "new_snow_24": data["new_snow_24"], "new_snow_48": data["new_snow_48"],
-                                    "name": data["name"]
-                                    })
-    db.commit()
-    print("[DEBUG] Updated {}\n\n".format(data["name"]))
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("use snow_db")
+        cursor.execute("""UPDATE ski_areas SET cur_temp = %(cur_temp)s, cur_depth = %(cur_depth)s, ytd = %(ytd)s, \
+            wind_dir = %(wind_dir)s, wind_speed = %(wind_speed)s, new_snow_12 = %(new_snow_12)s, \
+            new_snow_24 = %(new_snow_24)s, new_snow_48 = %(new_snow_48)s, ts = curdate() \
+            WHERE name = %(name)s;""", {"cur_temp": data["cur_temp"], "cur_depth": data["cur_depth"],
+                                        "ytd": data["ytd"], "wind_dir": data["wind_dir"],
+                                        "wind_speed": data["wind_speed"], "new_snow_12": data["new_snow_12"],
+                                        "new_snow_24": data["new_snow_24"], "new_snow_48": data["new_snow_48"],
+                                        "name": data["name"]
+                                        })
+        db.commit()
+        print("[DEBUG] Updated {}\n\n".format(data["name"]))
+    except:
+        utils.print_error_message("Error updating {}".format(data["name"]))
 
 
 # possible TODO if we have an admin web page
