@@ -3,7 +3,7 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import argparse
 import requests
-#from app import utils
+from app import utils
 
 
 """
