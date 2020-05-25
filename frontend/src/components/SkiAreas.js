@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Spinner from 'react-bootstrap/Spinner'
 import AreaCombo from './charts/AreaCombo';
+import AreaNewSnow from './charts/AreaNewSnow';
 import ErrorBoundary from './ErrorBoundary';
 //import { useState, useEffect } from 'react';
 
@@ -88,16 +89,21 @@ class SkiAreas extends Component {
                   <p>Current Temperature: {this.state.skiArea.cur_temp}&#176;</p>
                   <p>Wind Speed: {this.state.skiArea.wind_speed} mph</p>
                   <p>Wind Direction: {this.state.skiArea.wind_dir}</p>
-                  <p>12 Hour Snowfall: {this.state.skiArea.new_snow_12}"</p>
+                  {/*<p>12 Hour Snowfall: {this.state.skiArea.new_snow_12}"</p>
                   <p>24 Hour Snowfall: {this.state.skiArea.new_snow_24}"</p>
-                  <p>48 Hour Snowfall: {this.state.skiArea.new_snow_48}"</p>
+                  <p>48 Hour Snowfall: {this.state.skiArea.new_snow_48}"</p>*/}
                   <p>Current Snow Depth: {this.state.skiArea.cur_depth}"</p>
                   <p>YTD: {this.state.skiArea.ytd}"</p>
                 </div>
                 <ErrorBoundary>
                 <div className="row">
                 <div className="col-sm m-4 mainCard">
-                <AreaCombo data={this.state.SkiAreas} data_monthly={this.state.skiAreaMonthly} />
+                <AreaNewSnow data={this.state.skiArea} />
+                </div>
+                </div>
+                <div className="row">
+                <div className="col-sm m-4 mainCard">
+                <AreaCombo data_monthly={this.state.skiAreaMonthly} />
                 </div>
                 </div>
                 </ErrorBoundary>

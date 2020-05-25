@@ -55,11 +55,11 @@ class AreaCombo extends Component {
         chart: {
             zoomType: 'xy'
         },
+        title: {
+            text: 'Season Data'
+        },
         credits: {
             enabled: false,
-        },
-        title: {
-            text: '',
         },
         xAxis: [{
             categories: months,
