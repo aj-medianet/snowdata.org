@@ -67,8 +67,10 @@ def update_ski_area(data):
                                         })
         db.commit()
         print("[DEBUG] Updated {}\n\n".format(data["name"]))
+        return True
     except:
         utils.print_error_message("Error updating {}".format(data["name"]))
+        return False
 
 
 # possible TODO if we have an admin web page
@@ -160,8 +162,10 @@ def update_monthly_data(data):
                                 "month": data["month"], "year": data["year"]})
         db.commit()
         print("[DEBUG] Updated monthly data for {}\n\n".format(data["ski_area_name"]))
+        return True
     except:
         utils.print_error_message("Error updating monthly data for {}".format(data["ski_area_name"]))
+        return False
 
 
 #######################
@@ -199,6 +203,7 @@ def update_avg_temp(data):
         new_avg_temp = int(new_total_temp / new_count)
     except:
         utils.print_error_message("Error getting temps")
+        return False
 
     if new_avg_temp and new_total_temp and new_count:
         try:
@@ -210,8 +215,10 @@ def update_avg_temp(data):
                                                            "count": new_count, "ski_area_name": data["name"]})
             db.commit()
             print("[DEBUG] Updated average temp for {}\n\n".format(data["name"]))
+            return True
         except:
             utils.print_error_message("Error updating average temp for {}\n\n".format(data["name"]))
+            return False
 
 
 def reset_avg_temp(data):
@@ -224,8 +231,10 @@ def reset_avg_temp(data):
         %(ski_area_name)s; """, {"ski_area_name": data["name"]})
         db.commit()
         print("[DEBUG] Reset avg temp for {}\n\n".format(data["name"]))
+        return True
     except:
         utils.print_error_message("Error resetting avg temp for {}\n\n".format(data["name"]))
+        return False
 
 
 ##################
@@ -345,6 +354,7 @@ def increment_api_count(api_key, count):
     cursor.execute("""UPDATE users SET api_count=%(api_count)s WHERE api_key=%(api_key)s;""",
                    {"api_count": count, "api_key": api_key})
     db.commit()
+    return True
 
 
 def reset_api_counts():
@@ -354,6 +364,7 @@ def reset_api_counts():
     query = """UPDATE users SET api_count="0";"""
     cursor.execute(query)
     db.commit()
+    return True
 
 
 ##########################
