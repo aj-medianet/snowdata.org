@@ -78,6 +78,7 @@ spacy/*.html
 #
 
 package-lock.json
+prod-docker-compose.yml
 
 # Logs
 logs
