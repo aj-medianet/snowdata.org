@@ -91,7 +91,7 @@ Since this project is open sourced we have kept the production docker-compose bu
 - Create prod-docker-compose.yml
 - Setup your db credentials in the prod docker-compoe file and then create a credentials.py file like in the dev build
 - Point the frontend build to the prod.Dockerfile and link the ports correctly
-- remove all volumes except the DB, because you want the DB data to persist between builds
+- Remove all volumes except the DB, because you want the DB data to persist between builds
 - Setup NGINX on your server to route traffic to the frontend and backend ports exposed
 
 ## Continuous Integration
