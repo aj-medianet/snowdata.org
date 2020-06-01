@@ -27,7 +27,7 @@ This file will need to configure the DB to match the credentials in the docker-c
 You also need to include a number for the API call limit:
 - api_limit
 
-As well as gmail credentials that need to line up with the utils.py send_email function:
+As well as gmail credentials that line up with the utils.py send_email function:
 - email_password
 
 Install the node modules in the dev build after you've installed node and npm
