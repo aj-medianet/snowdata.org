@@ -82,7 +82,7 @@ Load the init.sql schema into the snow_db database
 ```
 mysql -u root -p snow_db < init.sql
 ```
-Password = root
+Password = <password in docker-compose.yml setuo>
 
 
 ### Deployment 
