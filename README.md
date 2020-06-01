@@ -79,14 +79,15 @@ docker exec -it <container ID> /bin/bash
 ```
 
 Load the init.sql schema into the snow_db database
+
 ```
-mysql -u root -p snow_db < init.sql
+mysql -u root -p snow_db < docker-entrypoint-initdb.d/init.sql
 ```
 
 
 ### Deployment 
 
-Since this project is open sourced we have kept the production docker-compose build hidden. However, you can see the build command in the Makefile and frontend prod.Dockerfile Steps to recreate a similar production build include:
+Since this project is open sourced we have kept the production docker-compose build hidden. However, you can see the build command in the Makefile and frontend prod.Dockerfile. Steps to recreate a similar production build include:
 - Create prod-docker-compose.yml
 - Setup your db credentials in the prod docker-compoe file and then create a credentials.py file like in the dev build
 - Point the frontend build to the prod.Dockerfile and link the ports correctly
