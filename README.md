@@ -15,6 +15,21 @@ https://docs.docker.com/compose/install/
 
 ### For development 
 
+To run the backend you will need to create a file called 'credentials.py' in the backend root directory. 
+
+This file will need to configure the DB to match the credentials in the docker-compose.yml file. You need to include:
+- db_user
+- db_password
+- db_host
+- db_port
+- db_name
+
+You also need to include a number for the API call limit:
+- api_limit
+
+As well as a gmail credentials that need to line up with the utils.py send_email function:
+- email_password
+
 Install the node modules in the dev build after you've installed node and npm
 ```
 cd frontend && npm install && cd ..
@@ -54,9 +69,6 @@ The backend is running on
 http://localhost:7072
 
 
-
-
-
 ### Manually load database
 Login to MySQL docker container
 ```
@@ -75,7 +87,12 @@ Password = root
 
 ### Deployment 
 
-TODO
+Since this project is open sourced we have kept the production docker-compose build hidden. However, you can see the build command in the Makefile and frontend prod.Dockerfile Steps to recreate a similar production build include:
+- Create prod-docker-compose.yml
+- Setup your db credentials in the prod docker-compoe file and then create a credentials.py file like in the dev build
+- Point the frontend build to the prod.Dockerfile and link the ports correctly
+- remove all volumes except the DB, because you want the DB data to persist between builds
+- Setup NGINX on your server to route traffic to the frontend and backend ports exposed
 
 ## Continuous Integration
 
