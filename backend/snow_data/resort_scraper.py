@@ -103,6 +103,10 @@ def jackson_hole():
     wind_speed = ' '.join(speedList)
     wind_speed = ''.join(e for e in wind_speed if e.isdecimal())
 
+    # end of season fix
+    if cur_temp == ' no mid mountain data in summer ':
+        cur_temp = bs2.find('div', {'id':'current_conditions-summary'}).find('p', {'class':'myforecast-current-lrg'}).string.strip('F')
+
     # removed the wind speed as jackson hole stopped reporting mid mountain data for this mid april
     # speedList = wind.split()[-2:]
     # wind_speed = ' '.join(speedList).strip('mph').strip()
