@@ -5,7 +5,7 @@ import source from '../docs/about.md';
 // displays website about info
 class About extends Component {
     state = {
-        text : null,
+        text: null,
     }
 
     componentDidMount() {
@@ -24,11 +24,11 @@ class About extends Component {
                 <br></br>
                 <div className="text-left m-3">
                     <ReactMarkdown source={text} />
-                </div>   
+                </div>
             </div>
-            
+
         )
     }
 }
 
-  export default About
+export default About

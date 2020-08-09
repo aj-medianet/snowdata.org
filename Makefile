@@ -8,6 +8,7 @@ rund:
 	docker-compose up -d
 
 br:
+	docker volume prune -f
 	docker-compose up -d --build
 
 prod:

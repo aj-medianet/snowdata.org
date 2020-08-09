@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import source from '../docs/tc.md';
 
 // displays website quickstart guide
-class QuickStart extends Component {
+class TC extends Component {
     state = {
         text : null,
     }
@@ -30,4 +30,4 @@ class QuickStart extends Component {
     }
 }
 
-export default QuickStart
+export default TC

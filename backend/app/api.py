@@ -19,6 +19,7 @@ skiarea.update_sa()
 # skiarea.check_website_change() # TODO get this working and then set a schedule for it
 # skiarea.create_new_month()
 
+
 # if it's the first of the month, create a new month for each ski area
 def check_first_of_month():
     if date.today().day == 1:
