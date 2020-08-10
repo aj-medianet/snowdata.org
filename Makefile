@@ -12,5 +12,4 @@ br:
 	docker-compose up -d --build
 
 prod:
-	docker volume prune -f
 	docker-compose -f prod-docker-compose.yml up -d --build
