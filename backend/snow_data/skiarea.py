@@ -1,5 +1,5 @@
 from app import db, utils
-from snow_data import resort_scraper, const, website_parser
+from snow_data import resort_scraper, const, website_parser, weather
 
 
 class SkiArea:
@@ -19,6 +19,20 @@ class SkiArea:
         self.new_snow_24 = new_snow_24
         self.new_snow_48 = new_snow_48
         self.avg_temp = avg_temp
+
+    def get_snow_data(self):
+        snow_data = resort_scraper.get_data(self.name)
+        self.cur_depth = snow_data["cur_depth"]
+        self.ytd = snow_data["ytd"]
+        self.new_snow_12 = snow_data["new_snow_12"]
+        self.new_snow_24 = snow_data["new_snow_24"]
+        self.new_snow_48 = snow_data["new_snow_48"]
+
+    def get_forecast_data(self):
+        forecast_data = weather.get_current_forecast(const.SKI_AREAS[self.name]["weather_gov_url"])
+        self.cur_temp = str(forecast_data["properties"]["periods"][0]["temperature"])
+        self.wind_dir = forecast_data["properties"]["periods"][0]["windDirection"]
+        self.wind_speed = forecast_data["properties"]["periods"][0]["windSpeed"].split(" ")[0]
 
     # updates the database with all of the ski areas snow_data
     def update_ski_areas(self):
@@ -62,12 +76,14 @@ class SkiArea:
 def update_sa():
     for ski_area in const.SKI_AREAS:
         try:
-            data = resort_scraper.get_data(ski_area)
-            sa = SkiArea(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8])
+            sa = SkiArea(name=ski_area)
+            sa.get_snow_data()
+            sa.get_forecast_data()
             sa.update_ski_areas()
             sa.update_avg_temp()
         except:
             utils.print_error_message("Error scraping and updating {}".format(ski_area))
+
 
 
 def create_new_month():
