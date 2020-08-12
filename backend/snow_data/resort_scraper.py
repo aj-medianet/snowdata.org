@@ -50,6 +50,7 @@ def bridger_bowl():
 
 
 def jackson_hole():
+    print("in JH")
     bs = get_soup_obj(const.SKI_AREAS["Jackson Hole"]["ski_area_url"])
     new_snow_12 = ""
     new_snow_24 = bs.find(text="24 Hrs").find_next('div').find_next('div').string.replace("\n", "")
@@ -65,8 +66,7 @@ def jackson_hole():
         "new_snow_48": new_snow_48
     }
 
-    for k in data:
-        data[k] = strip_special_chars(k)
+    data = {x: strip_special_chars(data[x]) for x in data}
 
     return data
 
@@ -87,6 +87,8 @@ def mt_bachelor():
         "new_snow_24": new_snow_24,
         "new_snow_48": new_snow_48
     }
+
+    data = {x: strip_special_chars(data[x]) for x in data}
 
     return data
 
@@ -127,6 +129,8 @@ def ski49n():
         "new_snow_24": new_snow_24,
         "new_snow_48": new_snow_48
     }
+
+    data = {x: strip_special_chars(data[x]) for x in data}
 
     return data
 
