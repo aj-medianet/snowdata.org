@@ -18,6 +18,7 @@ CREATE TABLE ski_areas (
   `new_snow_24` varchar(255),
   `new_snow_48` varchar(255),
   `ts` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `forecast` JSON,
   PRIMARY KEY (`id`),
   KEY (`name`)
 ) ENGINE=InnoDB;

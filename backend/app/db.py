@@ -2,6 +2,7 @@ import mysql.connector
 from werkzeug.security import generate_password_hash, check_password_hash
 import credentials
 from app import utils
+import json
 
 
 ################
@@ -70,6 +71,23 @@ def update_ski_area(data):
         return True
     except:
         utils.print_error_message("Error updating {}".format(data["name"]))
+        return False
+
+
+def update_forecast(name, forecast):
+    print("\n\n[DEBUG] db.update_forecast")
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("use snow_db")
+        cursor.execute("""UPDATE ski_areas SET forecast = %(forecast)s WHERE name = %(name)s;""", {"forecast": json.dumps(forecast),
+                                                                                                   "name": name
+                                                                                                   })
+        db.commit()
+        print("[DEBUG] Updated {} Forecast\n\n".format(name))
+        return True
+    except:
+        utils.print_error_message("Error updating {} Forecast".format(name))
         return False
 
 
@@ -157,8 +175,9 @@ def update_monthly_data(data):
         cursor.execute("use snow_db")
         cursor.execute(""" UPDATE monthly_data SET total_new_snow = %(total_new_snow)s, snow_depth = %(snow_depth)s, \
          avg_temp = %(avg_temp)s, ytd = %(ytd)s WHERE (ski_area_name = %(ski_area_name)s AND month = %(month)s AND \
-         year = %(year)s);""", {"total_new_snow": data["total_new_snow"],"snow_depth": data["snow_depth"],
-                                "avg_temp": data["avg_temp"], "ytd": data["ytd"], "ski_area_name": data["ski_area_name"],
+         year = %(year)s);""", {"total_new_snow": data["total_new_snow"], "snow_depth": data["snow_depth"],
+                                "avg_temp": data["avg_temp"], "ytd": data["ytd"],
+                                "ski_area_name": data["ski_area_name"],
                                 "month": data["month"], "year": data["year"]})
         db.commit()
         print("[DEBUG] Updated monthly data for {}\n\n".format(data["ski_area_name"]))

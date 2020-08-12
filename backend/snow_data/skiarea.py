@@ -20,6 +20,7 @@ class SkiArea:
         self.new_snow_48 = new_snow_48
         self.avg_temp = avg_temp
 
+    # gets snow data from resort scraper and assigns to instance variables
     def get_snow_data(self):
         snow_data = resort_scraper.get_data(self.name)
         self.cur_depth = snow_data["cur_depth"]
@@ -28,22 +29,26 @@ class SkiArea:
         self.new_snow_24 = snow_data["new_snow_24"]
         self.new_snow_48 = snow_data["new_snow_48"]
 
+    # gets the forecast from weather.gov api, assigns to instance variables and returns forecast as JSON obj
     def get_forecast_data(self):
         forecast_data = weather.get_current_forecast(const.SKI_AREAS[self.name]["weather_gov_url"])
         self.cur_temp = str(forecast_data["properties"]["periods"][0]["temperature"])
         self.wind_dir = forecast_data["properties"]["periods"][0]["windDirection"]
         self.wind_speed = forecast_data["properties"]["periods"][0]["windSpeed"].split(" ")[0]
+        return forecast_data
 
     # updates the database with all of the ski areas snow_data
     def update_ski_areas(self):
+        self.get_snow_data()
+        db.update_forecast(self.name, self.get_forecast_data())
         db.update_ski_area(self.__dict__)
+        self.update_avg_temp()
 
     # calculates monthly snow_data for a ski area and updates the db
     def create_new_month(self):
         prev = utils.get_prev_month()
         prev_prev = utils.get_two_months_ago()
         previous_month_data = db.get_ski_areas_month_year(self.name, prev_prev.month, prev_prev.year)
-
         data = {
             "ski_area_name": self.name,
             "month": prev.month,
@@ -53,8 +58,6 @@ class SkiArea:
             "avg_temp": db.get_avg_temp(self.__dict__),
             "ytd": self.ytd
         }
-
-        print("[DEBUG] create_new_month():", data)
         db.create_new_month(data)
         self.reset_avg_temp()  # reset so we can start calculating next months avg
 
@@ -72,18 +75,14 @@ class SkiArea:
 """
 
 
-# loop through the list of ski areas, get the current snow_data and update the db
+# loop through the list of ski areas, get the current snow_data/forecast and update the db
 def update_sa():
     for ski_area in const.SKI_AREAS:
         try:
             sa = SkiArea(name=ski_area)
-            sa.get_snow_data()
-            sa.get_forecast_data()
             sa.update_ski_areas()
-            sa.update_avg_temp()
         except:
             utils.print_error_message("Error scraping and updating {}".format(ski_area))
-
 
 
 def create_new_month():
@@ -96,6 +95,7 @@ def create_new_month():
             utils.print_error_message("SkiAreas error creating monthly snow_data for {}".format(ski_area))
 
 
+# TODO
 def check_website_change():
     for ski_area, value in const.SKI_AREAS.items():
         for key, url in value.items():

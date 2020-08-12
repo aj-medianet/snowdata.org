@@ -27,7 +27,6 @@ def alpental():
     new_snow_48 = bs.find_all('span', {'class': 'js-measurement'})[44]['data-usc']
     ytd = bs.find_all('span', {'class': 'js-measurement'})[45]['data-usc']
     cur_depth = bs.find_all('span', {'class': 'js-measurement'})[46]['data-usc']
-
     data = {
         "cur_depth": cur_depth,
         "ytd": ytd,
@@ -35,7 +34,6 @@ def alpental():
         "new_snow_24": new_snow_24,
         "new_snow_48": new_snow_48
     }
-
     return data
 
 
@@ -50,14 +48,12 @@ def bridger_bowl():
 
 
 def jackson_hole():
-    print("in JH")
     bs = get_soup_obj(const.SKI_AREAS["Jackson Hole"]["ski_area_url"])
     new_snow_12 = ""
     new_snow_24 = bs.find(text="24 Hrs").find_next('div').find_next('div').string.replace("\n", "")
     new_snow_48 = bs.find(text="48 Hrs").find_next('div').find_next('div').string.replace("\n", "")
     cur_depth = bs.find(text="Snow Depth").find_next('div').find_next('div').string.replace("\n", "")
     ytd = bs.find(text="Season Total").find_next('div').find_next('div').string.replace("\n", "")
-
     data = {
         "cur_depth": cur_depth,
         "ytd": ytd,
@@ -65,9 +61,7 @@ def jackson_hole():
         "new_snow_24": new_snow_24,
         "new_snow_48": new_snow_48
     }
-
     data = {x: strip_special_chars(data[x]) for x in data}
-
     return data
 
 
@@ -79,7 +73,6 @@ def mt_bachelor():
     new_snow_24 = snowfall.find('div', 'current-section condition').find('div', {'class': 'key'}).string
     cur_depth = snowfall.find('div', 'section-block full').find('div', {'class': 'key'}).string
     ytd = snowfall.find('div', 'section-block full first').find('div', {'class': 'key'}).string
-
     data = {
         "cur_depth": cur_depth,
         "ytd": ytd,
@@ -87,9 +80,7 @@ def mt_bachelor():
         "new_snow_24": new_snow_24,
         "new_snow_48": new_snow_48
     }
-
     data = {x: strip_special_chars(data[x]) for x in data}
-
     return data
 
 
@@ -101,7 +92,6 @@ def mt_hood():
     new_snow_48 = snow[2].find('dd', {'class': 'reading depth', 'data-depth': True})['data-depth']
     cur_depth = bs.find('div', {'class': 'snowdepth-mid'}).find('span', {'class': 'reading depth', 'data-depth': True})['data-depth']
     ytd = bs.find('dl', {'class': 'snowdepth-ytd'}).find('dd', {'class': 'reading depth', 'data-depth': True})['data-depth']
-
     data = {
         "cur_depth": cur_depth,
         "ytd": ytd,
@@ -109,7 +99,6 @@ def mt_hood():
         "new_snow_24": new_snow_24,
         "new_snow_48": new_snow_48
     }
-
     return data
 
 
@@ -121,7 +110,6 @@ def ski49n():
     new_snow_48 = snow.find(text="48 Hours").find_next('h3').string
     cur_depth = snow.find(text="Snow Depth").find_next('h3').string
     ytd = bs.find(text="Snowfall YTD (summit)").find_next('h3').string
-
     data = {
         "cur_depth": cur_depth,
         "ytd": ytd,
@@ -129,9 +117,7 @@ def ski49n():
         "new_snow_24": new_snow_24,
         "new_snow_48": new_snow_48
     }
-
     data = {x: strip_special_chars(data[x]) for x in data}
-
     return data
 
 
@@ -144,7 +130,6 @@ def snowbird():
     new_snow_48 = snow[2].string
     cur_depth = snow[3].string
     ytd = snow[4].string
-
     data = {
         "cur_depth": cur_depth,
         "ytd": ytd,
@@ -152,7 +137,6 @@ def snowbird():
         "new_snow_24": new_snow_24,
         "new_snow_48": new_snow_48
     }
-
     return data
 
 
@@ -166,7 +150,6 @@ def whitefish():
     new_snow_12 = ""
     new_snow_24 = snow_str2[1].split()[2]
     new_snow_48 = ""
-
     data = {
         "cur_depth": cur_depth,
         "ytd": ytd,
@@ -174,7 +157,6 @@ def whitefish():
         "new_snow_24": new_snow_24,
         "new_snow_48": new_snow_48
     }
-
     return data
 
 
@@ -201,7 +183,6 @@ def get_data(ski_area):
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser()
     parser.add_argument("func")
     args = parser.parse_args()
