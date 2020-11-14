@@ -41,3 +41,4 @@ def send_email(message):
 
 def print_error_message(message):
     print("[DEBUG] {}: {}".format(datetime.now(), message))
+

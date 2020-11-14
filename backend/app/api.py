@@ -4,13 +4,13 @@ from snow_data import skiarea
 import os
 import schedule
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import jsonify
+from flask import jsonify, session
 from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse
 from datetime import date
 
-api = Api(app)  # sets up flask restful api
-app.secret_key = os.urandom(24)  # for cors to work
+api = Api(app)  
+app.secret_key = os.urandom(24) 
 app_settings = os.getenv('APP_SETTINGS')
 app.config.from_object(app_settings)
 

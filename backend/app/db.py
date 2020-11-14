@@ -74,6 +74,7 @@ def update_ski_area(data):
         return False
 
 
+# updates ski_areas forecast with the JSON obj we get from weather.gov api
 def update_forecast(name, forecast):
     print("\n\n[DEBUG] db.update_forecast")
     try:
