@@ -64,7 +64,7 @@ class TestSession(Resource):
 
         response = make_response()
         response.headers['Access-Control-Allow-Credentials'] = 'true'
-        # response.set_cookie('sessionId', str(session["sessionId"]), secure=False, httponly=False)
+        response.set_cookie('sessionId', str(session["sessionId"]), secure=False, httponly=False)
         return response
 
 
