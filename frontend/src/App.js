@@ -14,6 +14,7 @@ import Pricing from './components/Pricing'
 import SkiAreas from './components/SkiAreas'
 import Footer from './components/FooterContent'
 import TC from './components/TC'
+import TestSesssion from './components/TestSession'
 
 class App extends Component {
   constructor() {
@@ -36,6 +37,7 @@ class App extends Component {
               <Route path="/api-documentation" component={Documentation}/>
               <Route path="/api-pricing" component={Pricing}/>
               <Route path="/tc" component={TC}/>
+              <Route path="/test-session" component={TestSesssion}/>
               <Route path="/skiareas/:skiArea" component={SkiAreas}/>
             </Switch>
             </div>

@@ -4,17 +4,18 @@ from snow_data import skiarea
 import os
 import schedule
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import jsonify, session
+from flask import jsonify, session, make_response
 from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse
 from datetime import date
+import uuid
 
 api = Api(app)  
 app.secret_key = os.urandom(24) 
 app_settings = os.getenv('APP_SETTINGS')
 app.config.from_object(app_settings)
 
-# DB dev function calls
+
 skiarea.update_sa()
 # skiarea.check_website_change() # TODO get this working and then set a schedule for it
 # skiarea.create_new_month()
@@ -54,6 +55,18 @@ parser.add_argument("email", type=str, location="json")
 parser.add_argument("newemail", type=str, location="json")
 parser.add_argument("password", type=str, location="json")
 parser.add_argument("newpassword", type=str, location="json")
+
+
+class TestSession(Resource):
+    def get(self):
+        session["sessionId"] = uuid.uuid4()
+        print("DEBUG session:", session["sessionId"])
+
+        response = make_response()
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+        response.set_cookie('sessionId', str(session["sessionId"]), secure=False, httponly=False)
+        return response
+
 
 
 class GetAllData(Resource):
@@ -220,5 +233,6 @@ api.add_resource(DeleteUser, '/delete-user')
 api.add_resource(Login, '/login')
 api.add_resource(UpdateEmail, '/update-email')
 api.add_resource(UpdatePassword, '/update-password')
+api.add_resource(TestSession, '/test-session')
 
 CORS(app, expose_headers='Authorization')
