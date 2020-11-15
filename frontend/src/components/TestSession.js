@@ -47,7 +47,8 @@ class TestSesssion extends Component {
     fetch('https://api.snowdata.org/test-session', {
     //fetch('http://localhost:7082/test-session', {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json', },
+      credentials: 'include',
+      //headers: { 'Content-Type': 'application/json', },
     }).then((response) => {
       return response
     }).then((data) => {
