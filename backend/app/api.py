@@ -4,16 +4,19 @@ from snow_data import skiarea
 import os
 import schedule
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import jsonify, session, make_response
+from flask import jsonify, session, make_response, request
 from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse
 from datetime import date
 import uuid
+from flask_session import Session
+import redis
 
 api = Api(app)  
 app.secret_key = os.urandom(24) 
 app_settings = os.getenv('APP_SETTINGS')
 app.config.from_object(app_settings)
+Session(app)
 
 
 skiarea.update_sa()
@@ -24,6 +27,7 @@ skiarea.update_sa()
 # if it's the first of the month, create a new month for each ski area
 def check_first_of_month():
     if date.today().day == 1:
+        print("[DEBUG] -- first of month. craete new month")
         skiarea.create_new_month()
 
 
@@ -55,17 +59,42 @@ parser.add_argument("email", type=str, location="json")
 parser.add_argument("newemail", type=str, location="json")
 parser.add_argument("password", type=str, location="json")
 parser.add_argument("newpassword", type=str, location="json")
+parser.add_argument("sessionId", type=str, location='cookies')
 
 
-class TestSession(Resource):
+class CreateSession(Resource):
     def get(self):
-        session["sessionId"] = uuid.uuid4()
-        print("DEBUG session:", session["sessionId"])
+        # setup secure session
+        # return cookie as secure and httpOnly
+        sessionId = str(uuid.uuid4())
+        print("create sessionId:", sessionId)
+        print("type:", type(sessionId))
+        session['sessionId'] = sessionId
+        res = jsonify(messages="tmp response", session=sessionId)
+        res.headers['Access-Control-Allow-Credentials'] = 'true'
+        # res.set_cookie('sessionId', sessionId)
 
-        response = make_response()
-        response.headers['Access-Control-Allow-Credentials'] = 'true'
-        response.set_cookie('sessionId', str(session["sessionId"]), secure=False, httponly=False)
-        return response
+        print('create session session obj:', session)
+        print("session[sessionId]:", session['sessionId'])
+        
+        return res
+
+
+class ValidateSession(Resource):
+    def get(self):
+        args = parser.parse_args()
+        sessionId = args["sessionId"]
+        print("sessionId:", sessionId)
+        print("session:", session)
+        if sessionId in session:
+            print("session exists:", sessionId)
+        else:
+            print("session does not exist")
+
+        res = jsonify(messages="tmp response", session=sessionId)
+        res.headers['Access-Control-Allow-Credentials'] = 'true'
+
+        return res
 
 
 
@@ -233,6 +262,8 @@ api.add_resource(DeleteUser, '/delete-user')
 api.add_resource(Login, '/login')
 api.add_resource(UpdateEmail, '/update-email')
 api.add_resource(UpdatePassword, '/update-password')
-api.add_resource(TestSession, '/test-session')
+api.add_resource(CreateSession, '/create-session')
+api.add_resource(ValidateSession, '/validate-session')
 
-CORS(app, expose_headers='Authorization')
+CORS(app, support_credentials=True)
+#CORS(app, expose_headers='Authorization')

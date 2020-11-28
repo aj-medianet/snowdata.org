@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import argparse
@@ -20,13 +19,12 @@ def get_soup_obj(url):
 
 
 def alpental():
-    # get snow data directly from ski area website
     bs = get_soup_obj(const.SKI_AREAS["Alpental"]["ski_area_url"])
-    new_snow_12 = bs.find_all('span', {'class': 'js-measurement'})[42]['data-usc']
-    new_snow_24 = bs.find_all('span', {'class': 'js-measurement'})[43]['data-usc']
-    new_snow_48 = bs.find_all('span', {'class': 'js-measurement'})[44]['data-usc']
-    ytd = bs.find_all('span', {'class': 'js-measurement'})[45]['data-usc']
-    cur_depth = bs.find_all('span', {'class': 'js-measurement'})[46]['data-usc']
+    new_snow_12 = bs.find_all('span', {'class': 'js-measurement'})[27]['data-usc']
+    new_snow_24 = bs.find_all('span', {'class': 'js-measurement'})[28]['data-usc']
+    new_snow_48 = bs.find_all('span', {'class': 'js-measurement'})[29]['data-usc']
+    ytd = bs.find_all('span', {'class': 'js-measurement'})[30]['data-usc']
+    cur_depth = bs.find_all('span', {'class': 'js-measurement'})[31]['data-usc']
     data = {
         "cur_depth": cur_depth,
         "ytd": ytd,
@@ -34,12 +32,32 @@ def alpental():
         "new_snow_24": new_snow_24,
         "new_snow_48": new_snow_48
     }
+    data = {x: strip_special_chars(data[x]) for x in data}
     return data
 
 
-# TODO 
-def big_sky():
+# needs selenium probably
+def alta():
     pass
+
+
+def big_sky():
+    bs = get_soup_obj(const.SKI_AREAS["Big Sky"]["ski_area_url"])
+    cur_depth = bs.find_all('span', {'class': 'js-measurement'})[12]['data-usc']
+    ytd = "" # does not report
+    new_snow_12 = bs.find_all('span', {'class': 'js-measurement'})[7]['data-usc']
+    new_snow_24 = bs.find_all('span', {'class': 'js-measurement'})[8]['data-usc']
+    new_snow_48 = bs.find_all('span', {'class': 'js-measurement'})[9]['data-usc']
+    data = {
+        "cur_depth": cur_depth,
+        "ytd": ytd,
+        "new_snow_12": new_snow_12,
+        "new_snow_24": new_snow_24,
+        "new_snow_48": new_snow_48
+    }
+
+    data = {x: strip_special_chars(data[x]) for x in data}
+    return data
 
 
 # TODO 
@@ -66,7 +84,7 @@ def jackson_hole():
     data = {x: strip_special_chars(data[x]) for x in data}
     return data
 
-
+# needs selenium probably
 def mt_bachelor():
     bs = get_soup_obj(const.SKI_AREAS["Mt Bachelor"]["ski_area_url"])
     snowfall = bs.find_all('div', 'current-sections conditions')[0]  # [1] is base mountain stats

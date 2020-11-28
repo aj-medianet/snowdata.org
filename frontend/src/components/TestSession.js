@@ -40,12 +40,33 @@ class TestSesssion extends Component {
     return true;
   }
 
-  login = (event) => {
+  setId = (event) => {
     event.preventDefault()
-    console.log("sending GET req")
+    console.log("setting id")
 
-    fetch('https://api.snowdata.org/test-session', {
-    //fetch('http://localhost:7082/test-session', {
+    //fetch('https://api.snowdata.org/test-session', {
+    fetch('http://localhost:7082/setId', {
+      method: 'GET',
+      withCredentials: true
+      //headers: { 'Content-Type': 'application/json', },
+    }).then((response) => {
+      return response
+    }).then((data) => {
+      console.log("data:", data)
+    }).catch((err) => {
+      this.setState({ errMessage: err })
+      console.log("error:", err)
+      return
+    })
+
+  }
+
+  CheckId = (event) => {
+    event.preventDefault()
+    console.log("checking id")
+
+    //fetch('https://api.snowdata.org/test-session', {
+    fetch('http://localhost:7082/checkId', {
       method: 'GET',
       credentials: 'include',
       //headers: { 'Content-Type': 'application/json', },
@@ -84,8 +105,15 @@ class TestSesssion extends Component {
                       <h2>Test Session</h2>
                       <Form>
                         
-                        <Button className="ml-3" variant="primary" onClick={this.login}>
-                          Get Test Session Data
+                        <Button className="ml-3" variant="primary" onClick={this.setId}>
+                          SetId
+                        </Button>
+                      </Form>
+                        <br /> <br />
+                      <Form>
+                        
+                        <Button className="ml-3" variant="primary" onClick={this.CheckId}>
+                          CheckId
                         </Button>
                       </Form>
                     </>
