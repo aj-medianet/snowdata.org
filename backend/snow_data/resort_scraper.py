@@ -4,6 +4,14 @@ import argparse
 import requests
 from snow_data import const
 from app.utils import strip_special_chars
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver import Firefox
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
 
 
 def get_soup_obj(url):
@@ -84,15 +92,21 @@ def jackson_hole():
     data = {x: strip_special_chars(data[x]) for x in data}
     return data
 
-# needs selenium probably
+
 def mt_bachelor():
-    bs = get_soup_obj(const.SKI_AREAS["Mt Bachelor"]["ski_area_url"])
-    snowfall = bs.find_all('div', 'current-sections conditions')[0]  # [1] is base mountain stats
-    new_snow_12 = ""
-    new_snow_48 = ""
-    new_snow_24 = snowfall.find('div', 'current-section condition').find('div', {'class': 'key'}).string
-    cur_depth = snowfall.find('div', 'section-block full').find('div', {'class': 'key'}).string
-    ytd = snowfall.find('div', 'section-block full first').find('div', {'class': 'key'}).string
+    print("[DEBUG] starting mt bachelor")
+    start = time.time()
+
+    options = Options()
+    options.add_argument("--headless")
+    driver = Firefox(firefox_options=options)
+    driver.get(const.SKI_AREAS["Mt Bachelor"]["ski_area_url"])
+    # wait until the snow data is visable
+    WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((By.XPATH, "//h3[contains(@class, 'amount ng-binding')]"))
+    )
+    elements = driver.find_elements(By.XPATH, "//h3[contains(@class, 'amount ng-binding')]")
+    new_snow_12, new_snow_24, new_snow_48, ytd, cur_depth  = elements[0].text, elements[1].text, elements[2].text, elements[4].text, elements[5].text
     data = {
         "cur_depth": cur_depth,
         "ytd": ytd,
@@ -101,7 +115,12 @@ def mt_bachelor():
         "new_snow_48": new_snow_48
     }
     data = {x: strip_special_chars(data[x]) for x in data}
+    # driver.quit()
+    print("[DEBUG] Execution time: {} seconds".format(time.time() - start))
+    print("[DEBUG] finish mt bachelor")
     return data
+    
+
 
 
 def mt_hood():

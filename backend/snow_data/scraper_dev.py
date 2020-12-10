@@ -96,5 +96,7 @@ def big_sky():
     data = {x: strip_special_chars(data[x]) for x in data}
     return data
 
+
 data = mt_bachelor()
-# print("data:", data)
+print("data:", data)
+

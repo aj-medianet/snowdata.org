@@ -20,7 +20,7 @@ SKI_AREAS = {
         "weather_gov_url": "https://api.weather.gov/points/43.598628,-110.852088"
     },
     "Mt Bachelor": {
-        "ski_area_url": "https://www.mtbachelor.com/conditions-report",
+        "ski_area_url": "https://www.mtbachelor.com/the-mountain/weather-operations/conditions-report",
         "weather_gov_url": "https://api.weather.gov/points/43.98886243884903,-121.68182373046875"
     },
     "Mt Hood": {
