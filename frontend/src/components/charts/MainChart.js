@@ -36,22 +36,22 @@ class MainChart extends Component {
         }
     }
     getTopFive(variable) {
-        const depth = this.props.data.filter(area => {
+        const sorted = this.props.data.filter(area => {
             return area[variable] !== "";
             }).map(area => {
                 const data = {}
                 data.name = area.name;
                 data.val = Number(area[variable]);
-                return data;
-        })
-        const depth_arr_big = depth.map(Object.values).sort(function(x,y) {
+                return data
+        }).map(Object.values).sort(function(x,y) {
             return y[1] - x[1];
         })
-        let depth_arr = [];
+
+        let topFive = [];
         for(let i=0; i<5; i++) {
-            depth_arr.push(depth_arr_big[i]);
+            topFive.push(sorted[i]);
         }
-        return depth_arr
+        return topFive
     }
 
     cleanOptions() {
