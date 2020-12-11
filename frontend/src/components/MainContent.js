@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import MainDepthChart from './charts/MainDepthChart';
-import MainTempChart from './charts/MainTempChart';
-import MainWindChart from './charts/MainWindChart';
-import MainYTDChart from './charts/MainYTDChart';
+
 import Spinner from 'react-bootstrap/Spinner';
 import ErrorBoundary from './ErrorBoundary';
 import MainChart from './charts/MainChart';
